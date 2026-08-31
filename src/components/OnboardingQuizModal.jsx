@@ -49,16 +49,26 @@ export default function OnboardingQuizModal({ isOpen, onClose }) {
   };
 
   const triggerStep5Punchline = (choice) => {
-    setSelectedInStep(choice);
+    if (choice) setSelectedInStep(choice);
     setTimeout(() => {
       setStep5SubStage("punchline");
       setSelectedInStep(null);
-      // Give 3.5 seconds (+1s added) for punchline animation so user can read and laugh comfortably
+      // Give 3.5 seconds for punchline animation so user can read and laugh comfortably
       setTimeout(() => {
         setStep5SubStage("real_question");
       }, 3500);
-    }, 350);
+    }, choice ? 300 : 0);
   };
+
+  // Step 5 Auto-Interrupt: Show "ดำด้าน หรือ ดำเงา" for 2.3s then auto-interrupt with "เฮ้ย ไม่ใช่!"
+  useEffect(() => {
+    if (step === 5 && step5SubStage === "matte_glossy") {
+      const gagTimer = setTimeout(() => {
+        triggerStep5Punchline();
+      }, 2300);
+      return () => clearTimeout(gagTimer);
+    }
+  }, [step, step5SubStage]);
 
   // Reset state whenever modal is opened
   useEffect(() => {
