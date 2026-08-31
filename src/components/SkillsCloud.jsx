@@ -1,25 +1,26 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import MotherboardCircuitSkills from './MotherboardCircuitSkills';
-import { 
-  Globe, 
-  Server, 
-  Database, 
-  Cpu, 
+import SkillConstellation from './SkillConstellation';
+import ScrollReveal from './ScrollReveal';
+import {
+  Globe,
+  Server,
+  Database,
+  Cpu,
   Terminal
 } from 'lucide-react';
 
 export default function SkillsCloud() {
-  const { lang, t } = useLanguage();
+  const { t } = useLanguage();
 
   const bentoCategories = [
     {
       id: "frontend",
       title: "Frontend Engineering",
-      titleTh: "สถาปัตยกรรมฝั่งหน้าบ้าน (Frontend)",
+      titleTh: "Frontend Engineering (สถาปัตยกรรมหน้าบ้าน)",
       icon: Globe,
       color: "bg-white dark:bg-slate-800/80",
-      badgeColor: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20",
+      badgeColor: "bg-cobalt-500/10 text-cobalt-400 border border-cobalt-500/20",
       colSpan: "lg:col-span-6",
       descTh: "เชี่ยวชาญการสร้าง Web Application ที่ตอบสนองลื่นไหล โครงสร้าง Component ยืดหยุ่น และ Type-Safe",
       descEn: "Building high-performance, accessible, and reactive user interfaces with modern frameworks",
@@ -35,10 +36,10 @@ export default function SkillsCloud() {
     {
       id: "backend",
       title: "Backend & API Systems",
-      titleTh: "ระบบหลังบ้าน & สถาปัตยกรรม API (Backend)",
+      titleTh: "Backend Engineering & สถาปัตยกรรม API",
       icon: Server,
       color: "bg-white dark:bg-slate-800/80",
-      badgeColor: "bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/20",
+      badgeColor: "bg-sky-500/10 text-sky-400 border border-sky-500/20",
       colSpan: "lg:col-span-6",
       descTh: "ออกแบบ API Gateway, ระบบยืนยันตัวตน, WebSockets แบบเรียลไทม์ และสถาปัตยกรรมแบบแยก Layer",
       descEn: "Architecting resilient RESTful APIs, real-time WebSockets, and modular service layers",
@@ -54,10 +55,10 @@ export default function SkillsCloud() {
     {
       id: "database",
       title: "Database & ORM Management",
-      titleTh: "การจัดการฐานข้อมูล & ORM (Database)",
+      titleTh: "Database & การจัดการ ORM",
       icon: Database,
       color: "bg-white dark:bg-slate-800/80",
-      badgeColor: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20",
+      badgeColor: "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
       colSpan: "lg:col-span-4",
       descTh: "วางโครงสร้าง Relational Schema, Multi-Tenant Isolation และการทำ Transaction ปลอดภัย",
       descEn: "Relational data modeling, ACID transactions, and tenant isolation",
@@ -71,10 +72,10 @@ export default function SkillsCloud() {
     {
       id: "automation",
       title: "Cloud DevOps & Automation",
-      titleTh: "ระบบอัตโนมัติและคลาวด์ (Cloud & Automation)",
+      titleTh: "Cloud DevOps & ระบบอัตโนมัติ (Automation)",
       icon: Cpu,
       color: "bg-white dark:bg-slate-800/80",
-      badgeColor: "bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20",
+      badgeColor: "bg-purple-500/10 text-purple-400 border border-purple-500/20",
       colSpan: "lg:col-span-4",
       descTh: "เชื่อมต่อ Workflow อัตโนมัติด้วย n8n, จัดการ RESTful Webhooks และระบบแจ้งเตือน LINE Notify",
       descEn: "Building automated data pipelines with n8n, webhooks, and asynchronous push services",
@@ -88,10 +89,10 @@ export default function SkillsCloud() {
     {
       id: "workflow",
       title: "Tools & Team Collaboration",
-      titleTh: "เครื่องมือพัฒนา & การทำงานเป็นทีม",
+      titleTh: "Tools & การทำงานร่วมกันเป็นทีม",
       icon: Terminal,
       color: "bg-white dark:bg-slate-800/80",
-      badgeColor: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20",
+      badgeColor: "bg-cobalt-500/10 text-cobalt-400 border border-cobalt-500/20",
       colSpan: "lg:col-span-4",
       descTh: "มีระเบียบวินัยในการใช้ Git Flow, Agile Sprints, การทำ Code Reviews และ CLI Scripting",
       descEn: "Version control discipline, sprint cycles, and command-line efficiency",
@@ -105,73 +106,75 @@ export default function SkillsCloud() {
   ];
 
   return (
-    <section id="skills" className="w-full py-20 px-6 sm:px-12 md:px-20 lg:px-32 border-t border-slate-200 dark:border-slate-800 bg-[#FAFAFA] dark:bg-[#0F172A] text-slate-900 dark:text-slate-100 transition-colors duration-200 text-left">
+    // The one deliberate dark band on the page — Cobalt signature move #8 —
+    // fixed graphite regardless of the site's light/dark toggle, so the
+    // light -> dark -> light rhythm holds either way.
+    <section id="skills" className="w-full py-20 px-6 sm:px-12 md:px-20 lg:px-32 bg-[#151B26] text-slate-100 transition-colors duration-200 text-left">
       <div className="max-w-6xl mx-auto space-y-12">
-        
-        {/* Section Heading */}
-        <div className="text-center space-y-3">
-          <div className="inline-block px-3.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-xs font-mono-code font-bold text-amber-600 dark:text-amber-400">
-            TECHNICAL PROFICIENCY & ECOSYSTEM
+
+        {/* Section Heading — no eyebrow pill; the pill is reserved for Projects only */}
+        <ScrollReveal direction="up">
+          <div className="text-center space-y-3">
+            <h2 className="font-display text-3xl sm:text-5xl font-semibold tracking-tight text-white">
+              {t('Skills & Engineering Arsenal', 'ทักษะและความเชี่ยวชาญทางวิศวกรรม')}
+            </h2>
+            <p className="text-xs sm:text-sm font-mono-code text-slate-400 max-w-2xl mx-auto">
+              {t(
+                'Structured tech stack matrix categorized by engineering domains and real project usage.',
+                'จัดหมวดหมู่ทักษะอย่างเป็นระบบ พร้อมบทบาทและตัวอย่างโปรเจกต์ที่นำไปใช้งานจริง'
+              )}
+            </p>
           </div>
-          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-            {t('Skills & Engineering Arsenal', 'ทักษะและความเชี่ยวชาญทางวิศวกรรม')}
-          </h2>
-          <p className="text-xs sm:text-sm font-mono-code text-slate-500 dark:text-slate-400 max-w-2xl mx-auto">
-            {t(
-              'Structured tech stack matrix categorized by engineering domains and real project usage.',
-              'จัดหมวดหมู่ทักษะอย่างเป็นระบบ พร้อมบทบาทและตัวอย่างโปรเจกต์ที่นำไปใช้งานจริง'
-            )}
-          </p>
-        </div>
+        </ScrollReveal>
 
         {/* REFINED BENTO GRID (CLEAN & SUBTLE) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {bentoCategories.map((cat) => {
+          {bentoCategories.map((cat, catIdx) => {
             const Icon = cat.icon;
             return (
+              <ScrollReveal key={cat.id} delay={catIdx * 0.06} distance={20} className={cat.colSpan}>
               <div
-                key={cat.id}
-                className={`${cat.colSpan} ${cat.color} p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-700/80 shadow-md shadow-slate-200/50 dark:shadow-black/30 flex flex-col justify-between space-y-6 hover:border-amber-500/50 transition-all`}
+                className="bg-[#1B2330] p-6 sm:p-8 rounded-2xl border border-white/10 flex flex-col justify-between space-y-6 hover:border-cobalt-500/40 transition-all"
               >
                 {/* Card Header */}
                 <div>
-                  <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-700/60">
+                  <div className="flex items-center justify-between pb-4 border-b border-white/10">
                     <div className="flex items-center gap-3">
                       <div className={`p-2.5 rounded-xl ${cat.badgeColor}`}>
                         <Icon className="w-5 h-5" />
                       </div>
                       <div>
-                        <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
+                        <h3 className="text-base sm:text-lg font-bold text-white">
                           {t(cat.title, cat.titleTh)}
                         </h3>
-                        <span className="text-[11px] font-mono-code text-slate-500 dark:text-slate-400">
+                        <span className="text-[11px] font-mono-code text-slate-400">
                           {cat.skills.length} Core Technologies
                         </span>
                       </div>
                     </div>
                   </div>
 
-                  <p className="text-xs text-slate-600 dark:text-slate-300 mt-4 leading-relaxed font-normal">
+                  <p className="text-xs text-slate-300 mt-4 leading-relaxed font-normal">
                     {t(cat.descEn, cat.descTh)}
                   </p>
                 </div>
 
-                {/* Skills Grid within the Bento Card */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2">
+                {/* Skills List — flat rows separated by a divider, not nested boxes */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 pt-2 divide-y divide-white/10 sm:divide-y-0">
                   {cat.skills.map((skill, sIdx) => (
                     <div
                       key={sIdx}
-                      className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800 flex flex-col justify-between hover:border-amber-500/50 transition-colors group cursor-default"
+                      className="py-2.5 sm:border-b sm:border-white/10 flex flex-col justify-between group cursor-default"
                     >
                       <div className="flex items-center justify-between">
-                        <span className="font-mono-code font-bold text-xs text-slate-800 dark:text-slate-200 group-hover:text-amber-500 transition-colors">
+                        <span className="font-mono-code font-bold text-xs text-slate-200 group-hover:text-cobalt-400 transition-colors">
                           {skill.name}
                         </span>
-                        <span className="text-[10px] font-mono-code px-1.5 py-0.5 rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400">
+                        <span className="text-[10px] font-mono-code text-slate-400">
                           {skill.level}
                         </span>
                       </div>
-                      <div className="text-[10px] font-mono-code text-slate-400 mt-1 truncate">
+                      <div className="text-[10px] font-mono-code text-slate-500 mt-1 truncate">
                         Used in: {skill.project}
                       </div>
                     </div>
@@ -179,12 +182,15 @@ export default function SkillsCloud() {
                 </div>
 
               </div>
+              </ScrollReveal>
             );
           })}
         </div>
 
-        {/* MOTHERBOARD CIRCUIT BLUEPRINT ANIMATION */}
-        <MotherboardCircuitSkills />
+        {/* INTERACTIVE SKILL CONSTELLATION MAP */}
+        <ScrollReveal delay={0.1}>
+          <SkillConstellation />
+        </ScrollReveal>
 
       </div>
     </section>

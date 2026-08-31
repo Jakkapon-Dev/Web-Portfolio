@@ -1,43 +1,29 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { projectPitchData } from '../data/projectPitchData';
-import { 
-  Play, 
-  RotateCcw, 
-  Activity, 
-  ShieldCheck, 
-  Database, 
-  Server, 
-  Radio, 
-  Bell, 
-  Zap, 
-  Smartphone, 
-  ScanLine, 
-  Layers, 
-  Cpu, 
-  Box, 
+import {
+  RotateCcw,
+  Activity,
+  ShieldCheck,
+  Database,
+  Server,
+  Radio,
+  Bell,
+  Zap,
+  Smartphone,
+  ScanLine,
+  Layers,
+  Cpu,
   Move,
   Sparkles,
-  Table,
-  CheckCircle2,
-  AlertTriangle,
   Lock,
-  Code2,
   Brain,
-  Shield,
   FileCode,
   Gauge,
-  Workflow,
-  Star,
-  Clock,
-  Lightbulb,
   Copy,
-  Check,
-  Target,
-  ChevronRight,
-  Info
+  Check
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
 
 export default function VisualArchitectureDiagram({ projectId }) {
@@ -88,7 +74,7 @@ export default function VisualArchitectureDiagram({ projectId }) {
           nameEn: "⚡ 3. Lunch Rush Peak Concurrency",
           descTh: "ออร์เดอร์เข้าพร้อมกัน ➔ จัดคิวแบบ FIFO ใน Redis ➔ จอครัวแสดงบัตรเรียงตามลำดับเวลา",
           descEn: "Concurrent burst traffic ➔ Redis in-memory queue sorts FIFO tickets ➔ Batched KDS display",
-          activeColor: "#F59E0B"
+          activeColor: "#5B8CFF"
         }
       ],
       nodes: [
@@ -215,7 +201,7 @@ export async function createOrderController(req, res) {
           icon: Database, 
           x: 550, 
           y: 220, 
-          color: '#F59E0B', 
+          color: '#5B8CFF', 
           glow: 'rgba(245, 158, 11, 0.4)',
           endpoints: 'Prisma Client • pgBouncer Pool',
           role: 'บันทึก Transaction แยก Schema และจัดการ Session Cache ใน Redis',
@@ -315,7 +301,7 @@ socket.on('KDS_NEW_TICKET', (newTicket) => {
           nameEn: "🟡 2. Late Arrival Priority Alert",
           descTh: "สแกนหลัง 08:00 ➔ ระบบคำนวณสถานะ 'LATE' ➔ ส่งข้อความด่วนพร้อมเวลาเข้าเรียนถึงผู้ปกครอง",
           descEn: "Scan after 08:00 AM ➔ Rule engine flags 'LATE' ➔ Sends priority notification to parent",
-          activeColor: "#F59E0B"
+          activeColor: "#5B8CFF"
         },
         {
           id: "hardware-offline",
@@ -485,7 +471,7 @@ export function calculateAttendanceStatus(scanTime) {
           icon: Database, 
           x: 580, 
           y: 230, 
-          color: '#F59E0B', 
+          color: '#5B8CFF', 
           glow: 'rgba(245, 158, 11, 0.4)',
           endpoints: 'PostgreSQL + pgBouncer Pool',
           role: 'บันทึก AttendanceLogs แบบ ACID และสถิติประจำวัน',
@@ -592,7 +578,7 @@ async function sendParentAlert(guardianLineId, studentName, time) {
           nameEn: "⚡ 2. Concurrent Sprint Collaboration",
           descTh: "ปรับลำดับการ์ดโดยใช้ Fractional Indexing ➔ เลี่ยงการเขียนทับทั้งคอลัมน์",
           descEn: "Uses Fractional Indexing to reorder items ➔ Prevents locking entire database column",
-          activeColor: "#F59E0B"
+          activeColor: "#5B8CFF"
         },
         {
           id: "network-drop",
@@ -765,7 +751,7 @@ await prisma.$transaction([
           icon: Database, 
           x: 560, 
           y: 60, 
-          color: '#F59E0B', 
+          color: '#5B8CFF', 
           glow: 'rgba(245, 158, 11, 0.4)',
           endpoints: 'PostgreSQL Tasks & Activities Table',
           role: 'จัดเก็บข้อมูลโปรเจกต์ Sprints และประวัติการทำงานของทีมอย่างแม่นยำ',
@@ -828,7 +814,7 @@ model Task {
           nameEn: "🟡 2. HR Candidate Evaluation & Status",
           descTh: "HR กดเปลี่ยนสถานะเป็น 'INTERVIEW' ➔ บันทึก Activity Log ➔ ส่งอีเมลแจ้งเตือนผู้สมัครอัตโนมัติ",
           descEn: "Recruiter changes status to 'INTERVIEW' ➔ Logs state audit ➔ Triggers candidate email notification",
-          activeColor: "#F59E0B"
+          activeColor: "#5B8CFF"
         },
         {
           id: "invalid-file",
@@ -986,7 +972,7 @@ export function calculateMatchScore(candidateSkills, requiredSkills) {
           icon: Database, 
           x: 580, 
           y: 150,  
-          color: '#F59E0B', 
+          color: '#5B8CFF', 
           glow: 'rgba(245, 158, 11, 0.4)',
           endpoints: 'PostgreSQL DB & AWS S3 Bucket',
           role: 'บันทึกประวัติการสมัครงาน จัดเก็บไฟล์เรซูเม่ และยิง Email แจ้งเตือน',
@@ -1032,12 +1018,43 @@ await prisma.application.create({
   const connections = currentArch.connections;
   const currentScenario = currentArch.scenarios[selectedScenarioIdx] || currentArch.scenarios[0];
 
+  // Dynamically spread nodes evenly across 100% full canvas width
+  const getResponsiveNodes = useCallback((rawNodes, width) => {
+    if (!width || width < 400) return rawNodes;
+    const minX = Math.min(...rawNodes.map(n => n.x));
+    const maxX = Math.max(...rawNodes.map(n => n.x));
+    if (maxX === minX) return rawNodes;
+
+    return rawNodes.map(n => {
+      const ratio = (n.x - minX) / (maxX - minX);
+      const targetX = 80 + ratio * (width - 160 - 72);
+      return { ...n, x: Math.round(targetX) };
+    });
+  }, []);
+
   useEffect(() => {
-    setNodes(currentArch.nodes);
+    const width = canvasRef.current?.clientWidth || 1100;
+    const scaled = getResponsiveNodes(currentArch.nodes, width);
+    setNodes(scaled);
     setSelectedNodeId(currentArch.nodes[0]?.id || null);
     setSelectedScenarioIdx(0);
     setActiveTab('code');
-  }, [projectId]);
+
+    const handleResize = () => {
+      if (!canvasRef.current) return;
+      const w = canvasRef.current.clientWidth;
+      setNodes(getResponsiveNodes(currentArch.nodes, w));
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+    // `currentArch` is re-derived from `architectures[projectId]` every render (the
+    // `architectures` object below isn't memoized), so `currentArch.nodes` is a new
+    // array reference each time — listing it here would re-run this effect (and
+    // setNodes) on every render instead of only on an actual project switch.
+    // `projectId` is the real trigger and is already listed.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [projectId, getResponsiveNodes]);
 
   const handleMouseDown = (e, id) => {
     e.preventDefault();
@@ -1081,7 +1098,8 @@ await prisma.application.create({
   }, [draggingNodeId, handleMouseMove, handleMouseUp]);
 
   const handleResetLayout = () => {
-    setNodes(currentArch.nodes);
+    const width = canvasRef.current?.clientWidth || 1100;
+    setNodes(getResponsiveNodes(currentArch.nodes, width));
   };
 
   const handleCopyPitch = () => {
@@ -1089,7 +1107,7 @@ await prisma.application.create({
     navigator.clipboard.writeText(textToCopy);
     setCopied(true);
     try {
-      confetti({ particleCount: 35, spread: 60, origin: { y: 0.7 }, colors: ['#F59E0B', '#10B981'] });
+      confetti({ particleCount: 35, spread: 60, origin: { y: 0.7 }, colors: ['#5B8CFF', '#10B981'] });
     } catch {}
     setTimeout(() => setCopied(false), 2500);
   };
@@ -1097,56 +1115,87 @@ await prisma.application.create({
   const selectedNode = nodes.find(n => n.id === selectedNodeId) || nodes[0];
 
   return (
-    <div className="w-full space-y-5 text-left selection:bg-amber-500 selection:text-slate-950">
+    <div className="w-full space-y-5 text-left selection:bg-cobalt-500 selection:text-white">
       
       {/* 1. SCENARIO SWITCHER & CONTROLS HEADER */}
-      <div className="p-3 sm:p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700/80 flex flex-wrap items-center justify-between gap-3 shadow-sm">
+      <div className="p-4 sm:p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700/80 space-y-3 shadow-sm">
         
-        {/* Scenario Pills */}
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs font-mono-code font-bold text-slate-500 dark:text-slate-400 mr-1 hidden sm:inline">
-            Simulation Scenario:
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          {/* Scenario Pills */}
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-xs font-mono-code font-bold text-slate-700 dark:text-slate-300 mr-1 flex items-center gap-1">
+              <Activity className="w-3.5 h-3.5 text-cobalt-500" />
+              <span>Simulation Scenario:</span>
+            </span>
+            {currentArch.scenarios.map((scen, sIdx) => {
+              const isActive = selectedScenarioIdx === sIdx;
+              return (
+                <button
+                  key={scen.id}
+                  onClick={() => setSelectedScenarioIdx(sIdx)}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-mono-code font-bold transition-all flex items-center gap-1.5 ${
+                    isActive
+                      ? 'bg-cobalt-500 text-white shadow-md shadow-cobalt-500/20 ring-2 ring-cobalt-400/40'
+                      : 'bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-600'
+                  }`}
+                >
+                  <span>{t(scen.nameEn, scen.nameTh)}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Speed & Reset */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setFlowSpeed(flowSpeed === 'normal' ? 'fast' : 'normal')}
+              className={`px-3 py-1.5 rounded-xl text-xs font-mono-code font-bold border transition-colors flex items-center gap-1.5 ${
+                flowSpeed === 'fast'
+                  ? 'bg-cobalt-500 text-white border-cobalt-500 shadow-sm'
+                  : 'bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-600'
+              }`}
+            >
+              <Zap className="w-3.5 h-3.5" />
+              <span>{flowSpeed === 'fast' ? '⚡ 2x Speed' : '1x Speed'}</span>
+            </button>
+
+            <button
+              onClick={handleResetLayout}
+              className="p-1.5 rounded-xl bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-600 hover:bg-slate-100 transition-colors shadow-sm"
+              title="Reset Positions"
+              aria-label="Reset node positions"
+            >
+              <RotateCcw className="w-4 h-4" aria-hidden="true" />
+            </button>
+          </div>
+        </div>
+
+        {/* Live Scenario Explanation Banner */}
+        <motion.div
+          key={currentScenario.id}
+          initial={{ opacity: 0, y: -4 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="p-3 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-750 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-mono-code"
+        >
+          <div className="flex items-center gap-2 text-slate-700 dark:text-slate-200">
+            <span
+              className="w-2.5 h-2.5 rounded-full animate-ping shrink-0"
+              style={{ backgroundColor: currentScenario.activeColor }}
+            />
+            <span className="font-bold">{t(currentScenario.descEn, currentScenario.descTh)}</span>
+          </div>
+
+          <span
+            className="px-2.5 py-0.5 rounded-md text-[10px] font-bold self-start sm:self-auto border shrink-0"
+            style={{
+              backgroundColor: `${currentScenario.activeColor}15`,
+              color: currentScenario.activeColor,
+              borderColor: `${currentScenario.activeColor}40`,
+            }}
+          >
+            ● LIVE PIPELINE ACTIVE
           </span>
-          {currentArch.scenarios.map((scen, sIdx) => {
-            const isActive = selectedScenarioIdx === sIdx;
-            return (
-              <button
-                key={scen.id}
-                onClick={() => setSelectedScenarioIdx(sIdx)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-mono-code font-bold transition-all flex items-center gap-1.5 ${
-                  isActive
-                    ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
-                    : 'bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-600 hover:bg-slate-100'
-                }`}
-              >
-                <span>{t(scen.nameEn, scen.nameTh)}</span>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Speed & Reset */}
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => setFlowSpeed(flowSpeed === 'normal' ? 'fast' : 'normal')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-mono-code font-bold border transition-colors flex items-center gap-1.5 ${
-              flowSpeed === 'fast'
-                ? 'bg-amber-500 text-slate-950 border-amber-500 shadow-sm'
-                : 'bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-600'
-            }`}
-          >
-            <Zap className="w-3.5 h-3.5" />
-            <span>{flowSpeed === 'fast' ? '⚡ 2x Speed' : '1x Speed'}</span>
-          </button>
-
-          <button
-            onClick={handleResetLayout}
-            className="p-1.5 rounded-xl bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-600 hover:bg-slate-100 transition-colors shadow-sm"
-            title="Reset Positions"
-          >
-            <RotateCcw className="w-4 h-4" />
-          </button>
-        </div>
+        </motion.div>
 
       </div>
 
@@ -1162,7 +1211,7 @@ await prisma.application.create({
         
         {/* Top Hint Bar */}
         <div className="absolute top-4 left-4 z-20 pointer-events-none flex items-center gap-2 bg-slate-900/85 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-slate-800 text-xs font-mono-code text-slate-300 shadow-md">
-          <Move className="w-3.5 h-3.5 text-amber-400 animate-bounce" />
+          <Move className="w-3.5 h-3.5 text-cobalt-400 animate-bounce" />
           <span>Click circle to select • Drag circles to rearrange topology</span>
         </div>
 
@@ -1172,7 +1221,7 @@ await prisma.application.create({
             <linearGradient id="fullFlowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stopColor={currentScenario.activeColor} stopOpacity="0.9" />
               <stop offset="50%" stopColor="#38BDF8" stopOpacity="1" />
-              <stop offset="100%" stopColor="#F59E0B" stopOpacity="0.9" />
+              <stop offset="100%" stopColor="#5B8CFF" stopOpacity="0.9" />
             </linearGradient>
 
             <filter id="fullGlow" x="-20%" y="-20%" width="140%" height="140%">
@@ -1203,7 +1252,7 @@ await prisma.application.create({
                 <path
                   d={pathD}
                   fill="none"
-                  stroke="#1E293B"
+                  stroke="#292524"
                   strokeWidth="6"
                   strokeLinecap="round"
                 />
@@ -1264,8 +1313,8 @@ await prisma.application.create({
               }}
               className={`absolute w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center cursor-pointer active:cursor-grabbing transition-shadow transition-transform duration-75 border-2 ${
                 isSelected 
-                  ? 'border-amber-400 bg-slate-900 ring-4 ring-amber-400/30' 
-                  : 'border-slate-700/80 bg-slate-900/90 hover:border-amber-400'
+                  ? 'border-cobalt-400 bg-slate-900 ring-4 ring-cobalt-400/30' 
+                  : 'border-slate-700/80 bg-slate-900/90 hover:border-cobalt-400'
               }`}
             >
               <div 
@@ -1315,7 +1364,7 @@ await prisma.application.create({
                   </h4>
                   <span className="text-xs text-slate-400 font-mono-code">({selectedNode.sub})</span>
                 </div>
-                <div className="text-xs font-mono-code text-amber-500 mt-0.5">
+                <div className="text-xs font-mono-code text-cobalt-500 mt-0.5">
                   Target: <code>{selectedNode.endpoints}</code>
                 </div>
               </div>
@@ -1329,8 +1378,8 @@ await prisma.application.create({
                   onClick={() => setSelectedNodeId(n.id)}
                   className={`px-2.5 py-1 rounded-lg text-[11px] font-mono-code font-bold transition-all ${
                     selectedNodeId === n.id
-                      ? 'bg-amber-500 text-slate-950 shadow-sm'
-                      : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-amber-500'
+                      ? 'bg-cobalt-500 text-white shadow-sm'
+                      : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-cobalt-500'
                   }`}
                 >
                   {n.label.split(' ')[0]}
@@ -1343,7 +1392,7 @@ await prisma.application.create({
               <button
                 onClick={() => setActiveTab('code')}
                 className={`px-3 py-1.5 rounded-lg transition-all ${
-                  activeTab === 'code' ? 'bg-amber-500 text-slate-950 shadow-sm' : 'text-slate-600 dark:text-slate-300 hover:text-amber-500'
+                  activeTab === 'code' ? 'bg-cobalt-500 text-white shadow-sm' : 'text-slate-600 dark:text-slate-300 hover:text-cobalt-500'
                 }`}
               >
                 Code & Payload
@@ -1351,7 +1400,7 @@ await prisma.application.create({
               <button
                 onClick={() => setActiveTab('tradeoffs')}
                 className={`px-3 py-1.5 rounded-lg transition-all ${
-                  activeTab === 'tradeoffs' ? 'bg-amber-500 text-slate-950 shadow-sm' : 'text-slate-600 dark:text-slate-300 hover:text-amber-500'
+                  activeTab === 'tradeoffs' ? 'bg-cobalt-500 text-white shadow-sm' : 'text-slate-600 dark:text-slate-300 hover:text-cobalt-500'
                 }`}
               >
                 Trade-offs
@@ -1359,7 +1408,7 @@ await prisma.application.create({
               <button
                 onClick={() => setActiveTab('security')}
                 className={`px-3 py-1.5 rounded-lg transition-all ${
-                  activeTab === 'security' ? 'bg-amber-500 text-slate-950 shadow-sm' : 'text-slate-600 dark:text-slate-300 hover:text-amber-500'
+                  activeTab === 'security' ? 'bg-cobalt-500 text-white shadow-sm' : 'text-slate-600 dark:text-slate-300 hover:text-cobalt-500'
                 }`}
               >
                 Security
@@ -1367,7 +1416,7 @@ await prisma.application.create({
               <button
                 onClick={() => setActiveTab('star')}
                 className={`px-3 py-1.5 rounded-lg transition-all ${
-                  activeTab === 'star' ? 'bg-amber-500 text-slate-950 shadow-sm' : 'text-slate-600 dark:text-slate-300 hover:text-amber-500'
+                  activeTab === 'star' ? 'bg-cobalt-500 text-white shadow-sm' : 'text-slate-600 dark:text-slate-300 hover:text-cobalt-500'
                 }`}
               >
                 Project Story
@@ -1380,8 +1429,8 @@ await prisma.application.create({
           {activeTab === 'code' && (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               <div className="lg:col-span-7 space-y-2">
-                <span className="text-xs font-mono-code font-bold text-amber-500 flex items-center gap-1.5">
-                  <FileCode className="w-3.5 h-3.5 text-amber-500" />
+                <span className="text-xs font-mono-code font-bold text-cobalt-500 flex items-center gap-1.5">
+                  <FileCode className="w-3.5 h-3.5 text-cobalt-500" />
                   <span>Real Implementation Code Snippet:</span>
                 </span>
                 <pre className="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-slate-200 font-mono-code text-xs overflow-x-auto leading-relaxed shadow-inner">
@@ -1394,7 +1443,7 @@ await prisma.application.create({
                   <Zap className="w-3.5 h-3.5 text-sky-400" />
                   <span>In-Transit JSON Data Packet:</span>
                 </span>
-                <pre className="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-amber-300 font-mono-code text-xs overflow-x-auto leading-relaxed shadow-inner">
+                <pre className="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-cobalt-300 font-mono-code text-xs overflow-x-auto leading-relaxed shadow-inner">
                   <code>{selectedNode.payloadSample}</code>
                 </pre>
               </div>
@@ -1405,7 +1454,7 @@ await prisma.application.create({
           {activeTab === 'tradeoffs' && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700/80 space-y-2">
-                <div className="text-xs font-mono-code font-bold text-amber-500 flex items-center gap-1.5">
+                <div className="text-xs font-mono-code font-bold text-cobalt-500 flex items-center gap-1.5">
                   <Brain className="w-4 h-4" />
                   <span>Architectural Decision:</span>
                 </div>
@@ -1433,7 +1482,7 @@ await prisma.application.create({
           {activeTab === 'security' && (
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700/80 space-y-1.5">
-                <div className="text-xs font-mono-code font-bold text-amber-500 flex items-center gap-1.5">
+                <div className="text-xs font-mono-code font-bold text-cobalt-500 flex items-center gap-1.5">
                   <Lock className="w-3.5 h-3.5" />
                   <span>Authentication & RBAC</span>
                 </div>
@@ -1471,13 +1520,13 @@ await prisma.application.create({
               {/* Core Narrative & Story Summary */}
               <div className="p-5 sm:p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700/80 space-y-3">
                 <div className="flex items-center justify-between gap-2">
-                  <span className="text-xs font-mono-code font-bold text-amber-500 flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-amber-500" />
+                  <span className="text-xs font-mono-code font-bold text-cobalt-500 flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-cobalt-500" />
                     <span>{t('Project Overview & Architecture Story:', 'ภาพรวม & เรื่องราวเบื้องหลังโปรเจกต์:')}</span>
                   </span>
                   <button
                     onClick={handleCopyPitch}
-                    className="px-3.5 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-mono-code text-xs font-bold transition-all shadow-sm flex items-center gap-1.5"
+                    className="px-3.5 py-1.5 rounded-xl bg-cobalt-500 hover:bg-cobalt-400 text-white font-mono-code text-xs font-bold transition-all shadow-sm flex items-center gap-1.5"
                   >
                     {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                     <span>{copied ? t('Copied!', 'คัดลอกแล้ว!') : t('Copy Summary', 'คัดลอกสรุป')}</span>
@@ -1492,8 +1541,8 @@ await prisma.application.create({
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 text-xs font-mono-code">
                 
                 {/* Situation */}
-                <div className="p-4 rounded-2xl bg-rose-500/5 dark:bg-rose-500/10 border border-rose-500/20 space-y-1.5">
-                  <span className="font-bold text-rose-600 dark:text-rose-400 block uppercase">
+                <div className="p-4 rounded-2xl bg-cobalt-500/5 dark:bg-cobalt-500/10 border border-cobalt-500/20 space-y-1.5">
+                  <span className="font-bold text-cobalt-600 dark:text-cobalt-400 block uppercase">
                     1. Situation (ปัญหาเดิม)
                   </span>
                   <p className="text-slate-600 dark:text-slate-300 font-sans text-xs leading-relaxed">
@@ -1512,8 +1561,8 @@ await prisma.application.create({
                 </div>
 
                 {/* Action */}
-                <div className="p-4 rounded-2xl bg-amber-500/5 dark:bg-amber-500/10 border border-amber-500/20 space-y-1.5">
-                  <span className="font-bold text-amber-600 dark:text-amber-400 block uppercase">
+                <div className="p-4 rounded-2xl bg-cobalt-500/5 dark:bg-cobalt-500/10 border border-cobalt-500/20 space-y-1.5">
+                  <span className="font-bold text-cobalt-600 dark:text-cobalt-400 block uppercase">
                     3. Action (สิ่งที่เราสร้าง)
                   </span>
                   <p className="text-slate-600 dark:text-slate-300 font-sans text-xs leading-relaxed">
@@ -1543,7 +1592,7 @@ await prisma.application.create({
       <div className="p-3.5 rounded-2xl bg-slate-900 text-slate-200 border border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs font-mono-code">
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span>Latency: <strong className="text-amber-400">{currentArch.specs.latency}</strong></span>
+          <span>Latency: <strong className="text-cobalt-400">{currentArch.specs.latency}</strong></span>
         </div>
         <div>
           <span>Isolation: <strong className="text-sky-400">{currentArch.specs.isolation}</strong></span>

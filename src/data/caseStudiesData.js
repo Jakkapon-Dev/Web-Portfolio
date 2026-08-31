@@ -43,6 +43,43 @@ export const caseStudiesData = {
       ]
     },
 
+    methodology: {
+      titleEn: "Engineering Thought Process & Deep Implementation",
+      titleTh: "กระบวนการคิดเชิงวิศวกรรม & วิธีออกแบบระบบทีละขั้นตอน",
+      steps: [
+        {
+          phase: "Step 1: Domain Modeling",
+          titleEn: "Relational Modeling with Strict Referential Integrity",
+          titleTh: "การวางโครงสร้างฐานข้อมูลเชิงสัมพันธ์ที่ปลอดภัย 100%",
+          detailEn: "Designed PostgreSQL schema using Prisma ORM with compound unique constraints (@@unique([studentId, date])). This guarantees at the database level that a student can NEVER have duplicate attendance records for the same date, regardless of concurrent submissions.",
+          detailTh: "ออกแบบ Schema ด้วย Prisma โดยใช้ Compound Unique Index (@@unique([studentId, date])) เพื่อการันตีระดับ Database ว่าจะไม่มีข้อมูลเช็กชื่อซ้ำซ้อนในวันเดียวกัน แม้จะมีการกดส่งข้อมูลซ้ำจากหลายอุปกรณ์"
+        },
+        {
+          phase: "Step 2: Server Actions Pipeline",
+          titleEn: "Type-Safe Server Action with Zod Guard",
+          titleTh: "สร้าง Server Action ควบคู่กับการตรวจสอบความถูกต้องด้วย Zod",
+          detailEn: "Replaced legacy REST API controllers with Next.js 14 Server Actions. Every incoming payload is parsed through a strict Zod schema before hitting the database, eliminating runtime type mismatch errors and preventing malicious injections.",
+          detailTh: "เลือกใช้ Next.js 14 Server Action แทน REST API แยกแบบเดิม โดยดักจับทุก Payload ด้วย Zod Schema แบบ Strict ก่อนส่งต่อไปยังฐานข้อมูล ทำให้มั่นใจว่าไม่มี Type Error หรือ Malicious Payload หลุดรอดเข้าไปได้"
+        },
+        {
+          phase: "Step 3: Asynchronous Webhooks",
+          titleEn: "Non-Blocking Async Event Dispatching for LINE Alerts",
+          titleTh: "ระบบยิง Webhook แจ้งเตือนแบบ Asynchronous ไม่บล็อกการทำงานหลัก",
+          detailEn: "Parent push notifications (LINE Messaging API) are decoupled from the main database transaction. The DB transaction commits first (<50ms), and notification webhooks are dispatched asynchronously in the background so slow external APIs never lag teacher UI response times.",
+          detailTh: "แยกการยิงแจ้งเตือน LINE ผู้ปกครองออกจาก Transaction หลักของฐานข้อมูล โดยให้ระบบบันทึกคะแนนเข้า DB ให้เสร็จก่อนใน 50ms แล้วยิง Webhook แบบ Async อยู่เบื้องหลัง ทำให้ครูไม่ต้องรอนานแม้ API ภายนอกจะช้า"
+        }
+      ]
+    },
+
+    warStory: {
+      titleEn: "The War Story: Concurrency Spike at 7:55 AM",
+      titleTh: "กรณีศึกษาบั๊กจริง: ปัญหา Traffic พุ่งสูงพร้อมกันตอน 07:55 น.",
+      problemEn: "During testing with 40 simultaneous classrooms submitting attendance at 7:55 AM, direct PostgreSQL connections exhausted immediately (500 Connection Timeout Errors).",
+      problemTh: "ช่วงทดสอบจำลองครู 40 ห้องกดส่งข้อมูลเช็กชื่อพร้อมกันในเวลา 07:55 น. ทำให้ Connection Pool ของ PostgreSQL เต็มทันทีและเกิด Error 500 Connection Timeout",
+      solutionEn: "Implemented pgBouncer connection pooling with transaction mode and refactored individual database upserts into a single atomic prisma.$transaction() batch. This dropped connection contention by 75% and stabilized response times under 80ms.",
+      solutionTh: "แก้ไขด้วยการติดตั้ง pgBouncer สำหรับทำ Connection Pooling และยุบ Query ย่อยๆ ของนักเรียนทั้งห้องให้รันรวมใน prisma.$transaction() เพียงคำสั่งเดียว ลดการใช้ Connection ลง 75% และความเร็วกลับมาเสถียรที่ต่ำกว่า 80ms"
+    },
+
     chapter2: {
       titleEn: "Chapter 2: System Architecture & Relational Integrity",
       titleTh: "บทที่ 2: สถาปัตยกรรมระบบ & ความถูกต้องของข้อมูล",
@@ -132,6 +169,43 @@ export const caseStudiesData = {
       ]
     },
 
+    methodology: {
+      titleEn: "Engineering Thought Process & Real-Time Pipeline",
+      titleTh: "กระบวนการคิดเชิงวิศวกรรม & สถาปัตยกรรม Real-Time",
+      steps: [
+        {
+          phase: "Step 1: Protocol Selection",
+          titleEn: "Hybrid Transport Architecture (WebSockets + REST)",
+          titleTh: "การผสมผสานสองโปรโตคอล: WebSockets สำหรับ KDS + REST สำหรับการคิดเงิน",
+          detailEn: "Rather than forcing everything over one protocol, we used Socket.io for zero-latency bidirectional KDS broadcasting, while keeping financial payment transactions and receipt printings over idempotent REST endpoints with ACID transactional logging.",
+          detailTh: "แยกการทำงานชัดเจน: ใช้ Socket.io สำหรับการกระจายสัญญาณเข้าจอครัวแบบเรียลไทม์ 0ms แต่ใช้ REST API สำหรับการชำระเงินและออกใบกำกับภาษี เพื่อให้มี Audit Trail และบันทึกประวัติทางการเงินที่ตรวจสอบได้ 100%"
+        },
+        {
+          phase: "Step 2: Tenant Scoped Channels",
+          titleEn: "Dynamic Room Partitioning in Socket.io",
+          titleTh: "การแบ่ง Channel ห้องตาม Tenant ID และ Branch ID",
+          detailEn: "Implemented JWT middleware on WebSocket handshakes to extract { tenantId, branchId }. Sockets automatically join isolated room channels (tenant:restaurant_1:branch_bkk). Events are broadcast exclusively to matching rooms, reducing network traffic and eliminating data cross-talk.",
+          detailTh: "ใช้ JWT Middleware ตรวจสอบสิทธิ์ตั้งแต่ขั้นตอน Handshake และดึงข้อมูล { tenantId, branchId } เพื่อจับอุปกรณ์เข้าห้อง Socket เฉพาะสาขา (tenant:1:branch:bkk) ทำให้การ Broadcast ออร์เดอร์ไม่สิ้นเปลือง Bandwidth และไม่มีข้อมูลรั่วไหล"
+        },
+        {
+          phase: "Step 3: Inventory Depletion Atomic Lock",
+          titleEn: "Preventing Race Conditions on Last-Item Inventory",
+          titleTh: "การล็อกสต็อกแบบ Transaction ป้องกันการสั่งเมนูสุดท้ายชนกัน",
+          detailEn: "When multiple tables order the last remaining Wagyu steak simultaneously, Prisma $transaction executes an atomic decrement with a conditional stock >= quantity check. If stock is exhausted, the transaction immediately rolls back and emits an out-of-stock event to the client.",
+          detailTh: "เมื่อ 2 โต๊ะสั่งเมนูจานสุดท้ายพร้อมกันในเสี้ยววินาที ระบบจะใช้ Prisma $transaction รันคำสั่งตัดสต็อกแบบ Atomic พร้อมเงื่อนไข stock >= qty หากสต็อกหมด Transaction จะ Rollback อัตโนมัติและแจ้งเตือนโต๊ะที่สั่งช้ากว่าทันที"
+        }
+      ]
+    },
+
+    warStory: {
+      titleEn: "The War Story: The Ghost Double-Order Bug",
+      titleTh: "กรณีศึกษาบั๊กจริง: ออร์เดอร์ผีเบิ้ล 2 จานเมื่อเน็ตกระตุก",
+      problemEn: "During peak lunch testing with flaky Wi-Fi, cashiers tapped Confirm Order twice when the spinner paused, causing duplicate orders and double food prep in the kitchen.",
+      problemTh: "ช่วงทดสอบที่สัญญาณ Wi-Fi ไม่เสถียร แคชเชียร์กดปุ่มยืนยันซ้ำเมื่อหน้าจอค้าง ส่งผลให้ออร์เดอร์ถูกส่งซ้ำและครัวทำอาหารเบิ้ล 2 จาน",
+      solutionEn: "Implemented Client-Side Idempotency Keys (UUIDv4 per checkout session) stored in Redis with a 15-second TTL. The server checks the key before creating an order; duplicate requests within the window receive the cached original response without creating duplicate kitchen tickets.",
+      solutionTh: "แก้ไขด้วยการสร้าง Idempotency Key (UUIDv4 ต่อการสั่ง 1 ครั้ง) และเก็บใน Redis 15 วินาที เมื่อเซิร์ฟเวอร์ได้รับ Key ซ้ำ จะส่งผลลัพธ์เดิมกลับไปโดยไม่สร้างออร์เดอร์ใหม่ในครัว แก้ปัญหาอาหารเบิ้ลได้อย่างเด็ดขาด"
+    },
+
     chapter2: {
       titleEn: "Chapter 2: Real-Time Event Bus & Data Architecture",
       titleTh: "บทที่ 2: สถาปัตยกรรม Real-Time & Event Gateway",
@@ -195,32 +269,69 @@ export const caseStudiesData = {
       titleTh: "บทที่ 1: การกระจายงานที่สับสน & เป้าหมายทีมที่หลุดลอย",
       dropCap: "C",
       narrativeEn: "ross-functional teams frequently struggle with fragmented communication across chat apps, forgotten task deadlines, and clunky legacy project tools that slow down daily productivity. When developers cannot see board status updates smoothly, team alignment degrades and project deliveries miss target deadlines.",
-      narrativeTh: "ทีมพัฒนาที่ทำงานร่วมกันหลายฝ่ายมักประสบปัญหาการสื่อสารที่กระจัดกระจายในแอปแช็ต งานมอบหมายหลงลืม และเครื่องมือบริหารงานแบบเดิมที่เทอะทะ โหลดช้า เมื่อสมาชิกในทีมไม่สามารถเห็นสถานะงานและกระดาน Kanban ได้อย่างลื่นไหล ประสิทธิภาพของทีมจะลดลงและส่งมอบงานไม่ทันกำหนด",
+      narrativeTh: "ทีมพัฒนาที่ทำงานร่วมกันหลายฝ่ายมักประสบปัญหาการสื่อสารที่กระจัดกระจายในแอปพลิเคชันแชต งานมอบหมายหลงลืม และเครื่องมือบริหารงานแบบเดิมที่เทอะทะ โหลดช้า เมื่อสมาชิกในทีมไม่สามารถเห็นสถานะงานและกระดาน Kanban ได้อย่างลื่นไหล ประสิทธิภาพของทีมจะลดลงและส่งมอบงานไม่ทันกำหนด",
       contextBoxTitleEn: "Sprint Lifecycle & Kanban Flow",
       contextBoxTitleTh: "กระบวนการลากวางงานในกระดาน Kanban",
       principles: [
         {
           num: "1",
-          titleEn: "Frictionless Drag-and-Drop",
-          titleTh: "1. ลากวางงานได้อย่างลื่นไหลไร้รอยต่อ",
-          descEn: "Designed an optimistic drag-and-drop board state that updates instantly on the client while persisting changes safely in the background.",
-          descTh: "ออกแบบกระดานลากวางที่ตอบสนองทันทีบนหน้าจอ (Optimistic UI) ก่อนบันทึกสถานะลงฐานข้อมูลในเบื้องหลัง"
+          titleEn: "Target 60fps Drag & Drop",
+          titleTh: "1. เป้าหมายความลื่นไหล 60fps",
+          descEn: "Designed an optimistic local state model with Zustand ensuring card drag transitions render at a smooth 60fps with zero network wait.",
+          descTh: "ออกแบบ State Management ด้วย Zustand ให้การ์ดขยับตามเมาส์ได้ทันทีแบบ 60fps โดยไม่ต้องรอเซิร์ฟเวอร์ตอบกลับ"
         },
         {
           num: "2",
-          titleEn: "Nested Workspaces & Sprints",
-          titleTh: "2. โครงสร้าง Workspaces และ Sprints เป็นหมวดหมู่",
-          descEn: "Created clean relational models for Organization ➔ Workspace ➔ Project ➔ Sprint ➔ Task hierarchy.",
-          descTh: "จัดโครงสร้างความสัมพันธ์ของข้อมูลแบบลำดับขั้น: องค์กร ➔ พื้นที่ทำงาน ➔ โปรเจกต์ ➔ สปรินต์ ➔ การ์ดงาน"
+          titleEn: "Eliminate Array Re-Indexing",
+          titleTh: "2. ลดภาระการคำนวณลำดับการ์ด",
+          descEn: "Adopted Fractional Indexing (Lexorank style) so moving a single card only updates one database row instead of rewriting thousands of column indexes.",
+          descTh: "ใช้เทคนิค Fractional Indexing ทำให้การย้ายการ์ด 1 ใบ บันทึก Database เพียงแถวเดียว ไม่ต้องอัปเดตเลขลำดับของการ์ดทั้งคอลัมน์"
         },
         {
           num: "3",
-          titleEn: "Minimalist High-Focus UI",
-          titleTh: "3. ดีไซน์มินิมอล ลดสิ่งรบกวนสายตา",
-          descEn: "Dark-mode first interface with high-contrast priority tags and clean typography to keep developers focused on delivery.",
-          descTh: "หน้าจอ Dark Mode ที่เน้นความชัดเจนของป้ายลำดับความสำคัญ (Priority Tags) ช่วยให้ทีมโฟกัสกับงานตรงหน้าได้อย่างเต็มที่"
+          titleEn: "Atomic Rollback Resilience",
+          titleTh: "3. ระบบกู้คืนสถานะเมื่อเกิด Error",
+          descEn: "Engineered an automatic rollback snapshot pipeline that cleanly restores card positions if an API batch request fails over weak networks.",
+          descTh: "สร้างระบบ Snapshot State อัตโนมัติ หากสัญญาณเน็ตหลุด การ์ดจะดีดกลับตำแหน่งเดิมอย่างนุ่มนวลพร้อมแจ้งเตือนผู้ใช้"
         }
       ]
+    },
+
+    methodology: {
+      titleEn: "Engineering Thought Process & Optimistic UI",
+      titleTh: "กระบวนการคิดเชิงวิศวกรรม & สถาปัตยกรรม Optimistic UI",
+      steps: [
+        {
+          phase: "Step 1: Fractional Indexing Math",
+          titleEn: "O(1) Task Reordering with Midpoint Calculation",
+          titleTh: "การจัดลำดับการ์ดแบบ O(1) ด้วยการคำนวณจุดกึ่งกลาง (Fractional Indexing)",
+          detailEn: "Traditional Kanban systems use integers (0, 1, 2, 3...). Inserting a card between index 1 and 2 requires updating every subsequent card (O(N) DB writes). Blackboard assigns floating-point indexes. Inserting between 1.0 and 2.0 simply assigns 1.5, making every re-order an O(1) single-row update.",
+          detailTh: "กระดานทั่วไปใช้เลขจำนวนเต็ม (0, 1, 2) ซึ่งเมื่อแทรกการ์ดตรงกลาง จะต้องไล่อัปเดตเลขการ์ดที่เหลือทั้งคอลัมน์ (O(N)) แต่ Blackboard ใช้ตัวเลขทศนิยม เช่น แทรกระหว่าง 1.0 กับ 2.0 จะได้ 1.5 ทันที ทำให้การบันทึกลง Database เป็น O(1) ประหยัดทรัพยากรเซิร์ฟเวอร์มหาศาล"
+        },
+        {
+          phase: "Step 2: Zustand Optimistic Pipeline",
+          titleEn: "Zero-Latency Local Mutator with Snapshot Rollback",
+          titleTh: "การจัดการ State แบบ Snapshot ก่อนยิง Request",
+          detailEn: "When a user drops a card, Zustand immediately clones the current column array into a previousState snapshot, renders the new UI layout in 0ms, and dispatches a debounced PATCH request. If the server responds with 4xx/5xx, previousState is applied instantly with a toast alert.",
+          detailTh: "เมื่อผู้ใช้วางการ์ด Zustand จะเก็บ Snapshot ไว้ก่อน แล้วปรับหน้าจอเป็นตำแหน่งใหม่ทันทีใน 0ms จากนั้นค่อยส่งคำขอ PATCH ไปยัง Server หากเซิร์ฟเวอร์ตอบกลับ Error ระบบจะนำ Snapshot เดิมมาคืนค่าพร้อมแสดงข้อความแจ้งเตือน"
+        },
+        {
+          phase: "Step 3: Debounced Batch Synchronization",
+          titleEn: "Debouncing Rapid Drag Events",
+          titleTh: "การรวบรวม Event ด้วย Debounce ป้องกันการยิง API ถี่เกินไป",
+          detailEn: "Users often reposition cards multiple times in seconds. A 300ms debounce buffer absorbs rapid drag-and-drop actions, sending only the final resting position to the API instead of hammering the database with intermediate movements.",
+          detailTh: "เมื่อผู้ใช้ลากการ์ดไปมาหลายครั้งในเวลาสั้นๆ ระบบจะใช้ Debounce Buffer 300ms เพื่อส่งเฉพาะตำแหน่งสุดท้ายไปยังเซิร์ฟเวอร์ ช่วยลดการยิง API ที่ไม่จำเป็นลงได้มากกว่า 80%"
+        }
+      ]
+    },
+
+    warStory: {
+      titleEn: "The War Story: Floating-Point Precision Collision",
+      titleTh: "กรณีศึกษาบั๊กจริง: ค่าทศนิยมชนกันเมื่อย้ายการ์ดซ้ำที่เดิม",
+      problemEn: "After repeatedly dropping tasks into the exact same gap 50+ times during stress testing, floating-point precision decayed (1.0000000000000002), causing index collisions where two cards had identical positions.",
+      problemTh: "ช่วงทดสอบ Stress Test เมื่อมีการลากการ์ดเข้าช่องว่างเดิมซ้ำๆ กว่า 50 ครั้ง เลขทศนิยมเริ่มละเอียดจนชนขีดจำกัดของ JavaScript Float ทำให้การ์ด 2 ใบได้ Index เดียวกัน",
+      solutionEn: "Implemented an automatic column rebalancer trigger. When Math.abs(indexA - indexB) < 0.00001, the server automatically recalibrates the entire column back to clean integer increments (1000, 2000, 3000), completely resolving index collisions.",
+      solutionTh: "แก้ไขโดยการเขียนเงื่อนไข Rebalancer เมื่อช่องว่างระหว่าง 2 Index แคบกว่า 0.00001 ระบบจะรันคำสั่งเกลี่ยลำดับในคอลัมน์นั้นใหม่ให้เป็นเลขจำนวนเต็ม (1000, 2000, 3000) อัตโนมัติ"
     },
 
     chapter2: {
@@ -312,6 +423,43 @@ export const caseStudiesData = {
       ]
     },
 
+    methodology: {
+      titleEn: "Engineering Thought Process & Team Collaboration",
+      titleTh: "กระบวนการคิดเชิงวิศวกรรม & สถาปัตยกรรมการทำงานร่วมกับทีม",
+      steps: [
+        {
+          phase: "Step 1: Layered Architecture (Separation of Concerns)",
+          titleEn: "Controller vs Service Layer Segregation",
+          titleTh: "การแยก Controller ออกจาก Service Layer เพื่อ Clean Architecture",
+          detailEn: "Controllers strictly handle HTTP request validation and status codes (200, 400, 500). All resume parsing, scoring algorithms, and database queries live in pure Service classes, allowing unit testing without spinning up mock HTTP servers.",
+          detailTh: "กำหนดให้ Controller มีหน้าที่เพียงตรวจสอบ HTTP Request และส่ง Status Code กลับ ส่วน Business Logic ทั้งหมด เช่น การคำนวณคะแนนผู้สมัคร อยู่ใน Service Layer ทำให้สามารถเขียน Unit Test ได้ง่ายและเป็นระเบียบ"
+        },
+        {
+          phase: "Step 2: Stream-Based Cloud Storage",
+          titleEn: "Memory-Efficient PDF Streaming to AWS S3",
+          titleTh: "การ Stream ไฟล์ PDF เข้าสู่ AWS S3 โดยไม่เปลือง RAM",
+          detailEn: "Rather than buffering large 10MB PDF resumes into server RAM, Multer creates a direct readable stream to AWS S3 with SHA-256 integrity checksums. This allows the API to handle multiple concurrent uploads without crashing Node.js heap memory limits.",
+          detailTh: "แทนที่จะโหลดไฟล์ PDF ขนาดใหญ่เข้า RAM ของเซิร์ฟเวอร์ ระบบใช้ Multer สร้าง Stream ส่งตรงเข้า AWS S3 พร้อมตรวจเช็กค่า SHA-256 Checksum ทำให้เซิร์ฟเวอร์รองรับการอัปโหลดพร้อมกันหลายคนได้โดยที่ RAM ไม่ล้น"
+        },
+        {
+          phase: "Step 3: Multi-Role Authorization Middleware",
+          titleEn: "Role-Based Access Control (RBAC)",
+          titleTh: "ระบบ Middleware ตรวจสอบสิทธิ์ผู้สมัครและ HR",
+          detailEn: "Engineered JWT authentication middleware verifying user claims (CANDIDATE vs RECRUITER). Endpoints like candidate shortlisting and job posting are protected at the router level, preventing unauthorized access.",
+          detailTh: "สร้าง Middleware ตรวจสอบ Token JWT เพื่อแยกสิทธิ์ระหว่างผู้สมัครงานและ HR อย่างเด็ดขาด ป้องกันไม่ให้ผู้สมัครเข้าถึงหน้าจัดการของผู้ว่าจ้าง"
+        }
+      ]
+    },
+
+    warStory: {
+      titleEn: "The War Story: Git Merge Conflict & Schema Drift",
+      titleTh: "กรณีศึกษาบั๊กจริง: ข้อพิพาทโค้ดและ Schema ชนกันในทีม",
+      problemEn: "During sprint week 3, two developers modified the user model migration simultaneously on separate feature branches, causing database migration failures on the staging server.",
+      problemTh: "ช่วงสัปดาห์ที่ 3 ของการพัฒนา มีสมาชิกในทีม 2 คนแก้ไข Schema ของตาราง User พร้อมกันในคนละ Branch ทำให้ Migration บน Staging Server เกิดข้อผิดพลาด",
+      solutionEn: "Established a strict Git Flow policy: enforced atomic migration scripts with sequential timestamps, automated PR migration checks, and instituted mandatory schema sync meetings before merging feature branches.",
+      solutionTh: "แก้ไขด้วยการวางระเบียบ Git Flow ใหม่: บังคับให้เขียน Migration แบบแยกไฟล์ตาม Timestamp, เพิ่มการตรวจสอบ Migration ใน Pull Request และนัดประชุมซิงก์ Schema ร่วมกันก่อน Merge ทุกครั้ง"
+    },
+
     chapter2: {
       titleEn: "Chapter 2: Modular Controller-Service Backend Architecture",
       titleTh: "บทที่ 2: สถาปัตยกรรม Backend แบบ Controller-Service",
@@ -350,7 +498,7 @@ export const caseStudiesData = {
       metrics: [
         { labelEn: "Cohort", labelTh: "รุ่นหลักสูตร", val: "JSD13" },
         { labelEn: "Methodology", labelTh: "วิธีทำงาน", val: "Agile/Scrum" },
-        { labelEn: "Status", labelTh: "สถานะ", val: "Capstones WIP" }
+        { labelEn: "Status", labelTh: "สถานะ", val: "กำลังพัฒนา (WIP)" }
       ],
       summaryEn: "MATCHA serves as the ultimate test of full-stack engineering, team communication, and professional delivery in the Generation Thailand bootcamp.",
       summaryTh: "MATCHA เป็นบทพิสูจน์ความสามารถทั้งด้านวิศวกรรมซอฟต์แวร์ การสื่อสารในทีม และความมุ่งมั่นในการส่งมอบงานระดับมืออาชีพในหลักสูตร Generation Thailand"

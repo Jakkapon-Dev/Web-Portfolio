@@ -5,7 +5,7 @@ export default function HireMe() {
   const { personal } = portfolioData;
 
   return (
-    <aside aria-label="Hire me" className="fixed left-4 bottom-4 z-30 hidden md:flex items-center justify-center overflow-hidden">
+    <aside aria-label="Hire me" className="fixed right-4 bottom-4 z-30 hidden md:flex items-center justify-center overflow-hidden">
       <div className="relative w-32 h-32 flex items-center justify-center">
         
         {/* Rotating Circular Text SVG */}
@@ -29,7 +29,7 @@ export default function HireMe() {
         {/* Center Circular Button */}
         <a
           href={`mailto:${personal.email}`}
-          className="absolute flex items-center justify-center w-14 h-14 rounded-full bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-md font-mono-code font-bold text-[11px] transition-transform hover:scale-105 text-center leading-tight"
+          className="absolute flex items-center justify-center w-14 h-14 rounded-full bg-cobalt-600 hover:bg-cobalt-700 text-slate-50 shadow-md font-mono-code font-bold text-[11px] transition-all hover:scale-105 text-center leading-tight"
         >
           HIRE<br />ME
         </a>

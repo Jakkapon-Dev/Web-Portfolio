@@ -4,7 +4,7 @@ import { portfolioData } from '../data/portfolioData';
 import ScrollReveal from './ScrollReveal';
 
 export default function About() {
-  const { lang, t } = useLanguage();
+  const { t } = useLanguage();
   const stats = portfolioData.aboutStats || [
     { value: "4+", labelEn: "Flagship Deployments", labelTh: "โปรเจกต์สถาปัตยกรรมหลัก" },
     { value: "6", labelEn: "Years Operations Precision", labelTh: "ปีประสบการณ์ทำงานรวม" },
@@ -12,16 +12,13 @@ export default function About() {
   ];
 
   return (
-    <section id="about" className="w-full py-20 px-6 sm:px-12 md:px-20 lg:px-32 border-t border-slate-200 dark:border-slate-800 bg-[#FAFAFA] dark:bg-[#0F172A] text-slate-900 dark:text-slate-100 transition-colors duration-200">
+    <section id="about" className="w-full py-16 px-6 sm:px-12 md:px-20 lg:px-32 bg-[#F7F9FC] dark:bg-[#0F141C] text-slate-900 dark:text-slate-100 transition-colors duration-200">
       <div className="max-w-6xl mx-auto">
-        
-        {/* Section Heading */}
+
+        {/* Section Heading — left-biased, no eyebrow pill (About already carries its own "ABOUT ME" kicker below) */}
         <ScrollReveal direction="up">
-          <div className="text-center mb-16">
-            <div className="inline-block px-3.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-xs font-mono-code font-bold text-amber-600 dark:text-amber-400 mb-2">
-              BIOGRAPHY & STATS
-            </div>
-            <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+          <div className="text-left mb-16 max-w-2xl">
+            <h2 className="font-display text-3xl sm:text-5xl font-semibold tracking-tight text-slate-900 dark:text-white">
               {t('Passion Fuels Purpose!', 'ความมุ่งมั่นขับเคลื่อนเป้าหมาย!')}
             </h2>
           </div>
@@ -33,7 +30,7 @@ export default function About() {
           
           {/* Left Column: Biography Narrative */}
           <div className="md:col-span-5 flex flex-col items-start justify-start text-left space-y-4">
-            <h3 className="text-xs font-mono-code font-bold uppercase tracking-widest text-amber-600 dark:text-amber-400">
+            <h3 className="text-xs font-mono-code font-bold uppercase tracking-widest text-cobalt-600 dark:text-cobalt-400">
               {t('ABOUT ME', 'เกี่ยวกับฉัน')}
             </h3>
 
@@ -78,9 +75,9 @@ export default function About() {
             {stats.map((stat, idx) => (
               <div
                 key={idx}
-                className="p-5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 shadow-sm text-center hover:border-amber-500/50 transition-colors"
+                className="p-5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 shadow-sm text-center hover:border-cobalt-500/50 transition-colors"
               >
-                <div className="text-3xl sm:text-4xl font-extrabold font-mono-code text-amber-500">
+                <div className="text-3xl sm:text-4xl font-extrabold font-mono-code text-cobalt-500">
                   {stat.value}
                 </div>
                 <div className="text-xs font-mono-code font-semibold mt-1 text-slate-600 dark:text-slate-300">

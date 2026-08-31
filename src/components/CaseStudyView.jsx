@@ -1,65 +1,68 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { caseStudiesData } from '../data/caseStudiesData';
-import { projectPitchData } from '../data/projectPitchData';
+import { portfolioData } from '../data/portfolioData';
 import { GithubIcon } from './Icons';
 import VisualArchitectureDiagram from './VisualArchitectureDiagram';
-import { 
-  ArrowLeft, 
-  X, 
-  FileCode2, 
-  Layers, 
-  Terminal, 
-  CheckCircle2, 
+import JakkBotMascot from './JakkBotMascot';
+import {
+  ArrowLeft,
   ArrowUpRight,
-  ChevronLeft,
-  ChevronRight,
+  Clock,
   Sparkles,
   Workflow,
+  X,
+  ChevronLeft,
+  ChevronRight,
   Cpu,
-  Database,
-  Code2,
-  Table,
-  Gauge,
-  Box,
+  Bug,
+  ShieldCheck,
+  Layers,
   Lightbulb,
-  Trophy,
-  Copy,
-  Check,
-  Zap,
-  Activity,
-  Bookmark,
-  Calendar,
-  User,
-  Clock,
-  ExternalLink
+  CheckCircle2,
+  AlertTriangle
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 export default function CaseStudyView({ projectId, onClose, onSelectProject }) {
-  const { lang, t } = useLanguage();
-  const [activeSection, setActiveSection] = useState('overview');
+  const { t, lang } = useLanguage();
+  const backBtnRef = useRef(null);
+  const triggerRef = useRef(null);
 
-  const study = caseStudiesData[projectId] || caseStudiesData.mystudentroom;
-  const pitchInfo = projectPitchData[projectId] || projectPitchData.mystudentroom;
-  
+  const study = caseStudiesData[projectId] || caseStudiesData.omnipos;
+  const projectConfig = portfolioData.featuredProjects.find(p => p.id === study.id);
+  const theme = projectConfig?.theme || {
+    accent: '#2A63F0',
+    btnPrimary: 'bg-cobalt-500 hover:bg-cobalt-400 text-white',
+    badgeClass: 'bg-cobalt-500/10 text-cobalt-600 dark:text-cobalt-400 border-cobalt-500/30'
+  };
   const projectKeys = Object.keys(caseStudiesData);
-  const currentIndex = projectKeys.indexOf(study.id);
-  const prevKey = projectKeys[(currentIndex - 1 + projectKeys.length) % projectKeys.length];
+  const currentIndex = projectKeys.indexOf(projectId);
   const nextKey = projectKeys[(currentIndex + 1) % projectKeys.length];
+  const prevKey = projectKeys[(currentIndex - 1 + projectKeys.length) % projectKeys.length];
 
   // Scroll to top on mount or project switch
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [projectId]);
 
-  const scrollToSection = (id) => {
-    setActiveSection(id);
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
+  // This view replaces the whole page — Escape returns to the portfolio,
+  // and focus lands on "Back to Portfolio" then restores to whatever
+  // triggered it (the project card's "Project Story" button) on unmount.
+  useEffect(() => {
+    triggerRef.current = document.activeElement;
+    backBtnRef.current?.focus();
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      if (triggerRef.current instanceof HTMLElement) triggerRef.current.focus();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <motion.div
@@ -67,42 +70,43 @@ export default function CaseStudyView({ projectId, onClose, onSelectProject }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 15 }}
       transition={{ duration: 0.2 }}
-      className="w-full min-h-screen bg-[#FAFAFA] dark:bg-[#0F172A] text-slate-900 dark:text-slate-100 py-6 px-4 sm:px-8 md:px-12 lg:px-20 font-sans selection:bg-amber-500 selection:text-slate-950 text-left"
+      className="w-full min-h-screen bg-[#F7F9FC] dark:bg-[#0F141C] text-slate-900 dark:text-slate-100 py-6 px-4 sm:px-8 lg:px-12 xl:px-16 font-sans selection:bg-cobalt-500 selection:text-white text-left"
     >
-      <div className="max-w-6xl mx-auto space-y-8">
+      <div className="w-full max-w-[1560px] mx-auto space-y-8">
         
         {/* ======================================================== */}
         {/* TOP STICKY BAR WITH DIRECT PROJECT SWITCHER BUTTONS      */}
         {/* ======================================================== */}
-        <header className="sticky top-4 z-40 w-full flex flex-wrap items-center justify-between gap-3 py-3 px-5 rounded-2xl bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200 dark:border-slate-800 shadow-md">
+        <header className="sticky top-4 z-40 w-full flex flex-wrap items-center justify-between gap-3 py-3 px-5 sm:px-6 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200 dark:border-slate-800 shadow-lg">
           
           {/* Left Return Button */}
           <div className="flex items-center gap-3">
             <button
+              ref={backBtnRef}
               onClick={onClose}
-              className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-colors flex items-center gap-1.5 text-xs font-mono-code font-bold shadow-sm"
+              className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-cobalt-500 hover:text-white text-slate-700 dark:text-slate-300 transition-all flex items-center gap-1.5 text-xs font-mono-code font-bold shadow-sm"
             >
-              <ArrowLeft className="w-4 h-4" />
-              <span>{t('Back', 'กลับ')}</span>
+              <ArrowLeft className="w-4 h-4" aria-hidden="true" />
+              <span>{t('Back to Portfolio', 'กลับหน้าหลัก')}</span>
             </button>
 
             <span className="text-xs font-mono-code font-bold text-slate-400 hidden xl:inline">
-              CASE STUDIES:
+              SELECT PROJECT:
             </span>
           </div>
 
           {/* Center Direct Project Switcher Buttons */}
           <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">
-            {projectKeys.map((pKey, idx) => {
+            {projectKeys.map((pKey) => {
               const pData = caseStudiesData[pKey];
               const isActive = study.id === pKey;
               return (
                 <button
                   key={pKey}
                   onClick={() => onSelectProject(pKey)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-mono-code font-bold transition-all flex items-center gap-1.5 ${
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-mono-code font-bold transition-all flex items-center gap-1.5 ${
                     isActive
-                      ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
+                      ? 'bg-cobalt-500 text-white shadow-md shadow-cobalt-500/20'
                       : 'text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700'
                   }`}
                 >
@@ -119,24 +123,26 @@ export default function CaseStudyView({ projectId, onClose, onSelectProject }) {
               onClick={() => onSelectProject(prevKey)}
               className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-mono-code transition-colors"
               title="Previous Project"
+              aria-label={t('Previous project', 'โปรเจกต์ก่อนหน้า')}
             >
-              <ChevronLeft className="w-4 h-4" />
+              <ChevronLeft className="w-4 h-4" aria-hidden="true" />
             </button>
 
             <button
               onClick={() => onSelectProject(nextKey)}
               className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-mono-code transition-colors"
               title="Next Project"
+              aria-label={t('Next project', 'โปรเจกต์ถัดไป')}
             >
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="w-4 h-4" aria-hidden="true" />
             </button>
 
             <button
               onClick={onClose}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-rose-500/10 hover:text-rose-500 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-xs font-mono-code font-bold transition-all ml-1"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-cobalt-500/10 hover:text-cobalt-500 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-xs font-mono-code font-bold transition-all ml-1"
             >
               <span>Close</span>
-              <X className="w-3.5 h-3.5" />
+              <X className="w-3.5 h-3.5" aria-hidden="true" />
             </button>
           </div>
 
@@ -146,12 +152,22 @@ export default function CaseStudyView({ projectId, onClose, onSelectProject }) {
         {/* EDITORIAL ARTICLE HERO HEADER                            */}
         {/* ======================================================== */}
         <section className="p-8 sm:p-12 lg:p-14 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl space-y-6">
+          {/* JAKK-BOT Intro Banner */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-end gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+            <div className="shrink-0">
+              <JakkBotMascot projectId={study.id} expression="intro" lang={lang} />
+            </div>
+            <div className="space-y-1 pb-0 sm:pb-2">
+              <p className="text-[11px] font-mono-code text-slate-500 dark:text-slate-400 uppercase tracking-widest">JAKK-BOT is narrating this story</p>
+              <p className="text-xs font-mono-code text-slate-400 dark:text-slate-500">Follow along through each part below</p>
+            </div>
+          </div>
           
           <div className="flex flex-wrap items-center gap-2">
-            <span className="px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-xs font-mono-code font-bold text-amber-600 dark:text-amber-400">
-              CASE STUDY #{study.number}
+            <span className={`px-3.5 py-1 rounded-full text-xs font-mono-code font-bold ${theme.badgeClass || 'bg-cobalt-500/10 border border-cobalt-500/30 text-cobalt-600 dark:text-cobalt-400'}`}>
+              PROJECT STORY #{study.number}
             </span>
-            <span className="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-xs font-mono-code text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+            <span className="px-3.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-xs font-mono-code text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
               {study.category}
             </span>
           </div>
@@ -160,11 +176,13 @@ export default function CaseStudyView({ projectId, onClose, onSelectProject }) {
             {study.title}: <span className="text-slate-500 dark:text-slate-400 font-normal">{t(study.subtitleEn, study.subtitleTh)}</span>
           </h1>
 
-          {/* Meta Bar */}
+          {/* Author & Read Meta */}
           <div className="flex flex-wrap items-center gap-6 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs font-mono-code text-slate-500 dark:text-slate-400">
-            <div className="flex items-center gap-1.5">
-              <User className="w-4 h-4 text-amber-500" />
-              <span>Jakkapon Wapakpet</span>
+            <div className="flex items-center gap-2">
+              <span className="w-6 h-6 rounded-full bg-cobalt-500 text-white font-bold flex items-center justify-center text-[10px]">
+                JW
+              </span>
+              <span className="font-bold text-slate-800 dark:text-slate-200">Jakkapon Wapakpet</span>
             </div>
             <div className="flex items-center gap-1.5">
               <Clock className="w-4 h-4 text-sky-500" />
@@ -172,7 +190,7 @@ export default function CaseStudyView({ projectId, onClose, onSelectProject }) {
             </div>
             <div className="flex items-center gap-1.5">
               <Workflow className="w-4 h-4 text-emerald-500" />
-              <span>Full-Stack System Design</span>
+              <span>{t('Project Story · Full-Stack Engineering', 'เรื่องราวโปรเจกต์ · วิศวกรรมระบบ')}</span>
             </div>
 
             {study.github && (
@@ -180,7 +198,7 @@ export default function CaseStudyView({ projectId, onClose, onSelectProject }) {
                 href={study.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="ml-auto inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-slate-700 dark:text-slate-300 transition-all font-bold"
+                className="ml-auto inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-cobalt-500 hover:text-white text-slate-700 dark:text-slate-300 transition-all font-bold"
               >
                 <GithubIcon className="w-3.5 h-3.5" />
                 <span>Source Code</span>
@@ -192,226 +210,277 @@ export default function CaseStudyView({ projectId, onClose, onSelectProject }) {
         </section>
 
         {/* ======================================================== */}
-        {/* MAIN BODY WITH STICKY TABLE OF CONTENTS SIDEBAR          */}
+        {/* FULL-WIDTH ARTICLE SECTIONS (EDGE-TO-EDGE EXPANDED)      */}
         {/* ======================================================== */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="w-full space-y-12">
           
-          {/* LEFT STICKY TABLE OF CONTENTS (25%) */}
-          <aside className="hidden lg:block lg:col-span-3 sticky top-24 space-y-4">
-            <div className="p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-md space-y-3">
-              <span className="text-xs font-mono-code font-bold uppercase tracking-wider text-slate-400 block">
-                Table of Contents
-              </span>
-
-              <nav className="space-y-1 text-xs font-mono-code">
-                <button
-                  onClick={() => scrollToSection('sec-problem')}
-                  className={`w-full text-left p-2.5 rounded-xl transition-colors flex items-center justify-between ${
-                    activeSection === 'sec-problem'
-                      ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold border border-amber-500/30'
-                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
-                  }`}
-                >
-                  <span>01. The Problem</span>
-                  <span>→</span>
-                </button>
-
-                <button
-                  onClick={() => scrollToSection('sec-architecture')}
-                  className={`w-full text-left p-2.5 rounded-xl transition-colors flex items-center justify-between ${
-                    activeSection === 'sec-architecture'
-                      ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold border border-amber-500/30'
-                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
-                  }`}
-                >
-                  <span>02. Architecture & Flow</span>
-                  <span>→</span>
-                </button>
-
-                <button
-                  onClick={() => scrollToSection('sec-decisions')}
-                  className={`w-full text-left p-2.5 rounded-xl transition-colors flex items-center justify-between ${
-                    activeSection === 'sec-decisions'
-                      ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold border border-amber-500/30'
-                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
-                  }`}
-                >
-                  <span>03. Trade-offs</span>
-                  <span>→</span>
-                </button>
-
-                <button
-                  onClick={() => scrollToSection('sec-results')}
-                  className={`w-full text-left p-2.5 rounded-xl transition-colors flex items-center justify-between ${
-                    activeSection === 'sec-results'
-                      ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold border border-amber-500/30'
-                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
-                  }`}
-                >
-                  <span>04. Impact Metrics</span>
-                  <span>→</span>
-                </button>
-              </nav>
-            </div>
-          </aside>
-
-          {/* RIGHT SPACIOUS ARTICLE (75%) */}
-          <main className="lg:col-span-9 space-y-12">
-            
-            {/* ---------------------------------------------------- */}
-            {/* SECTION 1: THE PROBLEM & CONTEXT                     */}
-            {/* ---------------------------------------------------- */}
-            <section id="sec-problem" className="p-8 sm:p-10 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl space-y-8">
-              <div className="space-y-1 pb-4 border-b border-slate-100 dark:border-slate-800">
-                <span className="text-xs font-mono-code font-bold text-amber-500 uppercase">
-                  Chapter 01 // The Problem & Background
+          {/* ---------------------------------------------------- */}
+          {/* SECTION 1: THE PROBLEM & CONTEXT                     */}
+          {/* ---------------------------------------------------- */}
+          <section id="sec-problem" className="p-8 sm:p-12 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl space-y-8">
+            {/* Mascot row */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-end gap-3 sm:gap-5 pb-2">
+              <div className="shrink-0">
+                <JakkBotMascot projectId={study.id} expression="origin" lang={lang} />
+              </div>
+              <div className="space-y-1 pb-4 border-b border-slate-100 dark:border-slate-800 flex-1 w-full">
+                <span className="text-xs font-mono-code font-bold uppercase tracking-widest" style={{ color: theme.accent }}>
+                  🧩 Part 01 · Origin Story — Why This Was Built
                 </span>
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
+                <h2 className="text-xl sm:text-2xl md:text-4xl font-extrabold text-slate-900 dark:text-white">
                   {t(study.chapter1.titleEn, study.chapter1.titleTh)}
                 </h2>
               </div>
+            </div>
 
-              <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
-                <span className="float-left text-4xl sm:text-5xl font-black font-mono-code text-amber-500 mr-3 leading-none mt-1">
-                  {study.chapter1.dropCap}
-                </span>
-                {t(study.chapter1.narrativeEn, study.chapter1.narrativeTh)}
-              </p>
+            <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+              <span className="float-left text-5xl sm:text-6xl font-black font-mono-code mr-4 leading-none mt-1" style={{ color: theme.accent }}>
+                {study.chapter1.dropCap}
+              </span>
+              {t(study.chapter1.narrativeEn, study.chapter1.narrativeTh)}
+            </p>
 
-              {/* 3 Problem Points as styled cards */}
-              <div className="space-y-3 pt-2">
-                <span className="text-xs font-mono-code font-bold text-slate-700 dark:text-slate-300 block">
-                  {t('Key Friction Points & Design Requirements:', 'จุดติดขัดหน้างานและความต้องการในการออกแบบ:')}
-                </span>
+            {/* 3 Problem Points as wide styled cards */}
+            <div className="space-y-3 pt-2">
+              <span className="text-xs font-mono-code font-bold text-slate-700 dark:text-slate-300 block">
+                {t('Key Friction Points & Design Requirements:', 'จุดติดขัดหน้างานและความต้องการในการออกแบบ:')}
+              </span>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  {study.chapter1.principles.map((p) => (
-                    <div
-                      key={p.num}
-                      className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 space-y-2 flex flex-col justify-between"
-                    >
-                      <div className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white font-mono-code flex items-center gap-2">
-                        <span className="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-500 flex items-center justify-center text-xs font-bold shrink-0">
-                          {p.num}
-                        </span>
-                        <span>{t(p.titleEn, p.titleTh)}</span>
-                      </div>
-                      <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
-                        {t(p.descEn, p.descTh)}
-                      </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {study.chapter1.principles.map((p) => (
+                  <div
+                    key={p.num}
+                    className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 space-y-3 flex flex-col justify-between"
+                  >
+                    <div className="font-bold text-sm sm:text-base text-slate-900 dark:text-white font-mono-code flex items-center gap-2.5">
+                      <span className="w-7 h-7 rounded-xl bg-cobalt-500/20 text-cobalt-500 flex items-center justify-center text-xs font-bold shrink-0">
+                        {p.num}
+                      </span>
+                      <span>{t(p.titleEn, p.titleTh)}</span>
                     </div>
-                  ))}
-                </div>
+                    <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+                      {t(p.descEn, p.descTh)}
+                    </p>
+                  </div>
+                ))}
               </div>
-            </section>
+            </div>
+          </section>
 
-            {/* ---------------------------------------------------- */}
-            {/* SECTION 2: SYSTEM ARCHITECTURE & INTERACTIVE FLOW   */}
-            {/* ---------------------------------------------------- */}
-            <section id="sec-architecture" className="p-8 sm:p-10 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl space-y-6">
-              <div className="space-y-1 pb-4 border-b border-slate-100 dark:border-slate-800">
-                <span className="text-xs font-mono-code font-bold text-sky-500 uppercase">
-                  Chapter 02 // Full-Scale Architecture Canvas
+          {/* ---------------------------------------------------- */}
+          {/* SECTION 2: FULL-WIDTH SYSTEM ARCHITECTURE CANVAS     */}
+          {/* ---------------------------------------------------- */}
+          <section id="sec-architecture" className="p-8 sm:p-12 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl space-y-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-end gap-3 sm:gap-5">
+              <div className="shrink-0">
+                <JakkBotMascot projectId={study.id} expression="architecture" lang={lang} />
+              </div>
+              <div className="space-y-1 pb-4 border-b border-slate-100 dark:border-slate-800 flex-1 w-full">
+                <span className="text-xs font-mono-code font-bold text-sky-500 uppercase tracking-widest">
+                  ⚡ Part 02 · How It Works — System Architecture & Data Flow
                 </span>
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
+                <h2 className="text-xl sm:text-2xl md:text-4xl font-extrabold text-slate-900 dark:text-white">
                   {t(study.chapter2.titleEn, study.chapter2.titleTh)}
                 </h2>
-                <p className="text-xs text-slate-500 dark:text-slate-400 font-mono-code">
+                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-mono-code">
                   {t(study.chapter2.leadEn, study.chapter2.leadTh)}
                 </p>
               </div>
+            </div>
 
-              {/* Spacious Full-Width Interactive Architecture Canvas */}
-              <VisualArchitectureDiagram projectId={study.id} />
-            </section>
+            {/* Spacious Full-Width Interactive Architecture Canvas */}
+            <VisualArchitectureDiagram projectId={study.id} />
+          </section>
 
-            {/* ---------------------------------------------------- */}
-            {/* SECTION 3: ENGINEERING DECISIONS & TRADE-OFFS       */}
-            {/* ---------------------------------------------------- */}
-            <section id="sec-decisions" className="p-8 sm:p-10 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl space-y-6">
-              <div className="space-y-1 pb-4 border-b border-slate-100 dark:border-slate-800">
-                <span className="text-xs font-mono-code font-bold text-purple-500 uppercase">
-                  Chapter 03 // Technical Decisions & Trade-Offs
-                </span>
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
-                  {t('Architectural Trade-offs & Decisions', 'เหตุผลทางวิศวกรรมและการตัดสินใจเชิงสถาปัตยกรรม')}
-                </h2>
+          {/* ---------------------------------------------------- */}
+          {/* SECTION 3: STEP-BY-STEP ENGINEERING METHODOLOGY      */}
+          {/* ---------------------------------------------------- */}
+          {study.methodology && (
+            <section id="sec-methodology" className="p-8 sm:p-12 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl space-y-8">
+              <div className="flex flex-col sm:flex-row items-start sm:items-end gap-3 sm:gap-5">
+                <div className="shrink-0">
+                  <JakkBotMascot projectId={study.id} expression="architecture" lang={lang} />
+                </div>
+                <div className="space-y-1 pb-4 border-b border-slate-100 dark:border-slate-800 flex-1 w-full">
+                  <span className="text-xs font-mono-code font-bold text-sky-500 uppercase tracking-widest flex items-center gap-1.5">
+                    <Cpu className="w-4 h-4" /> Part 03 · Deep Implementation & Engineering Process
+                  </span>
+                  <h2 className="text-xl sm:text-2xl md:text-4xl font-extrabold text-slate-900 dark:text-white">
+                    {t(study.methodology.titleEn, study.methodology.titleTh)}
+                  </h2>
+                </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {study.chapter2.tradeoffs.map((item, idx) => (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                {study.methodology.steps.map((step, idx) => (
                   <div
                     key={idx}
-                    className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 space-y-2 hover:border-amber-500/50 transition-colors"
+                    className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 space-y-3 flex flex-col justify-between"
                   >
-                    <div className="text-xs font-mono-code font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1.5">
-                      <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                      <span>Decision #{idx + 1}: {item.decision}</span>
+                    <div>
+                      <span
+                        className="px-2.5 py-0.5 rounded-md text-[10px] font-mono-code font-bold inline-block mb-2 border"
+                        style={{
+                          backgroundColor: `${theme.accent}15`,
+                          color: theme.accent,
+                          borderColor: `${theme.accent}40`,
+                        }}
+                      >
+                        {step.phase}
+                      </span>
+                      <h4 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white font-mono-code mb-2">
+                        {t(step.titleEn, step.titleTh)}
+                      </h4>
                     </div>
-                    <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
-                      {t(item.rationaleEn, item.rationaleTh)}
+                    <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+                      {t(step.detailEn, step.detailTh)}
                     </p>
                   </div>
                 ))}
               </div>
             </section>
+          )}
 
-            {/* ---------------------------------------------------- */}
-            {/* SECTION 4: IMPACT METRICS & DELIVERABLES            */}
-            {/* ---------------------------------------------------- */}
-            <section id="sec-results" className="p-8 sm:p-10 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl space-y-8">
-              <div className="space-y-1 pb-4 border-b border-slate-100 dark:border-slate-800">
-                <span className="text-xs font-mono-code font-bold text-emerald-500 uppercase">
-                  Chapter 04 // Measurable Results & Impact
+          {/* ---------------------------------------------------- */}
+          {/* SECTION 4: THE WAR STORY (HARDEST BUG SOLVED)        */}
+          {/* ---------------------------------------------------- */}
+          {study.warStory && (
+            <section id="sec-warstory" className="p-8 sm:p-12 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl space-y-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-end gap-3 sm:gap-5">
+                <div className="shrink-0">
+                  <JakkBotMascot projectId={study.id} expression="decision" lang={lang} />
+                </div>
+                <div className="space-y-1 pb-4 border-b border-slate-100 dark:border-slate-800 flex-1 w-full">
+                  <span className="text-xs font-mono-code font-bold text-amber-500 uppercase tracking-widest flex items-center gap-1.5">
+                    <Bug className="w-4 h-4" /> Part 04 · The War Story — Hardest Bug & Edge Case Solved
+                  </span>
+                  <h2 className="text-xl sm:text-2xl md:text-4xl font-extrabold text-slate-900 dark:text-white">
+                    {t(study.warStory.titleEn, study.warStory.titleTh)}
+                  </h2>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Problem Box */}
+                <div className="p-6 rounded-2xl bg-red-500/5 dark:bg-red-950/20 border border-red-500/20 space-y-3">
+                  <div className="flex items-center gap-2 text-red-600 dark:text-red-400 font-bold font-mono-code text-sm">
+                    <AlertTriangle className="w-4 h-4" />
+                    <span>{t("The Friction & Critical Bug Encountered", "ปัญหาและคอขวดวิกฤตที่เจอหน้างาน")}</span>
+                  </div>
+                  <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-normal">
+                    {t(study.warStory.problemEn, study.warStory.problemTh)}
+                  </p>
+                </div>
+
+                {/* Solution Box */}
+                <div className="p-6 rounded-2xl bg-emerald-500/5 dark:bg-emerald-950/20 border border-emerald-500/20 space-y-3">
+                  <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-bold font-mono-code text-sm">
+                    <ShieldCheck className="w-4 h-4" />
+                    <span>{t("How It Was Architected & Resolved", "วิธีออกแบบแก้ปัญหาและการรับประกันผล")}</span>
+                  </div>
+                  <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-normal">
+                    {t(study.warStory.solutionEn, study.warStory.solutionTh)}
+                  </p>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* ---------------------------------------------------- */}
+          {/* SECTION 5: ENGINEERING DECISIONS & TRADE-OFFS       */}
+          {/* ---------------------------------------------------- */}
+          <section id="sec-decisions" className="p-8 sm:p-12 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl space-y-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-end gap-3 sm:gap-5">
+              <div className="shrink-0">
+                <JakkBotMascot projectId={study.id} expression="decision" lang={lang} />
+              </div>
+              <div className="space-y-1 pb-4 border-b border-slate-100 dark:border-slate-800 flex-1 w-full">
+                <span className="text-xs font-mono-code font-bold text-purple-500 uppercase tracking-widest">
+                  🤔 Part 05 · Why I Built It This Way — Engineering Decisions
                 </span>
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
+                <h2 className="text-xl sm:text-2xl md:text-4xl font-extrabold text-slate-900 dark:text-white">
+                  {t('Trade-offs & Engineering Decisions', 'ทำไมถึงเลือกแบบนี้ — การตัดสินใจเชิงวิศวกรรม')}
+                </h2>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              {study.chapter2.tradeoffs.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 space-y-3 hover:border-cobalt-500/50 transition-colors"
+                >
+                  <div className="text-xs sm:text-sm font-mono-code font-bold text-cobalt-600 dark:text-cobalt-400 flex items-center gap-1.5">
+                    <Sparkles className="w-4 h-4 text-cobalt-500" />
+                    <span>Decision #{idx + 1}: {item.decision}</span>
+                  </div>
+                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+                    {t(item.whyEn || item.rationaleEn, item.whyTh || item.rationaleTh)}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* ---------------------------------------------------- */}
+          {/* SECTION 6: IMPACT METRICS & DELIVERABLES            */}
+          {/* ---------------------------------------------------- */}
+          <section id="sec-results" className="p-8 sm:p-12 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl space-y-8">
+            <div className="flex flex-col sm:flex-row items-start sm:items-end gap-3 sm:gap-5">
+              <div className="shrink-0">
+                <JakkBotMascot projectId={study.id} expression="result" lang={lang} />
+              </div>
+              <div className="space-y-1 pb-4 border-b border-slate-100 dark:border-slate-800 flex-1 w-full">
+                <span className="text-xs font-mono-code font-bold text-emerald-500 uppercase tracking-widest">
+                  📊 Part 06 · What Changed — Outcomes & Real Impact
+                </span>
+                <h2 className="text-xl sm:text-2xl md:text-4xl font-extrabold text-slate-900 dark:text-white">
                   {t(study.chapter3.titleEn, study.chapter3.titleTh)}
                 </h2>
               </div>
+            </div>
 
-              {/* 3 Hero Metrics Cards */}
-              <div className="grid grid-cols-3 gap-4">
-                {study.chapter3.metrics.map((m, idx) => (
-                  <div key={idx} className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 text-center">
-                    <div className="text-2xl sm:text-4xl font-extrabold font-mono-code text-amber-500">
-                      {m.val}
-                    </div>
-                    <div className="text-xs font-mono-code text-slate-500 dark:text-slate-400 mt-2 font-semibold">
-                      {t(m.labelEn, m.labelTh)}
-                    </div>
+            {/* 3 Hero Metrics Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+              {study.chapter3.metrics.map((m, idx) => (
+                <div key={idx} className="p-8 rounded-3xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 text-center space-y-2">
+                  <div className="text-3xl sm:text-5xl font-extrabold font-mono-code" style={{ color: theme.accent }}>
+                    {m.val}
                   </div>
-                ))}
-              </div>
+                  <div className="text-xs sm:text-sm font-mono-code text-slate-500 dark:text-slate-400 font-semibold">
+                    {t(m.labelEn, m.labelTh)}
+                  </div>
+                </div>
+              ))}
+            </div>
 
-              <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
-                {t(study.chapter3.summaryEn, study.chapter3.summaryTh)}
-              </p>
+            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+              {t(study.chapter3.summaryEn, study.chapter3.summaryTh)}
+            </p>
 
-              {/* Bottom Action Links */}
-              <div className="flex flex-wrap items-center gap-4 pt-4 border-t border-slate-100 dark:border-slate-800">
-                {study.github && (
-                  <a
-                    href={study.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs sm:text-sm shadow-md shadow-amber-500/20 transition-all font-mono-code"
-                  >
-                    <GithubIcon className="w-4 h-4" />
-                    <span>Inspect Source Code on GitHub</span>
-                    <ArrowUpRight className="w-4 h-4" />
-                  </a>
-                )}
-
-                <button
-                  onClick={onClose}
-                  className="px-6 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold text-xs sm:text-sm transition-all border border-slate-200 dark:border-slate-700 font-mono-code"
+            {/* Bottom Action Links */}
+            <div className="flex flex-wrap items-center gap-4 pt-4 border-t border-slate-100 dark:border-slate-800">
+              {study.github && (
+                <a
+                  href={study.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-bold text-xs sm:text-sm shadow-md transition-all font-mono-code ${theme.btnPrimary || 'bg-cobalt-500 hover:bg-cobalt-400 text-white shadow-cobalt-500/20'}`}
                 >
-                  ← Return to Overview
-                </button>
-              </div>
-            </section>
+                  <GithubIcon className="w-4 h-4" />
+                  <span>{t('View Source Code on GitHub', 'ดูโค้ดบน GitHub')}</span>
+                  <ArrowUpRight className="w-4 h-4" />
+                </a>
+              )}
 
-          </main>
+              <button
+                onClick={onClose}
+                className="px-6 py-3.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold text-xs sm:text-sm transition-all border border-slate-200 dark:border-slate-700 font-mono-code"
+              >
+                ← {t('Back to Portfolio', 'กลับหน้าหลัก')}
+              </button>
+            </div>
+          </section>
 
         </div>
 
