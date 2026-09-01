@@ -1115,16 +1115,16 @@ await prisma.application.create({
   const selectedNode = nodes.find(n => n.id === selectedNodeId) || nodes[0];
 
   return (
-    <div className="w-full space-y-5 text-left selection:bg-cobalt-500 selection:text-white">
+    <div className="w-full space-y-5 text-left selection:bg-draft-500 selection:text-white">
       
       {/* 1. SCENARIO SWITCHER & CONTROLS HEADER */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700/80 space-y-3 shadow-sm">
+      <div className="p-4 sm:p-5 rounded-2xl bg-blueprint-50 dark:bg-blueprint-800/90 border border-blueprint-200 dark:border-blueprint-700/80 space-y-3 shadow-sm">
         
         <div className="flex flex-wrap items-center justify-between gap-3">
           {/* Scenario Pills */}
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs font-mono-code font-bold text-slate-700 dark:text-slate-300 mr-1 flex items-center gap-1">
-              <Activity className="w-3.5 h-3.5 text-cobalt-500" />
+            <span className="text-xs font-mono-code font-bold text-blueprint-700 dark:text-blueprint-300 mr-1 flex items-center gap-1">
+              <Activity className="w-3.5 h-3.5 text-draft-500" />
               <span>Simulation Scenario:</span>
             </span>
             {currentArch.scenarios.map((scen, sIdx) => {
@@ -1135,8 +1135,8 @@ await prisma.application.create({
                   onClick={() => setSelectedScenarioIdx(sIdx)}
                   className={`px-3 py-1.5 rounded-xl text-xs font-mono-code font-bold transition-all flex items-center gap-1.5 ${
                     isActive
-                      ? 'bg-cobalt-500 text-white shadow-md shadow-cobalt-500/20 ring-2 ring-cobalt-400/40'
-                      : 'bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-600'
+                      ? 'bg-draft-500 text-white shadow-md shadow-draft-500/20 ring-2 ring-draft-400/40'
+                      : 'bg-white dark:bg-blueprint-700 text-blueprint-700 dark:text-blueprint-200 border border-blueprint-200 dark:border-blueprint-600 hover:bg-blueprint-100 dark:hover:bg-blueprint-600'
                   }`}
                 >
                   <span>{t(scen.nameEn, scen.nameTh)}</span>
@@ -1151,8 +1151,8 @@ await prisma.application.create({
               onClick={() => setFlowSpeed(flowSpeed === 'normal' ? 'fast' : 'normal')}
               className={`px-3 py-1.5 rounded-xl text-xs font-mono-code font-bold border transition-colors flex items-center gap-1.5 ${
                 flowSpeed === 'fast'
-                  ? 'bg-cobalt-500 text-white border-cobalt-500 shadow-sm'
-                  : 'bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-600'
+                  ? 'bg-draft-500 text-white border-draft-500 shadow-sm'
+                  : 'bg-white dark:bg-blueprint-700 text-blueprint-700 dark:text-blueprint-200 border-blueprint-200 dark:border-blueprint-600'
               }`}
             >
               <Zap className="w-3.5 h-3.5" />
@@ -1161,7 +1161,7 @@ await prisma.application.create({
 
             <button
               onClick={handleResetLayout}
-              className="p-1.5 rounded-xl bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-600 hover:bg-slate-100 transition-colors shadow-sm"
+              className="p-1.5 rounded-xl bg-white dark:bg-blueprint-700 text-blueprint-700 dark:text-blueprint-200 border border-blueprint-200 dark:border-blueprint-600 hover:bg-blueprint-100 transition-colors shadow-sm"
               title="Reset Positions"
               aria-label="Reset node positions"
             >
@@ -1175,9 +1175,9 @@ await prisma.application.create({
           key={currentScenario.id}
           initial={{ opacity: 0, y: -4 }}
           animate={{ opacity: 1, y: 0 }}
-          className="p-3 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-750 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-mono-code"
+          className="p-3 rounded-xl bg-blueprint-100 dark:bg-blueprint-900 border border-blueprint-200 dark:border-blueprint-750 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-mono-code"
         >
-          <div className="flex items-center gap-2 text-slate-700 dark:text-slate-200">
+          <div className="flex items-center gap-2 text-blueprint-700 dark:text-blueprint-200">
             <span
               className="w-2.5 h-2.5 rounded-full animate-ping shrink-0"
               style={{ backgroundColor: currentScenario.activeColor }}
@@ -1202,7 +1202,7 @@ await prisma.application.create({
       {/* 2. FULL-WIDTH CANVAS (100% UNCLUTTERED, NO DRAWER OVERLAY) */}
       <div 
         ref={canvasRef}
-        className="relative w-full h-[380px] sm:h-[420px] rounded-3xl bg-slate-950 border border-slate-800 shadow-2xl overflow-hidden cursor-crosshair select-none"
+        className="relative w-full h-[380px] sm:h-[420px] rounded-3xl bg-blueprint-950 border border-blueprint-800 shadow-2xl overflow-hidden cursor-crosshair select-none"
         style={{
           backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.08) 1px, transparent 0)`,
           backgroundSize: '24px 24px'
@@ -1210,8 +1210,8 @@ await prisma.application.create({
       >
         
         {/* Top Hint Bar */}
-        <div className="absolute top-4 left-4 z-20 pointer-events-none flex items-center gap-2 bg-slate-900/85 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-slate-800 text-xs font-mono-code text-slate-300 shadow-md">
-          <Move className="w-3.5 h-3.5 text-cobalt-400 animate-bounce" />
+        <div className="absolute top-4 left-4 z-20 pointer-events-none flex items-center gap-2 bg-blueprint-900/85 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-blueprint-800 text-xs font-mono-code text-blueprint-300 shadow-md">
+          <Move className="w-3.5 h-3.5 text-draft-400 animate-bounce" />
           <span>Click circle to select • Drag circles to rearrange topology</span>
         </div>
 
@@ -1313,8 +1313,8 @@ await prisma.application.create({
               }}
               className={`absolute w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center cursor-pointer active:cursor-grabbing transition-shadow transition-transform duration-75 border-2 ${
                 isSelected 
-                  ? 'border-cobalt-400 bg-slate-900 ring-4 ring-cobalt-400/30' 
-                  : 'border-slate-700/80 bg-slate-900/90 hover:border-cobalt-400'
+                  ? 'border-draft-400 bg-blueprint-900 ring-4 ring-draft-400/30' 
+                  : 'border-blueprint-700/80 bg-blueprint-900/90 hover:border-draft-400'
               }`}
             >
               <div 
@@ -1328,7 +1328,7 @@ await prisma.application.create({
                 {node.label.split(' ')[0]}
               </span>
 
-              <div className="absolute -bottom-6 whitespace-nowrap px-2 py-0.5 rounded-full bg-slate-900/95 border border-slate-800 text-[10px] font-mono-code text-slate-300 pointer-events-none shadow-md">
+              <div className="absolute -bottom-6 whitespace-nowrap px-2 py-0.5 rounded-full bg-blueprint-900/95 border border-blueprint-800 text-[10px] font-mono-code text-blueprint-300 pointer-events-none shadow-md">
                 {node.label}
               </div>
             </div>
@@ -1343,11 +1343,11 @@ await prisma.application.create({
           key={selectedNode.id}
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl space-y-6"
+          className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-blueprint-900 border border-blueprint-200 dark:border-blueprint-800 shadow-xl space-y-6"
         >
           
           {/* Header Bar with Node Picker & Tab Switcher */}
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-slate-100 dark:border-slate-800">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-blueprint-100 dark:border-blueprint-800">
             
             {/* Selected Node Profile */}
             <div className="flex items-center gap-3">
@@ -1359,12 +1359,12 @@ await prisma.application.create({
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h4 className="font-bold text-lg text-slate-900 dark:text-white font-mono-code">
+                  <h4 className="font-bold text-lg text-blueprint-900 dark:text-white font-mono-code">
                     {selectedNode.label}
                   </h4>
-                  <span className="text-xs text-slate-400 font-mono-code">({selectedNode.sub})</span>
+                  <span className="text-xs text-blueprint-400 font-mono-code">({selectedNode.sub})</span>
                 </div>
-                <div className="text-xs font-mono-code text-cobalt-500 mt-0.5">
+                <div className="text-xs font-mono-code text-draft-500 mt-0.5">
                   Target: <code>{selectedNode.endpoints}</code>
                 </div>
               </div>
@@ -1378,8 +1378,8 @@ await prisma.application.create({
                   onClick={() => setSelectedNodeId(n.id)}
                   className={`px-2.5 py-1 rounded-lg text-[11px] font-mono-code font-bold transition-all ${
                     selectedNodeId === n.id
-                      ? 'bg-cobalt-500 text-white shadow-sm'
-                      : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-cobalt-500'
+                      ? 'bg-draft-500 text-white shadow-sm'
+                      : 'bg-blueprint-100 dark:bg-blueprint-800 text-blueprint-600 dark:text-blueprint-400 hover:text-draft-500'
                   }`}
                 >
                   {n.label.split(' ')[0]}
@@ -1388,11 +1388,11 @@ await prisma.application.create({
             </div>
 
             {/* Tab Selector */}
-            <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs font-mono-code font-bold">
+            <div className="flex items-center gap-1 p-1 rounded-xl bg-blueprint-100 dark:bg-blueprint-800/80 border border-blueprint-200 dark:border-blueprint-700 text-xs font-mono-code font-bold">
               <button
                 onClick={() => setActiveTab('code')}
                 className={`px-3 py-1.5 rounded-lg transition-all ${
-                  activeTab === 'code' ? 'bg-cobalt-500 text-white shadow-sm' : 'text-slate-600 dark:text-slate-300 hover:text-cobalt-500'
+                  activeTab === 'code' ? 'bg-draft-500 text-white shadow-sm' : 'text-blueprint-600 dark:text-blueprint-300 hover:text-draft-500'
                 }`}
               >
                 Code & Payload
@@ -1400,7 +1400,7 @@ await prisma.application.create({
               <button
                 onClick={() => setActiveTab('tradeoffs')}
                 className={`px-3 py-1.5 rounded-lg transition-all ${
-                  activeTab === 'tradeoffs' ? 'bg-cobalt-500 text-white shadow-sm' : 'text-slate-600 dark:text-slate-300 hover:text-cobalt-500'
+                  activeTab === 'tradeoffs' ? 'bg-draft-500 text-white shadow-sm' : 'text-blueprint-600 dark:text-blueprint-300 hover:text-draft-500'
                 }`}
               >
                 Trade-offs
@@ -1408,7 +1408,7 @@ await prisma.application.create({
               <button
                 onClick={() => setActiveTab('security')}
                 className={`px-3 py-1.5 rounded-lg transition-all ${
-                  activeTab === 'security' ? 'bg-cobalt-500 text-white shadow-sm' : 'text-slate-600 dark:text-slate-300 hover:text-cobalt-500'
+                  activeTab === 'security' ? 'bg-draft-500 text-white shadow-sm' : 'text-blueprint-600 dark:text-blueprint-300 hover:text-draft-500'
                 }`}
               >
                 Security
@@ -1416,7 +1416,7 @@ await prisma.application.create({
               <button
                 onClick={() => setActiveTab('star')}
                 className={`px-3 py-1.5 rounded-lg transition-all ${
-                  activeTab === 'star' ? 'bg-cobalt-500 text-white shadow-sm' : 'text-slate-600 dark:text-slate-300 hover:text-cobalt-500'
+                  activeTab === 'star' ? 'bg-draft-500 text-white shadow-sm' : 'text-blueprint-600 dark:text-blueprint-300 hover:text-draft-500'
                 }`}
               >
                 Project Story
@@ -1429,11 +1429,11 @@ await prisma.application.create({
           {activeTab === 'code' && (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               <div className="lg:col-span-7 space-y-2">
-                <span className="text-xs font-mono-code font-bold text-cobalt-500 flex items-center gap-1.5">
-                  <FileCode className="w-3.5 h-3.5 text-cobalt-500" />
+                <span className="text-xs font-mono-code font-bold text-draft-500 flex items-center gap-1.5">
+                  <FileCode className="w-3.5 h-3.5 text-draft-500" />
                   <span>Real Implementation Code Snippet:</span>
                 </span>
-                <pre className="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-slate-200 font-mono-code text-xs overflow-x-auto leading-relaxed shadow-inner">
+                <pre className="p-4 rounded-2xl bg-blueprint-950 border border-blueprint-800 text-blueprint-200 font-mono-code text-xs overflow-x-auto leading-relaxed shadow-inner">
                   <code>{selectedNode.codeSnippet}</code>
                 </pre>
               </div>
@@ -1443,7 +1443,7 @@ await prisma.application.create({
                   <Zap className="w-3.5 h-3.5 text-sky-400" />
                   <span>In-Transit JSON Data Packet:</span>
                 </span>
-                <pre className="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-cobalt-300 font-mono-code text-xs overflow-x-auto leading-relaxed shadow-inner">
+                <pre className="p-4 rounded-2xl bg-blueprint-950 border border-blueprint-800 text-draft-300 font-mono-code text-xs overflow-x-auto leading-relaxed shadow-inner">
                   <code>{selectedNode.payloadSample}</code>
                 </pre>
               </div>
@@ -1453,25 +1453,25 @@ await prisma.application.create({
           {/* TAB 2: TRADEOFFS */}
           {activeTab === 'tradeoffs' && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700/80 space-y-2">
-                <div className="text-xs font-mono-code font-bold text-cobalt-500 flex items-center gap-1.5">
+              <div className="p-5 rounded-2xl bg-blueprint-50 dark:bg-blueprint-800/80 border border-blueprint-100 dark:border-blueprint-700/80 space-y-2">
+                <div className="text-xs font-mono-code font-bold text-draft-500 flex items-center gap-1.5">
                   <Brain className="w-4 h-4" />
                   <span>Architectural Decision:</span>
                 </div>
-                <h5 className="font-bold text-sm text-slate-900 dark:text-white font-mono-code">
+                <h5 className="font-bold text-sm text-blueprint-900 dark:text-white font-mono-code">
                   {selectedNode.tradeoffs.decision}
                 </h5>
-                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                <p className="text-xs text-blueprint-600 dark:text-blueprint-300 leading-relaxed">
                   {selectedNode.tradeoffs.why}
                 </p>
               </div>
 
-              <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700/80 space-y-2">
+              <div className="p-5 rounded-2xl bg-blueprint-50 dark:bg-blueprint-800/80 border border-blueprint-100 dark:border-blueprint-700/80 space-y-2">
                 <div className="text-xs font-mono-code font-bold text-emerald-500 flex items-center gap-1.5">
                   <Gauge className="w-4 h-4" />
                   <span>Why this beats alternatives:</span>
                 </div>
-                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed pt-1">
+                <p className="text-xs text-blueprint-600 dark:text-blueprint-300 leading-relaxed pt-1">
                   {selectedNode.tradeoffs.vsAlternative}
                 </p>
               </div>
@@ -1481,32 +1481,32 @@ await prisma.application.create({
           {/* TAB 3: SECURITY */}
           {activeTab === 'security' && (
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700/80 space-y-1.5">
-                <div className="text-xs font-mono-code font-bold text-cobalt-500 flex items-center gap-1.5">
+              <div className="p-4 rounded-2xl bg-blueprint-50 dark:bg-blueprint-800/80 border border-blueprint-100 dark:border-blueprint-700/80 space-y-1.5">
+                <div className="text-xs font-mono-code font-bold text-draft-500 flex items-center gap-1.5">
                   <Lock className="w-3.5 h-3.5" />
                   <span>Authentication & RBAC</span>
                 </div>
-                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                <p className="text-xs text-blueprint-600 dark:text-blueprint-300 leading-relaxed">
                   {selectedNode.security.auth}
                 </p>
               </div>
 
-              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700/80 space-y-1.5">
+              <div className="p-4 rounded-2xl bg-blueprint-50 dark:bg-blueprint-800/80 border border-blueprint-100 dark:border-blueprint-700/80 space-y-1.5">
                 <div className="text-xs font-mono-code font-bold text-sky-400 flex items-center gap-1.5">
                   <Activity className="w-3.5 h-3.5" />
                   <span>Concurrency & Locking</span>
                 </div>
-                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                <p className="text-xs text-blueprint-600 dark:text-blueprint-300 leading-relaxed">
                   {selectedNode.security.concurrency}
                 </p>
               </div>
 
-              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700/80 space-y-1.5">
+              <div className="p-4 rounded-2xl bg-blueprint-50 dark:bg-blueprint-800/80 border border-blueprint-100 dark:border-blueprint-700/80 space-y-1.5">
                 <div className="text-xs font-mono-code font-bold text-emerald-500 flex items-center gap-1.5">
                   <ShieldCheck className="w-3.5 h-3.5" />
                   <span>Payload Sanitization</span>
                 </div>
-                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                <p className="text-xs text-blueprint-600 dark:text-blueprint-300 leading-relaxed">
                   {selectedNode.security.validation}
                 </p>
               </div>
@@ -1518,21 +1518,21 @@ await prisma.application.create({
             <div className="space-y-5">
               
               {/* Core Narrative & Story Summary */}
-              <div className="p-5 sm:p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700/80 space-y-3">
+              <div className="p-5 sm:p-6 rounded-2xl bg-blueprint-50 dark:bg-blueprint-800/80 border border-blueprint-100 dark:border-blueprint-700/80 space-y-3">
                 <div className="flex items-center justify-between gap-2">
-                  <span className="text-xs font-mono-code font-bold text-cobalt-500 flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-cobalt-500" />
+                  <span className="text-xs font-mono-code font-bold text-draft-500 flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-draft-500" />
                     <span>{t('Project Overview & Architecture Story:', 'ภาพรวม & เรื่องราวเบื้องหลังโปรเจกต์:')}</span>
                   </span>
                   <button
                     onClick={handleCopyPitch}
-                    className="px-3.5 py-1.5 rounded-xl bg-cobalt-500 hover:bg-cobalt-400 text-white font-mono-code text-xs font-bold transition-all shadow-sm flex items-center gap-1.5"
+                    className="px-3.5 py-1.5 rounded-xl bg-draft-500 hover:bg-draft-400 text-white font-mono-code text-xs font-bold transition-all shadow-sm flex items-center gap-1.5"
                   >
                     {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                     <span>{copied ? t('Copied!', 'คัดลอกแล้ว!') : t('Copy Summary', 'คัดลอกสรุป')}</span>
                   </button>
                 </div>
-                <p className="text-sm text-slate-700 dark:text-slate-200 leading-relaxed font-normal">
+                <p className="text-sm text-blueprint-700 dark:text-blueprint-200 leading-relaxed font-normal">
                   "{t(pitchData.pitchScriptEn, pitchData.pitchScriptTh)}"
                 </p>
               </div>
@@ -1541,11 +1541,11 @@ await prisma.application.create({
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 text-xs font-mono-code">
                 
                 {/* Situation */}
-                <div className="p-4 rounded-2xl bg-cobalt-500/5 dark:bg-cobalt-500/10 border border-cobalt-500/20 space-y-1.5">
-                  <span className="font-bold text-cobalt-600 dark:text-cobalt-400 block uppercase">
+                <div className="p-4 rounded-2xl bg-draft-500/5 dark:bg-draft-500/10 border border-draft-500/20 space-y-1.5">
+                  <span className="font-bold text-draft-600 dark:text-draft-400 block uppercase">
                     1. Situation (ปัญหาเดิม)
                   </span>
-                  <p className="text-slate-600 dark:text-slate-300 font-sans text-xs leading-relaxed">
+                  <p className="text-blueprint-600 dark:text-blueprint-300 font-sans text-xs leading-relaxed">
                     {t(pitchData.star.situation.descEn, pitchData.star.situation.descTh)}
                   </p>
                 </div>
@@ -1555,17 +1555,17 @@ await prisma.application.create({
                   <span className="font-bold text-sky-600 dark:text-sky-400 block uppercase">
                     2. Task (โจทย์ & เป้าหมาย)
                   </span>
-                  <p className="text-slate-600 dark:text-slate-300 font-sans text-xs leading-relaxed">
+                  <p className="text-blueprint-600 dark:text-blueprint-300 font-sans text-xs leading-relaxed">
                     {t(pitchData.star.task.descEn, pitchData.star.task.descTh)}
                   </p>
                 </div>
 
                 {/* Action */}
-                <div className="p-4 rounded-2xl bg-cobalt-500/5 dark:bg-cobalt-500/10 border border-cobalt-500/20 space-y-1.5">
-                  <span className="font-bold text-cobalt-600 dark:text-cobalt-400 block uppercase">
+                <div className="p-4 rounded-2xl bg-draft-500/5 dark:bg-draft-500/10 border border-draft-500/20 space-y-1.5">
+                  <span className="font-bold text-draft-600 dark:text-draft-400 block uppercase">
                     3. Action (สิ่งที่เราสร้าง)
                   </span>
-                  <p className="text-slate-600 dark:text-slate-300 font-sans text-xs leading-relaxed">
+                  <p className="text-blueprint-600 dark:text-blueprint-300 font-sans text-xs leading-relaxed">
                     {t(pitchData.star.action.descEn, pitchData.star.action.descTh)}
                   </p>
                 </div>
@@ -1575,7 +1575,7 @@ await prisma.application.create({
                   <span className="font-bold text-emerald-600 dark:text-emerald-400 block uppercase">
                     4. Result (ผลลัพธ์ที่ได้)
                   </span>
-                  <p className="text-slate-600 dark:text-slate-300 font-sans text-xs leading-relaxed">
+                  <p className="text-blueprint-600 dark:text-blueprint-300 font-sans text-xs leading-relaxed">
                     {t(pitchData.star.result.descEn, pitchData.star.result.descTh)}
                   </p>
                 </div>
@@ -1589,10 +1589,10 @@ await prisma.application.create({
       )}
 
       {/* 4. SLEEK BOTTOM STATUS & BENCHMARK RIBBON */}
-      <div className="p-3.5 rounded-2xl bg-slate-900 text-slate-200 border border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs font-mono-code">
+      <div className="p-3.5 rounded-2xl bg-blueprint-900 text-blueprint-200 border border-blueprint-800 flex flex-wrap items-center justify-between gap-3 text-xs font-mono-code">
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span>Latency: <strong className="text-cobalt-400">{currentArch.specs.latency}</strong></span>
+          <span>Latency: <strong className="text-draft-400">{currentArch.specs.latency}</strong></span>
         </div>
         <div>
           <span>Isolation: <strong className="text-sky-400">{currentArch.specs.isolation}</strong></span>

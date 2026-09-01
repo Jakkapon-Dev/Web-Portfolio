@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "../context/LanguageContext";
-import { useTheme, ACCENT_THEMES } from "../context/ThemeContext";
+import { useTheme } from "../context/ThemeContext";
 import {
   Sparkles,
   ArrowRight,
   CheckCircle2,
-  HelpCircle,
   Clock,
   Coffee,
   Code2,
@@ -22,8 +21,8 @@ import {
 } from "lucide-react";
 
 export default function OnboardingQuizModal({ isOpen, onClose }) {
-  const { t, lang } = useLanguage();
-  const { theme, setThemeMode, setAccentColor } = useTheme();
+  const { t } = useLanguage();
+  const { setThemeMode, setAccentColor } = useTheme();
 
   const [step, setStep] = useState(1); // 1 to 5, and 6 for "รอแป๊บ..."
   const [step2SubStage, setStep2SubStage] = useState("choice"); // "choice" | "dark_side_warning"
@@ -39,14 +38,6 @@ export default function OnboardingQuizModal({ isOpen, onClose }) {
   const [isSkipHovered, setIsSkipHovered] = useState(false);
   const [loadingTextIdx, setLoadingTextIdx] = useState(0);
   const [loadingProgress, setLoadingProgress] = useState(0);
-
-  const handleModeClick = (modeChoice) => {
-    if (modeChoice === "light") {
-      setStep2SubStage("dark_side_warning");
-    } else {
-      handleSelectOption("mode", "dark");
-    }
-  };
 
   const triggerStep5Punchline = (choice) => {
     if (choice) setSelectedInStep(choice);
@@ -70,17 +61,18 @@ export default function OnboardingQuizModal({ isOpen, onClose }) {
     }
   }, [step, step5SubStage]);
 
-  // Reset state whenever modal is opened
-  useEffect(() => {
-    if (isOpen) {
-      setStep(1);
-      setStep2SubStage("choice");
-      setStep5SubStage("matte_glossy");
-      setSelectedInStep(null);
-      setLoadingProgress(0);
-      setLoadingTextIdx(0);
-    }
-  }, [isOpen]);
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
+  if (isOpen && !prevIsOpen) {
+    setPrevIsOpen(true);
+    setStep(1);
+    setStep2SubStage("choice");
+    setStep5SubStage("matte_glossy");
+    setSelectedInStep(null);
+    setLoadingProgress(0);
+    setLoadingTextIdx(0);
+  } else if (!isOpen && prevIsOpen) {
+    setPrevIsOpen(false);
+  }
 
   const loadingMessages = [
     t("กำลังผสมเฉดสีที่คุณเลือก...", "กำลังผสมเฉดสีที่คุณเลือก..."),
@@ -177,7 +169,7 @@ export default function OnboardingQuizModal({ isOpen, onClose }) {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
           transition={{ duration: 0.3 }}
-          className="relative w-full max-w-2xl bg-[#0F141C] text-slate-100 rounded-3xl border border-slate-800 shadow-2xl overflow-hidden p-6 sm:p-10 text-left font-sans"
+          className="relative w-full max-w-2xl bg-[#10263D] text-slate-100 rounded-3xl border border-slate-800 shadow-2xl overflow-hidden p-6 sm:p-10 text-left font-sans"
         >
           {/* Top Skip Button with Option 2 Witty Tooltip */}
           {step <= 5 && (
@@ -209,7 +201,7 @@ export default function OnboardingQuizModal({ isOpen, onClose }) {
           {step <= 5 && (
             <div className="mb-6 space-y-2">
               <div className="flex items-center justify-between text-xs font-mono-code text-slate-400">
-                <span className="text-cobalt-400 font-bold">ATM INTERVIEW · ข้อที่ {step} / 5</span>
+                <span className="text-draft-400 font-bold">ATM INTERVIEW · ข้อที่ {step} / 5</span>
                 <span>{step * 20}%</span>
               </div>
               <div className="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
@@ -361,8 +353,8 @@ export default function OnboardingQuizModal({ isOpen, onClose }) {
                       onClick={() => setStep2SubStage("dark_warn_1")}
                       className={`p-6 rounded-2xl bg-slate-900/90 border text-left transition-all group space-y-2 ${
                         selectedInStep === "dark"
-                          ? "border-cobalt-500 bg-cobalt-500/20 ring-2 ring-cobalt-500/40"
-                          : "border-slate-800 hover:border-cobalt-500 hover:bg-cobalt-500/10"
+                          ? "border-draft-500 bg-draft-500/20 ring-2 ring-draft-500/40"
+                          : "border-slate-800 hover:border-draft-500 hover:bg-draft-500/10"
                       }`}
                     >
                       <div className="flex items-center justify-between font-bold text-base text-white font-mono-code">
@@ -370,7 +362,7 @@ export default function OnboardingQuizModal({ isOpen, onClose }) {
                           <Moon className="w-5 h-5 text-indigo-400" />
                           <span>Dark Mode (โหมดมืด)</span>
                         </div>
-                        {selectedInStep === "dark" && <CheckCircle2 className="w-4 h-4 text-cobalt-400" />}
+                        {selectedInStep === "dark" && <CheckCircle2 className="w-4 h-4 text-draft-400" />}
                       </div>
                       <p className="text-xs text-slate-400 leading-relaxed">
                         สาย Dev ตัวจริง แสงแดดคือศัตรู แสบตากลางวัน นอนเช้าตื่นบ่าย
@@ -644,20 +636,20 @@ export default function OnboardingQuizModal({ isOpen, onClose }) {
                   onClick={() => handleSelectOption("roleFocus", "fullstack")}
                   className={`w-full p-4 rounded-2xl bg-slate-900/90 border text-left transition-all group flex items-center justify-between ${
                     selectedInStep === "fullstack"
-                      ? "border-cobalt-500 bg-cobalt-500/20 ring-2 ring-cobalt-500/40"
-                      : "border-slate-800 hover:border-cobalt-500 hover:bg-cobalt-500/10"
+                      ? "border-draft-500 bg-draft-500/20 ring-2 ring-draft-500/40"
+                      : "border-slate-800 hover:border-draft-500 hover:bg-draft-500/10"
                   }`}
                 >
                   <div>
                     <div className="font-bold text-sm text-white font-mono-code flex items-center gap-2">
-                      <Briefcase className="w-4 h-4 text-cobalt-400" />
+                      <Briefcase className="w-4 h-4 text-draft-400" />
                       <span>Full-Stack Developer ตัวตึง</span>
                     </div>
                     <p className="text-xs text-slate-400 mt-1">
                       อยากดูความสามารถรอบด้าน ทำได้ครบวงจรตั้งแต่หน้าบ้านยันหลังบ้าน
                     </p>
                   </div>
-                  <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-cobalt-400 group-hover:translate-x-1 transition-all" />
+                  <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-draft-400 group-hover:translate-x-1 transition-all" />
                 </button>
 
                 <button
@@ -746,10 +738,10 @@ export default function OnboardingQuizModal({ isOpen, onClose }) {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2">
                 <button
                   onClick={() => handleSelectOption("landing", "projects")}
-                  className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-cobalt-500 text-left transition-all group hover:bg-cobalt-500/10 space-y-2 flex flex-col justify-between"
+                  className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-draft-500 text-left transition-all group hover:bg-draft-500/10 space-y-2 flex flex-col justify-between"
                 >
                   <div>
-                    <FolderGit2 className="w-6 h-6 text-cobalt-400 mb-2" />
+                    <FolderGit2 className="w-6 h-6 text-draft-400 mb-2" />
                     <div className="font-bold text-sm text-white font-mono-code">ดูผลงานจริงก่อน</div>
                   </div>
                   <p className="text-xs text-slate-400">
@@ -929,18 +921,18 @@ export default function OnboardingQuizModal({ isOpen, onClose }) {
 
                     <button
                       onClick={() => handleSelectOption("coffeeOrBug", "bot")}
-                      className="w-full p-4 rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-cobalt-500 text-left transition-all group hover:bg-cobalt-500/10 flex items-center justify-between"
+                      className="w-full p-4 rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-draft-500 text-left transition-all group hover:bg-draft-500/10 flex items-center justify-between"
                     >
                       <div>
                         <div className="font-bold text-sm text-white font-mono-code flex items-center gap-2">
-                          <Bot className="w-4 h-4 text-cobalt-400" />
+                          <Bot className="w-4 h-4 text-draft-400" />
                           <span>ให้ JakkBot ตอบแทนได้ไหม? 🤖</span>
                         </div>
                         <p className="text-xs text-slate-400 mt-1">
                           ขี้เกียจคิด ขอผ่านไปดูเว็บเลย!
                         </p>
                       </div>
-                      <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-cobalt-400 group-hover:translate-x-1 transition-all" />
+                      <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-draft-400 group-hover:translate-x-1 transition-all" />
                     </button>
                   </div>
                 </motion.div>
@@ -970,8 +962,8 @@ export default function OnboardingQuizModal({ isOpen, onClose }) {
               {/* Spinning ATM Radar / Spinner */}
               <div className="relative w-16 h-16 flex items-center justify-center">
                 <div className="absolute inset-0 rounded-full border-4 border-slate-800" />
-                <div className="absolute inset-0 rounded-full border-4 border-t-cobalt-500 border-r-sky-400 border-b-transparent border-l-transparent animate-spin" />
-                <Clock className="w-6 h-6 text-cobalt-400 animate-pulse" />
+                <div className="absolute inset-0 rounded-full border-4 border-t-draft-500 border-r-sky-400 border-b-transparent border-l-transparent animate-spin" />
+                <Clock className="w-6 h-6 text-draft-400 animate-pulse" />
               </div>
 
               {/* Dynamic Witty Status Text */}

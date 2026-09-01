@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { X, Layers, Cpu, Database, Server, Terminal, ArrowRight, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { X, Layers, Terminal, ShieldCheck, CheckCircle2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function ArchitectureModal({ project, isOpen, onClose }) {

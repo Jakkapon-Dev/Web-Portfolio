@@ -1,24 +1,76 @@
-# Dependencies
+# ===================================================
+# Dependencies & Package Managers
+# ===================================================
 node_modules/
 .pnp
 .pnp.js
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
 
-# Production & Build Artifacts
+# ===================================================
+# Production & Build Outputs
+# ===================================================
 dist/
 dist-ssr/
 build/
 out/
+.next/
+.nuxt/
+.output/
+.svelte-kit/
+storybook-static/
 
-# Environment variables & secrets
+# ===================================================
+# Cache & Temporary Directories
+# ===================================================
+.cache/
+.vite/
+.turbo/
+.parcel-cache/
+.temp/
+.tmp/
+tmp/
+temp/
+scratch/
+*.tsbuildinfo
+.eslintcache
+.stylelintcache
+.prettiercache
+.oxlintcache
+
+# ===================================================
+# Environment Variables & Secrets
+# ===================================================
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*
 *.env
+*.env.*
+*.local
+.env*.local
 !.env.example
+!.env.template
 
-# Logs
+# Private Keys & Certs
+*.pem
+*.key
+*.cert
+*.crt
+*.pfx
+*.p12
+id_rsa*
+id_ed25519*
+credentials.json
+service-account*.json
+client_secret*.json
+
+# ===================================================
+# Logs & Diagnostic Dumps
+# ===================================================
 logs/
 *.log
 npm-debug.log*
@@ -27,10 +79,26 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# Editor & IDE files
+# ===================================================
+# Testing & Code Coverage
+# ===================================================
+coverage/
+.nyc_output/
+*.lcov
+playwright-report/
+test-results/
+.cypress-cache/
+cypress/videos/
+cypress/screenshots/
+
+# ===================================================
+# Editor & IDE Files
+# ===================================================
 .vscode/*
 !.vscode/extensions.json
 !.vscode/settings.json
+!.vscode/launch.json
+!.vscode/tasks.json
 .idea/
 *.suo
 *.ntvs*
@@ -40,8 +108,15 @@ lerna-debug.log*
 *.swo
 *.swn
 *.swp
+*.sublime-project
+*.sublime-workspace
+.fleet/
+.zed/
+*.code-workspace
 
-# OS generated files
+# ===================================================
+# OS & System Files
+# ===================================================
 .DS_Store
 .DS_Store?
 ._*
@@ -49,34 +124,39 @@ lerna-debug.log*
 .Trashes
 ehthumbs.db
 Thumbs.db
+Thumbs.db:encryptable
 [Dd]esktop.ini
+desktop.ini
 $RECYCLE.BIN/
+*.lnk
 
-# Testing & Coverage
-coverage/
-.nyc_output/
-*.lcov
+# ===================================================
+# Database & Local Dumps
+# ===================================================
+*.sqlite
+*.sqlite3
+*.db
+*.dump
+*.sql.gz
+*.bak
 
-# Temporary / Cache folders
-.cache/
-.vite/
-.turbo/
-.temp/
-.tmp/
-tmp/
-*.tsbuildinfo
-
-# References & Local Templates
-references/
-
-# graft's local graph cache — regenerable, not committed (run `graft build`).
-graft/
-
-# AI Agent & local tooling configs
+# ===================================================
+# AI Agents & Local Assistant Tooling
+# ===================================================
 .agents/
 .gemini/
 .claude/
 .claude.json
 .mcp.json
+.cursor/
+.cursorrules
+.copilot/
+.continue/
 .ignore
 skills-lock.json
+
+# ===================================================
+# Local Graph / Cache & References
+# ===================================================
+references/
+graft/

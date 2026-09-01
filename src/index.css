@@ -6,9 +6,17 @@
 @variant dark (&:where(.dark, .dark *));
 
 /*
-  Hallmark · macrostructure: Marquee Hero · genre: modern-minimal
-  theme: Cobalt (cool paper · electric cobalt accent · Space Grotesk + Inter + JetBrains Mono)
-  differs from the prior violet system on: paper band (kept light) · accent hue (violet ~270 -> cobalt ~222) · display style (system-sans -> grotesk-sans)
+  Hallmark · macrostructure: Marquee Hero · genre: technical-drafting
+  theme: Blueprint (drafting paper in light · cyanotype blueprint in dark · Space Grotesk + Inter + JetBrains Mono)
+  differs from the prior Cobalt system on: light mode is now literal drafting vellum (cool paper, navy ink)
+  instead of generic SaaS off-white; dark mode is a literal cyanotype blueprint (navy field, cyan linework)
+  instead of a neutral near-black; accent moves from electric cobalt blue to drafting-pencil orange (#E8611C);
+  radii tighten toward square (instrument-drawn, not soft/SaaS) section by section as each one is redone —
+  not a global --radius change, so untouched sections don't jump ahead of their own redesign pass.
+  New tokens live under --color-draft-* (accent) and --color-blueprint-* (ink scale) — kept separate from the
+  --color-cobalt-* scale, which stays reserved for the ATM-quiz accent picker (cobalt/violet/emerald/amber)
+  so retheming the page doesn't silently reskin that unrelated feature. Rolling out section by section —
+  see Navbar first; other sections still read the old paper/cobalt tokens until their turn.
 */
 
 @layer base {
@@ -21,8 +29,8 @@
   }
 
   html, body {
-    background-color: #F7F9FC;
-    color: #1B2430;
+    background-color: #F4F6F5;
+    color: #16324F;
     font-family: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     margin: 0;
     padding: 0;
@@ -31,8 +39,8 @@
   }
 
   html.dark, html.dark body, body.dark {
-    background-color: #0F141C !important;
-    color: #E8EDF5 !important;
+    background-color: #10263D !important;
+    color: #CFE8FF !important;
   }
   * {
     @apply border-border outline-ring/50;
@@ -76,18 +84,89 @@
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #C7D2E0;
+  background: #AFD3ED;
   border-radius: 9999px;
 }
 .dark ::-webkit-scrollbar-thumb, html.dark ::-webkit-scrollbar-thumb {
-  background: #2A3444;
+  background: #1D4C74;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #9FAEC2;
+  background: #E8611C;
+}
+
+/* ========================================================================== */
+/* BLUEPRINT THEME — site brand tokens (independent of the accent picker below) */
+/* ========================================================================== */
+:root, html {
+  /* Draft orange — the one accent, the "pencil mark" on the drawing */
+  --color-draft-50: #FFF3EC;
+  --color-draft-100: #FFE1CF;
+  --color-draft-200: #FFC29E;
+  --color-draft-300: #FF9E68;
+  --color-draft-400: #F17D3E;
+  --color-draft-500: #E8611C;
+  --color-draft-600: #C94F13;
+  --color-draft-700: #A33F10;
+  --color-draft-800: #7C3210;
+  --color-draft-900: #5E280F;
+  --color-draft-950: #331306;
+
+  /* Blueprint navy — ink scale. Light mode reads it as ink-on-paper;
+     dark mode flips the ramp so the site becomes a literal cyanotype. */
+  --color-blueprint-50: #EAF3FB;
+  --color-blueprint-100: #D3E7F6;
+  --color-blueprint-200: #AFD3ED;
+  --color-blueprint-300: #8AC0E6;
+  --color-blueprint-400: #5FA4D6;
+  --color-blueprint-500: #3A80B8;
+  --color-blueprint-600: #276393;
+  --color-blueprint-700: #1D4C74;
+  --color-blueprint-800: #16324F;
+  --color-blueprint-900: #102540;
+  --color-blueprint-950: #0A1830;
+
+  --grid-line: rgb(22 50 79 / 7%);
+}
+
+html.dark {
+  --grid-line: rgb(207 232 255 / 6%);
+}
+
+/* Pencil-underline hover: a thin drafting-pencil stroke that draws in from
+   the left on hover/focus, instead of a plain color change. Plain CSS (not
+   Tailwind arbitrary utilities) so the transform reliably animates. */
+.pencil-underline {
+  position: relative;
+}
+.pencil-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1.5px;
+  background: var(--color-draft-500);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.pencil-underline:hover::after,
+.pencil-underline:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* Faint drafting graph-paper grid — background texture only, never a border */
+.blueprint-grid {
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 24px 24px;
 }
 
 /* ========================================================================== */
 /* DYNAMIC ACCENT PALETTES (Cobalt / Violet / Emerald / Amber)                */
+/* — the ATM-quiz accent picker. Untouched by the Blueprint rebrand: it's a  */
+/* separate customization feature, not the site's own brand identity.       */
 /* ========================================================================== */
 :root, html, html[data-accent="cobalt"] {
   --color-cobalt-50: #EFF4FF;
@@ -158,7 +237,7 @@ html[data-accent="amber"] {
   --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
-  /* Dynamic Accent scale mapped to current chosen accent */
+  /* Dynamic Accent scale mapped to current chosen accent (ATM-quiz picker) */
   --color-cobalt-50: var(--color-cobalt-50);
   --color-cobalt-100: var(--color-cobalt-100);
   --color-cobalt-200: var(--color-cobalt-200);
@@ -170,6 +249,31 @@ html[data-accent="amber"] {
   --color-cobalt-800: var(--color-cobalt-800);
   --color-cobalt-900: var(--color-cobalt-900);
   --color-cobalt-950: var(--color-cobalt-950);
+
+  /* Blueprint theme brand scales — draft-* (accent) and blueprint-* (ink) */
+  --color-draft-50: var(--color-draft-50);
+  --color-draft-100: var(--color-draft-100);
+  --color-draft-200: var(--color-draft-200);
+  --color-draft-300: var(--color-draft-300);
+  --color-draft-400: var(--color-draft-400);
+  --color-draft-500: var(--color-draft-500);
+  --color-draft-600: var(--color-draft-600);
+  --color-draft-700: var(--color-draft-700);
+  --color-draft-800: var(--color-draft-800);
+  --color-draft-900: var(--color-draft-900);
+  --color-draft-950: var(--color-draft-950);
+
+  --color-blueprint-50: var(--color-blueprint-50);
+  --color-blueprint-100: var(--color-blueprint-100);
+  --color-blueprint-200: var(--color-blueprint-200);
+  --color-blueprint-300: var(--color-blueprint-300);
+  --color-blueprint-400: var(--color-blueprint-400);
+  --color-blueprint-500: var(--color-blueprint-500);
+  --color-blueprint-600: var(--color-blueprint-600);
+  --color-blueprint-700: var(--color-blueprint-700);
+  --color-blueprint-800: var(--color-blueprint-800);
+  --color-blueprint-900: var(--color-blueprint-900);
+  --color-blueprint-950: var(--color-blueprint-950);
 
   /* Graphite — the one deliberate dark band per page (Skills section), independent of light/dark mode */
   --color-graphite: #151B26;
@@ -218,70 +322,72 @@ html[data-accent="amber"] {
 }
 
 :root {
-  --background: #F7F9FC;
-  --foreground: #1B2430;
+  /* Blueprint · light = drafting paper, ink navy, one pencil-orange accent */
+  --background: #F4F6F5;
+  --foreground: #16324F;
   --card: #FFFFFF;
-  --card-foreground: #1B2430;
+  --card-foreground: #16324F;
   --popover: #FFFFFF;
-  --popover-foreground: #1B2430;
-  --primary: #2A63F0;
+  --popover-foreground: #16324F;
+  --primary: #E8611C;
   --primary-foreground: #FFFFFF;
-  --secondary: #EEF2F8;
-  --secondary-foreground: #1B2430;
-  --muted: #EEF2F8;
-  --muted-foreground: #3D4A5C;
-  --accent: #DCE7FF;
-  --accent-foreground: #1D4FD1;
+  --secondary: #E7ECEA;
+  --secondary-foreground: #16324F;
+  --muted: #E7ECEA;
+  --muted-foreground: #4A5D6E;
+  --accent: #FFE1CF;
+  --accent-foreground: #A33F10;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: #DCE3EC;
-  --input: #DCE3EC;
-  --ring: #2A63F0;
-  --chart-1: #2A63F0;
-  --chart-2: #5B8CFF;
-  --chart-3: #3D4A5C;
-  --chart-4: #1B2430;
-  --chart-5: #8FB4FF;
+  --border: #CBD8E0;
+  --input: #CBD8E0;
+  --ring: #E8611C;
+  --chart-1: #E8611C;
+  --chart-2: #F17D3E;
+  --chart-3: #16324F;
+  --chart-4: #3A80B8;
+  --chart-5: #8AC0E6;
   --radius: 0.5rem;
   --sidebar: #FFFFFF;
-  --sidebar-foreground: #1B2430;
-  --sidebar-primary: #2A63F0;
+  --sidebar-foreground: #16324F;
+  --sidebar-primary: #E8611C;
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #DCE7FF;
-  --sidebar-accent-foreground: #1D4FD1;
-  --sidebar-border: #DCE3EC;
-  --sidebar-ring: #2A63F0;
+  --sidebar-accent: #FFE1CF;
+  --sidebar-accent-foreground: #A33F10;
+  --sidebar-border: #CBD8E0;
+  --sidebar-ring: #E8611C;
 }
 
 .dark {
-  --background: #0F141C;
-  --foreground: #E8EDF5;
-  --card: #161D28;
-  --card-foreground: #E8EDF5;
-  --popover: #161D28;
-  --popover-foreground: #E8EDF5;
-  --primary: #5B8CFF;
-  --primary-foreground: #0F141C;
-  --secondary: #1B2330;
-  --secondary-foreground: #E8EDF5;
-  --muted: #1B2330;
-  --muted-foreground: #8FA0B8;
-  --accent: rgb(42 99 240 / 20%);
-  --accent-foreground: #BDD3FF;
+  /* Blueprint · dark = literal cyanotype: navy field, cyan linework, brighter orange for contrast */
+  --background: #10263D;
+  --foreground: #CFE8FF;
+  --card: #16324F;
+  --card-foreground: #CFE8FF;
+  --popover: #16324F;
+  --popover-foreground: #CFE8FF;
+  --primary: #FF7A33;
+  --primary-foreground: #10263D;
+  --secondary: #1B3A57;
+  --secondary-foreground: #CFE8FF;
+  --muted: #1B3A57;
+  --muted-foreground: #8AB4D6;
+  --accent: rgb(232 97 28 / 20%);
+  --accent-foreground: #FFC29E;
   --destructive: oklch(0.704 0.191 22.216);
-  --border: rgb(255 255 255 / 10%);
-  --input: rgb(255 255 255 / 15%);
-  --ring: #5B8CFF;
-  --chart-1: #5B8CFF;
-  --chart-2: #8FB4FF;
-  --chart-3: #8FA0B8;
-  --chart-4: #C7D2E0;
-  --chart-5: #E8EDF5;
-  --sidebar: #161D28;
-  --sidebar-foreground: #E8EDF5;
-  --sidebar-primary: #5B8CFF;
-  --sidebar-primary-foreground: #0F141C;
-  --sidebar-accent: rgb(42 99 240 / 20%);
-  --sidebar-accent-foreground: #BDD3FF;
-  --sidebar-border: rgb(255 255 255 / 10%);
-  --sidebar-ring: #5B8CFF;
+  --border: rgb(207 232 255 / 12%);
+  --input: rgb(207 232 255 / 15%);
+  --ring: #FF7A33;
+  --chart-1: #FF7A33;
+  --chart-2: #F17D3E;
+  --chart-3: #CFE8FF;
+  --chart-4: #8AC0E6;
+  --chart-5: #5FA4D6;
+  --sidebar: #16324F;
+  --sidebar-foreground: #CFE8FF;
+  --sidebar-primary: #FF7A33;
+  --sidebar-primary-foreground: #10263D;
+  --sidebar-accent: rgb(232 97 28 / 20%);
+  --sidebar-accent-foreground: #FFC29E;
+  --sidebar-border: rgb(207 232 255 / 12%);
+  --sidebar-ring: #FF7A33;
 }

@@ -18,9 +18,9 @@ import {
 } from 'lucide-react';
 import { GithubIcon, LinkedinIcon } from './Icons';
 
-// Cobalt's signature interactive move — a real command palette, not a
-// decorative ⌘K badge. Opens on click or Cmd/Ctrl+K, filters by typing,
-// Arrow↑/↓ to select, Enter to run, Esc or backdrop to close.
+// A real command palette, not a decorative ⌘K badge. Opens on click or
+// Cmd/Ctrl+K, filters by typing, Arrow↑/↓ to select, Enter to run, Esc or
+// backdrop to close.
 export default function CommandPalette({ isOpen, onClose, onReopenOnboarding }) {
   const { t, setLang, lang } = useLanguage();
   const { toggleTheme } = useTheme();
@@ -109,11 +109,11 @@ export default function CommandPalette({ isOpen, onClose, onReopenOnboarding }) 
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -8, scale: 0.98 }}
             transition={{ duration: 0.15 }}
-            className="relative z-10 w-full max-w-lg rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-[#161D28] shadow-2xl overflow-hidden"
+            className="relative z-10 w-full max-w-lg rounded-[8px] border border-blueprint-200 dark:border-blueprint-700/50 bg-white dark:bg-blueprint-800 shadow-2xl overflow-hidden"
             onKeyDown={handleKeyDown}
           >
-            <div className="flex items-center gap-2.5 px-4 py-3 border-b border-slate-100 dark:border-white/10">
-              <Search className="w-4 h-4 text-slate-400 shrink-0" aria-hidden="true" />
+            <div className="flex items-center gap-2.5 px-4 py-3 border-b border-blueprint-100 dark:border-blueprint-700/50">
+              <Search className="w-4 h-4 text-blueprint-400 shrink-0" aria-hidden="true" />
               <input
                 ref={inputRef}
                 type="text"
@@ -123,14 +123,14 @@ export default function CommandPalette({ isOpen, onClose, onReopenOnboarding }) 
                   setActiveIndex(0);
                 }}
                 placeholder={t('Type a command…', 'พิมพ์คำสั่ง…')}
-                className="w-full bg-transparent text-sm font-mono-code text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none"
+                className="w-full bg-transparent text-sm font-mono-code text-blueprint-900 dark:text-white placeholder:text-blueprint-400 focus:outline-none"
               />
-              <kbd className="hidden sm:inline text-[10px] font-mono-code px-1.5 py-0.5 rounded border border-slate-200 dark:border-white/10 text-slate-400">esc</kbd>
+              <kbd className="hidden sm:inline text-[10px] font-mono-code px-1.5 py-0.5 rounded-[3px] border border-blueprint-200 dark:border-blueprint-700/50 text-blueprint-400">esc</kbd>
             </div>
 
             <ul ref={listRef} className="max-h-80 overflow-y-auto py-1.5" role="listbox">
               {filtered.length === 0 && (
-                <li className="px-4 py-6 text-center text-xs font-mono-code text-slate-400">
+                <li className="px-4 py-6 text-center text-xs font-mono-code text-blueprint-400">
                   {t('No matching commands', 'ไม่พบคำสั่งที่ตรงกัน')}
                 </li>
               )}
@@ -145,8 +145,8 @@ export default function CommandPalette({ isOpen, onClose, onReopenOnboarding }) 
                       onMouseEnter={() => setActiveIndex(idx)}
                       className={`w-full flex items-center gap-3 px-4 py-2 text-left text-xs font-mono-code transition-colors ${
                         isActive
-                          ? 'bg-cobalt-500/10 text-cobalt-700 dark:text-cobalt-300'
-                          : 'text-slate-700 dark:text-slate-300'
+                          ? 'bg-draft-500/10 text-draft-700 dark:text-draft-300'
+                          : 'text-blueprint-700 dark:text-blueprint-300'
                       }`}
                     >
                       <Icon className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />

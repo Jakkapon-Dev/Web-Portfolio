@@ -14,7 +14,7 @@ import {
 import confetti from 'canvas-confetti';
 
 export default function Keyboard3DVariant({ onOpenCaseStudy }) {
-  const { lang, t } = useLanguage();
+  const { t } = useLanguage();
   const { personal, about, featuredProjects } = portfolioData;
   const [activeKey, setActiveKey] = useState('React.js');
   const [copied, setCopied] = useState(false);

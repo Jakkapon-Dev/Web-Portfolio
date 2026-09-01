@@ -1,6 +1,8 @@
 import React, { Suspense, lazy, useState } from 'react';
+import { AnimatePresence, MotionConfig } from 'framer-motion';
 import { LanguageProvider } from './context/LanguageContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { MotionProvider, useMotionPreference } from './context/MotionContext';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -13,13 +15,14 @@ import HireMe from './components/HireMe';
 import ParallaxBackground from './components/ParallaxBackground';
 import JakkBotGuide from './components/JakkBotGuide';
 import OnboardingQuizModal from './components/OnboardingQuizModal';
+import ElasticCursor from './components/ElasticCursor';
 
 // Full-screen deep-dive view (and the architecture diagram it pulls in) is one
 // of the heaviest chunks in the app — only load it once someone opens a case
 // study, instead of shipping it in everyone's first-load bundle.
 const CaseStudyView = lazy(() => import('./components/CaseStudyView'));
 
-export default function App() {
+function AppContent() {
   const [activeCaseStudy, setActiveCaseStudy] = useState(null);
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(() => {
     try {
@@ -28,24 +31,33 @@ export default function App() {
       return true;
     }
   });
+  const { reducedMotionMode } = useMotionPreference();
 
   return (
-    <ThemeProvider>
-      <LanguageProvider>
-        <div className="min-h-screen bg-[#F7F9FC] text-slate-900 dark:bg-[#0F141C] dark:text-slate-100 transition-colors duration-300 font-sans relative selection:bg-cobalt-500 selection:text-white">
-          
-          {/* ATM Style Onboarding Questionnaire Modal */}
-          <OnboardingQuizModal
-            isOpen={isOnboardingOpen}
-            onClose={() => setIsOnboardingOpen(false)}
-          />
+    // reducedMotion feeds every framer-motion component in the tree — "user"
+    // follows the OS live, "always"/"never" force it once someone flips the
+    // Navbar toggle. See MotionContext for how that mode is derived.
+    <MotionConfig reducedMotion={reducedMotionMode}>
+      <div className="min-h-screen bg-[#F4F6F5] text-blueprint-900 dark:bg-[#10263D] dark:text-blueprint-50 transition-colors duration-300 font-sans relative selection:bg-draft-500 selection:text-white">
 
-          {/* Parallax Scroll & Ambient Glow Layer */}
-          <ParallaxBackground />
+        {/* Drafting-tool cursor — desktop/mouse only, self-hides on touch */}
+        <ElasticCursor />
 
-          {/* Full-Screen Case Study Deep-Dive View */}
+        {/* ATM Style Onboarding Questionnaire Modal */}
+        <OnboardingQuizModal
+          isOpen={isOnboardingOpen}
+          onClose={() => setIsOnboardingOpen(false)}
+        />
+
+        {/* Parallax Scroll & Ambient Glow Layer */}
+        <ParallaxBackground />
+
+        {/* Full-Screen Case Study Deep-Dive View — AnimatePresence so
+            CaseStudyView's own exit animation actually gets to play instead
+            of the view just vanishing when it unmounts. */}
+        <AnimatePresence mode="wait">
           {activeCaseStudy ? (
-            <Suspense fallback={null}>
+            <Suspense fallback={null} key="case-study">
               <CaseStudyView
                 projectId={activeCaseStudy}
                 onClose={() => setActiveCaseStudy(null)}
@@ -53,7 +65,7 @@ export default function App() {
               />
             </Suspense>
           ) : (
-            <>
+            <React.Fragment key="main-content">
               {/* Codebucks High-Contrast Header */}
               <Navbar onReopenOnboarding={() => setIsOnboardingOpen(true)} />
 
@@ -71,10 +83,22 @@ export default function App() {
               <Footer />
               <HireMe />
               <JakkBotGuide onReopenOnboarding={() => setIsOnboardingOpen(true)} />
-            </>
+            </React.Fragment>
           )}
+        </AnimatePresence>
 
-        </div>
+      </div>
+    </MotionConfig>
+  );
+}
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <LanguageProvider>
+        <MotionProvider>
+          <AppContent />
+        </MotionProvider>
       </LanguageProvider>
     </ThemeProvider>
   );

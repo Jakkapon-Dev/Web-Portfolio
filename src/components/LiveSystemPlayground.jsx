@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+import React, { useState } from "react";
 import { useLanguage } from "../context/LanguageContext";
 import { portfolioData } from "../data/portfolioData";
 import {
@@ -9,9 +9,7 @@ import {
   Server,
   Database,
   Smartphone,
-  Send,
   RefreshCw,
-  Layers,
   Sparkles,
   X
 } from "lucide-react";
@@ -27,7 +25,7 @@ export default function LiveSystemPlayground({ initialProjectId = "omnipos", isO
   });
 
   const projectConfig = portfolioData.featuredProjects.find((p) => p.id === activeProject) || portfolioData.featuredProjects[0];
-  const theme = projectConfig?.theme || { accent: "#2A63F0" };
+  const theme = projectConfig?.theme || { accent: "#E8611C" };
 
   const runSimulation = () => {
     setSimState({ status: "running", logs: ["🚀 [Event Triggered] Ingesting client request payload..."], metrics: null });
@@ -124,7 +122,7 @@ export default function LiveSystemPlayground({ initialProjectId = "omnipos", isO
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/85 backdrop-blur-md">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-blueprint-950/85 backdrop-blur-md">
         <div className="absolute inset-0" onClick={onClose} />
 
         <motion.div
@@ -135,10 +133,10 @@ export default function LiveSystemPlayground({ initialProjectId = "omnipos", isO
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.96, y: 15 }}
           transition={{ duration: 0.2 }}
-          className="relative w-full max-w-4xl max-h-[92vh] flex flex-col bg-[#0D121C] text-slate-100 rounded-3xl border border-slate-800 shadow-2xl z-10 overflow-hidden text-left"
+          className="relative w-full max-w-4xl max-h-[92vh] flex flex-col bg-[#0A1830] text-blueprint-100 rounded-[10px] border border-blueprint-800 shadow-2xl z-10 overflow-hidden text-left"
         >
           {/* Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 sm:p-6 border-b border-slate-800 bg-[#141B26]">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 sm:p-6 border-b border-blueprint-800 bg-[#141B26]">
             <div>
               <div className="flex items-center gap-2">
                 <span
@@ -152,16 +150,16 @@ export default function LiveSystemPlayground({ initialProjectId = "omnipos", isO
                   <Activity className="w-3.5 h-3.5 animate-pulse" />
                   <span>Real-Time Event Simulator</span>
                 </span>
-                <span className="text-xs font-mono-code text-slate-400">Interactive Test Bench</span>
+                <span className="text-xs font-mono-code text-blueprint-400">Interactive Test Bench</span>
               </div>
               <h3 className="text-xl font-bold text-white mt-1">
-                {projectConfig.title} <span className="text-slate-400 text-sm font-normal font-mono-code">— Live Event Pipeline</span>
+                {projectConfig.title} <span className="text-blueprint-400 text-sm font-normal font-mono-code">— Live Event Pipeline</span>
               </h3>
             </div>
 
             {/* Project Switcher */}
             <div className="flex items-center gap-2">
-              <div className="flex flex-wrap items-center gap-1 p-1 rounded-xl bg-slate-900 border border-slate-800">
+              <div className="flex flex-wrap items-center gap-1 p-1 rounded-[4px] bg-blueprint-900 border border-blueprint-800">
                 {portfolioData.featuredProjects.map((p) => {
                   const isActive = activeProject === p.id;
                   return (
@@ -173,8 +171,8 @@ export default function LiveSystemPlayground({ initialProjectId = "omnipos", isO
                       }}
                       className={`px-3 py-1.5 rounded-lg text-xs font-mono-code font-bold transition-all flex items-center gap-1 ${
                         isActive
-                          ? "bg-cobalt-500 text-white shadow-md shadow-cobalt-500/20"
-                          : "text-slate-400 hover:text-white hover:bg-slate-800"
+                          ? "bg-draft-500 text-white shadow-md shadow-draft-500/20"
+                          : "text-blueprint-400 hover:text-white hover:bg-blueprint-800"
                       }`}
                     >
                       <span>#{p.number}</span>
@@ -187,7 +185,7 @@ export default function LiveSystemPlayground({ initialProjectId = "omnipos", isO
               <button
                 onClick={onClose}
                 aria-label="Close"
-                className="p-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white transition-colors border border-slate-800"
+                className="p-2 rounded-[4px] bg-blueprint-900 hover:bg-blueprint-800 text-blueprint-400 hover:text-white transition-colors border border-blueprint-800"
               >
                 <X className="w-5 h-5" aria-hidden="true" />
               </button>
@@ -195,13 +193,13 @@ export default function LiveSystemPlayground({ initialProjectId = "omnipos", isO
           </div>
 
           {/* Interactive Trigger Control Box */}
-          <div className="p-6 bg-[#111722] border-b border-slate-800/80 space-y-4">
+          <div className="p-6 bg-[#111722] border-b border-blueprint-800/80 space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <span className="text-xs font-mono-code font-bold text-slate-400 uppercase tracking-wider block">
+                <span className="text-xs font-mono-code font-bold text-blueprint-400 uppercase tracking-wider block">
                   Simulate Real-World Client Action
                 </span>
-                <p className="text-xs text-slate-300 mt-1">
+                <p className="text-xs text-blueprint-300 mt-1">
                   {activeProject === "omnipos" && t("Simulate Cashier/QR sending 2x Pad Thai order to live kitchen display", "จำลองแคชเชียร์/โต๊ะส่งออร์เดอร์ผัดไทย 2 จานเข้าจอครัวแบบเรียลไทม์")}
                   {activeProject === "mystudentroom" && t("Simulate RFID gate tap for student attendance logging", "จำลองการแตะบัตร RFID เช็กชื่อนักเรียนพร้อมยิงแจ้งเตือน LINE")}
                   {activeProject === "blackboard" && t("Simulate dragging Kanban task with instant 60fps optimistic update", "จำลองการลากวางการ์ด Kanban แบบ Optimistic UI 0ms")}
@@ -212,8 +210,8 @@ export default function LiveSystemPlayground({ initialProjectId = "omnipos", isO
               <button
                 onClick={runSimulation}
                 disabled={simState.status === "running"}
-                className={`px-5 py-2.5 rounded-xl font-mono-code font-bold text-xs text-white flex items-center gap-2 shadow-lg transition-all shrink-0 ${
-                  simState.status === "running" ? "opacity-60 cursor-not-allowed bg-slate-700" : "hover:scale-105"
+                className={`px-5 py-2.5 rounded-[4px] font-mono-code font-bold text-xs text-white flex items-center gap-2 shadow-lg transition-all shrink-0 ${
+                  simState.status === "running" ? "opacity-60 cursor-not-allowed bg-blueprint-700" : "hover:scale-105"
                 }`}
                 style={{ backgroundColor: theme.accent }}
               >
@@ -233,19 +231,19 @@ export default function LiveSystemPlayground({ initialProjectId = "omnipos", isO
 
             {/* Architecture Node Visual Track */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 text-center text-xs font-mono-code">
-              <div className={`p-3 rounded-xl border transition-all ${simState.status !== "idle" ? "border-emerald-500/50 bg-emerald-500/10 text-emerald-300" : "border-slate-800 bg-slate-900/60 text-slate-500"}`}>
+              <div className={`p-3 rounded-[4px] border transition-all ${simState.status !== "idle" ? "border-emerald-500/50 bg-emerald-500/10 text-emerald-300" : "border-blueprint-800 bg-blueprint-900/60 text-blueprint-500"}`}>
                 <div className="font-bold flex items-center justify-center gap-1.5"><Smartphone className="w-3.5 h-3.5" /> 1. Client Event</div>
                 <div className="text-[10px] opacity-75 mt-0.5">Payload Ingest</div>
               </div>
-              <div className={`p-3 rounded-xl border transition-all ${simState.logs.length > 1 ? "border-sky-500/50 bg-sky-500/10 text-sky-300" : "border-slate-800 bg-slate-900/60 text-slate-500"}`}>
+              <div className={`p-3 rounded-[4px] border transition-all ${simState.logs.length > 1 ? "border-sky-500/50 bg-sky-500/10 text-sky-300" : "border-blueprint-800 bg-blueprint-900/60 text-blueprint-500"}`}>
                 <div className="font-bold flex items-center justify-center gap-1.5"><Server className="w-3.5 h-3.5" /> 2. Gateway Auth</div>
                 <div className="text-[10px] opacity-75 mt-0.5">Zod & JWT Guard</div>
               </div>
-              <div className={`p-3 rounded-xl border transition-all ${simState.logs.length > 2 ? "border-purple-500/50 bg-purple-500/10 text-purple-300" : "border-slate-800 bg-slate-900/60 text-slate-500"}`}>
+              <div className={`p-3 rounded-[4px] border transition-all ${simState.logs.length > 2 ? "border-purple-500/50 bg-purple-500/10 text-purple-300" : "border-blueprint-800 bg-blueprint-900/60 text-blueprint-500"}`}>
                 <div className="font-bold flex items-center justify-center gap-1.5"><Database className="w-3.5 h-3.5" /> 3. Transaction</div>
                 <div className="text-[10px] opacity-75 mt-0.5">Prisma ACID DB</div>
               </div>
-              <div className={`p-3 rounded-xl border transition-all ${simState.status === "success" ? "border-amber-500/50 bg-amber-500/10 text-amber-300" : "border-slate-800 bg-slate-900/60 text-slate-500"}`}>
+              <div className={`p-3 rounded-[4px] border transition-all ${simState.status === "success" ? "border-amber-500/50 bg-amber-500/10 text-amber-300" : "border-blueprint-800 bg-blueprint-900/60 text-blueprint-500"}`}>
                 <div className="font-bold flex items-center justify-center gap-1.5"><Zap className="w-3.5 h-3.5" /> 4. Real-Time Push</div>
                 <div className="text-[10px] opacity-75 mt-0.5">Sub-50ms Delivery</div>
               </div>
@@ -254,7 +252,7 @@ export default function LiveSystemPlayground({ initialProjectId = "omnipos", isO
 
           {/* Real-Time Terminal Log Stream */}
           <div className="flex-1 p-5 sm:p-6 overflow-y-auto bg-[#080C14] font-mono-code text-xs space-y-2.5">
-            <div className="text-slate-500 flex items-center justify-between pb-2 border-b border-slate-900 text-[11px]">
+            <div className="text-blueprint-500 flex items-center justify-between pb-2 border-b border-blueprint-900 text-[11px]">
               <span>// SYSTEM LOG STREAM & REAL-TIME PACKET TRACE</span>
               {simState.metrics && (
                 <span className="text-emerald-400 font-bold flex items-center gap-1">
@@ -264,7 +262,7 @@ export default function LiveSystemPlayground({ initialProjectId = "omnipos", isO
             </div>
 
             {simState.logs.length === 0 ? (
-              <div className="py-12 text-center text-slate-600 space-y-2">
+              <div className="py-12 text-center text-blueprint-600 space-y-2">
                 <Sparkles className="w-6 h-6 mx-auto opacity-40" />
                 <p>Click "Trigger Live Event" above to observe the end-to-end event execution pipeline.</p>
               </div>
@@ -275,7 +273,7 @@ export default function LiveSystemPlayground({ initialProjectId = "omnipos", isO
                     key={idx}
                     initial={{ opacity: 0, x: -8 }}
                     animate={{ opacity: 1, x: 0 }}
-                    className="p-2.5 rounded-lg bg-slate-900/80 border border-slate-800/80 text-slate-300 leading-relaxed"
+                    className="p-2.5 rounded-lg bg-blueprint-900/80 border border-blueprint-800/80 text-blueprint-300 leading-relaxed"
                   >
                     {log}
                   </motion.div>
@@ -285,15 +283,15 @@ export default function LiveSystemPlayground({ initialProjectId = "omnipos", isO
           </div>
 
           {/* Footer Info */}
-          <div className="p-4 bg-[#141B26] border-t border-slate-800 flex items-center justify-between text-xs font-mono-code">
-            <div className="flex items-center gap-2 text-slate-400">
+          <div className="p-4 bg-[#141B26] border-t border-blueprint-800 flex items-center justify-between text-xs font-mono-code">
+            <div className="flex items-center gap-2 text-blueprint-400">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
               <span>Event Engine: Connected</span>
             </div>
 
             <button
               onClick={onClose}
-              className="px-4 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 transition-colors"
+              className="px-4 py-1.5 rounded-lg bg-blueprint-800 hover:bg-blueprint-700 text-blueprint-200 transition-colors"
             >
               {t("Close Simulator", "ปิดหน้าต่างจำลอง")}
             </button>

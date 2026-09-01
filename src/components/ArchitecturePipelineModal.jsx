@@ -47,37 +47,37 @@ export default function ArchitecturePipelineModal({ project, isOpen, onClose, on
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.96, y: 15 }}
           transition={{ duration: 0.2 }}
-          className="relative w-full max-w-5xl max-h-[92vh] overflow-y-auto bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 rounded-3xl border border-slate-200 dark:border-slate-700/80 shadow-2xl p-6 sm:p-8 z-10 text-left selection:bg-cobalt-500 selection:text-white space-y-6"
+          className="relative w-full max-w-5xl max-h-[92vh] overflow-y-auto bg-white dark:bg-blueprint-800 text-blueprint-900 dark:text-blueprint-50 rounded-[10px] border border-blueprint-200 dark:border-blueprint-700/60 shadow-2xl p-6 sm:p-8 z-10 text-left selection:bg-draft-500 selection:text-white space-y-6"
         >
-          
+
           {/* Header with Direct Project Switcher Buttons */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-blueprint-100 dark:border-blueprint-700/50">
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono-code font-bold text-cobalt-600 dark:text-cobalt-400 bg-cobalt-500/10 border border-cobalt-500/30 px-2.5 py-0.5 rounded-full flex items-center gap-1.5 shadow-sm">
-                  <Activity className="w-3.5 h-3.5 animate-pulse text-cobalt-500" />
+                <span className="text-xs font-mono-code font-bold text-draft-600 dark:text-draft-400 bg-draft-500/10 border border-draft-500/30 px-2.5 py-0.5 rounded-full flex items-center gap-1.5 shadow-sm">
+                  <Activity className="w-3.5 h-3.5 animate-pulse text-draft-500" />
                   <span>Enterprise System Topology</span>
                 </span>
-                <span className="text-xs font-mono-code text-slate-400">#{project.number}</span>
+                <span className="text-xs font-mono-code text-blueprint-400">#{project.number}</span>
               </div>
-              <h3 id={titleId} className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mt-1">
-                {project.title} <span className="text-slate-500 dark:text-slate-400 text-base font-normal font-mono-code">— Architecture Flow</span>
+              <h3 id={titleId} className="text-xl sm:text-2xl font-bold text-blueprint-900 dark:text-white mt-1">
+                {project.title} <span className="text-blueprint-500 dark:text-blueprint-300 text-base font-normal font-mono-code">— Architecture Flow</span>
               </h3>
             </div>
 
             {/* Project Switcher Pills */}
             <div className="flex items-center gap-2">
-              <div className="flex flex-wrap items-center gap-1 p-1 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">
+              <div className="flex flex-wrap items-center gap-1 p-1 rounded-[6px] bg-blueprint-50 dark:bg-blueprint-900/80 border border-blueprint-200 dark:border-blueprint-700/50">
                 {featuredProjects.map((p) => {
                   const isActive = project.id === p.id;
                   return (
                     <button
                       key={p.id}
                       onClick={() => onSelectProject && onSelectProject(p)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-mono-code font-bold transition-all flex items-center gap-1 ${
+                      className={`px-3 py-1.5 rounded-[4px] text-xs font-mono-code font-bold transition-all flex items-center gap-1 ${
                         isActive
-                          ? 'bg-cobalt-500 text-white shadow-md shadow-cobalt-500/20'
-                          : 'text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700'
+                          ? 'bg-draft-500 text-white shadow-md shadow-draft-500/20'
+                          : 'text-blueprint-600 dark:text-blueprint-300 hover:bg-white dark:hover:bg-blueprint-700'
                       }`}
                     >
                       <span>#{p.number}</span>
@@ -91,7 +91,7 @@ export default function ArchitecturePipelineModal({ project, isOpen, onClose, on
                 ref={closeBtnRef}
                 onClick={onClose}
                 aria-label={t('Close', 'ปิด')}
-                className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors shadow-sm"
+                className="p-2 rounded-[4px] bg-blueprint-50 dark:bg-blueprint-900 hover:bg-blueprint-100 dark:hover:bg-blueprint-700 text-blueprint-600 dark:text-blueprint-300 transition-colors shadow-sm"
               >
                 <X className="w-5 h-5" aria-hidden="true" />
               </button>
@@ -102,14 +102,14 @@ export default function ArchitecturePipelineModal({ project, isOpen, onClose, on
           <VisualArchitectureDiagram projectId={project.id} />
 
           {/* Footer Action */}
-          <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-4">
-            <span className="text-xs font-mono-code text-slate-500 dark:text-slate-400">
+          <div className="pt-4 border-t border-blueprint-100 dark:border-blueprint-700/50 flex flex-wrap items-center justify-between gap-4">
+            <span className="text-xs font-mono-code text-blueprint-500 dark:text-blueprint-300">
               Stack: {project.techStack?.join(' • ')}
             </span>
 
             <button
               onClick={onClose}
-              className="px-6 py-2.5 rounded-xl bg-cobalt-500 hover:bg-cobalt-400 text-white font-bold text-xs font-mono-code transition-colors shadow-md shadow-cobalt-500/20"
+              className="px-6 py-2.5 rounded-[4px] bg-draft-500 hover:bg-draft-400 text-white font-bold text-xs font-mono-code transition-colors shadow-md shadow-draft-500/20"
             >
               {t('Close Flow View', 'ปิดหน้าต่าง Flow')}
             </button>
