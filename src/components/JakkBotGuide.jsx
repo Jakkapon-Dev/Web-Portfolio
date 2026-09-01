@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "../context/LanguageContext";
 import { EXPRESSIONS, JakkBotSvg } from "./JakkBotMascot";
-import { X, Sparkles, FileText, Mail, ChevronRight } from "lucide-react";
+import { X, FileText, Mail, ChevronRight } from "lucide-react";
 import { portfolioData } from "../data/portfolioData";
 
 const SECTION_ORDER = ["hero", "projects", "skills", "about", "experience", "contact"];
@@ -90,7 +90,7 @@ const FAQ_ITEMS = [
   },
 ];
 
-export default function JakkBotGuide({ onReopenOnboarding }) {
+export default function JakkBotGuide() {
   const { lang, t } = useLanguage();
   const [activeSection, setActiveSection] = useState(null);
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -164,22 +164,6 @@ export default function JakkBotGuide({ onReopenOnboarding }) {
 
             {/* Quick FAQ Chips */}
             <div className="space-y-1.5 pt-1">
-              {onReopenOnboarding && (
-                <button
-                  onClick={() => {
-                    setIsChatOpen(false);
-                    onReopenOnboarding();
-                  }}
-                  className="w-full flex items-center justify-between p-2 rounded-[4px] bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition-all text-left text-[11px] font-bold"
-                >
-                  <span className="flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                    <span>{lang === "th" ? "🎬 ทำแบบสอบถาม ATM เออรัก เออเร่อ" : "🎬 Take ATM Interview Quiz"}</span>
-                  </span>
-                  <ChevronRight className="w-3.5 h-3.5 shrink-0 opacity-60" />
-                </button>
-              )}
-
               {FAQ_ITEMS.map((item) => (
                 <button
                   key={item.id}

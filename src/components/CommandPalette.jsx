@@ -14,14 +14,13 @@ import {
   SunMoon,
   Languages,
   Copy,
-  Sparkles,
 } from 'lucide-react';
 import { GithubIcon, LinkedinIcon } from './Icons';
 
 // A real command palette, not a decorative ⌘K badge. Opens on click or
 // Cmd/Ctrl+K, filters by typing, Arrow↑/↓ to select, Enter to run, Esc or
 // backdrop to close.
-export default function CommandPalette({ isOpen, onClose, onReopenOnboarding }) {
+export default function CommandPalette({ isOpen, onClose }) {
   const { t, setLang, lang } = useLanguage();
   const { toggleTheme } = useTheme();
   const { personal } = portfolioData;
@@ -37,7 +36,6 @@ export default function CommandPalette({ isOpen, onClose, onReopenOnboarding }) 
   };
 
   const commands = useMemo(() => [
-    ...(onReopenOnboarding ? [{ id: 'open-interview', label: t('Take ATM Interview Quiz', 'ทำแบบสอบถามสัมภาษณ์ (ATM เออรัก เออเร่อ)'), icon: Sparkles, run: onReopenOnboarding }] : []),
     { id: 'go-projects', label: t('Go to Projects', 'ไปที่ผลงาน'), icon: FolderGit2, run: () => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' }) },
     { id: 'go-skills', label: t('Go to Skills', 'ไปที่ทักษะ'), icon: Zap, run: () => document.getElementById('skills')?.scrollIntoView({ behavior: 'smooth' }) },
     { id: 'go-about', label: t('Go to About', 'ไปที่ประวัติ'), icon: User, run: () => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' }) },
@@ -49,7 +47,7 @@ export default function CommandPalette({ isOpen, onClose, onReopenOnboarding }) 
     { id: 'copy-email', label: t('Copy email address', 'คัดลอกอีเมล'), icon: Copy, run: () => navigator.clipboard.writeText(personal.email) },
     { id: 'toggle-theme', label: t('Toggle light / dark theme', 'สลับโหมดสว่าง / มืด'), icon: SunMoon, run: toggleTheme },
     { id: 'toggle-lang', label: t('Switch to Thai', 'Switch to English'), icon: Languages, run: () => setLang(lang === 'en' ? 'th' : 'en') },
-  ], [t, lang, personal, setLang, toggleTheme, onReopenOnboarding]);
+  ], [t, lang, personal, setLang, toggleTheme]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();

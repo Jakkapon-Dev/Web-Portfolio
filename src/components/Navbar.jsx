@@ -21,7 +21,7 @@ import ThemeSwitchGagModal from './ThemeSwitchGagModal';
 // section links left; language, theme, the ⌘K affordance, and one solid
 // draft-orange button (Resume) right. First section moved from the old
 // Cobalt system — see index.css header comment for what changed and why.
-export default function Navbar({ onReopenOnboarding }) {
+export default function Navbar() {
   const { lang, setLang, t } = useLanguage();
   const { theme, setThemeMode } = useTheme();
   const { motionEnabled, toggleMotion } = useMotionPreference();
@@ -131,17 +131,6 @@ export default function Navbar({ onReopenOnboarding }) {
               {motionEnabled ? <Zap className="w-4 h-4 text-draft-500" aria-hidden="true" /> : <ZapOff className="w-4 h-4 text-blueprint-400" aria-hidden="true" />}
             </button>
 
-            {onReopenOnboarding && (
-              <button
-                onClick={onReopenOnboarding}
-                className="p-2 rounded-[3px] text-blueprint-600 dark:text-blueprint-200 hover:bg-blueprint-50 dark:hover:bg-white/5 transition-colors border border-blueprint-200 dark:border-blueprint-700/50"
-                title={t("Re-take ATM Interview & Customizer", "ทำแบบสอบถามสัมภาษณ์ (ATM เออรัก เออเร่อ)")}
-                aria-label="ATM Interview"
-              >
-                <Sparkles className="w-4 h-4 text-amber-500" />
-              </button>
-            )}
-
             <button
               onClick={() => setPaletteOpen(true)}
               className="hidden sm:flex items-center gap-1.5 px-2.5 py-2 rounded-[3px] text-xs font-mono-code text-blueprint-500 dark:text-blueprint-300 border border-blueprint-200 dark:border-blueprint-700/50 hover:border-draft-400 hover:text-draft-600 dark:hover:text-draft-400 transition-colors"
@@ -170,7 +159,6 @@ export default function Navbar({ onReopenOnboarding }) {
       <CommandPalette
         isOpen={paletteOpen}
         onClose={() => setPaletteOpen(false)}
-        onReopenOnboarding={onReopenOnboarding}
       />
 
       <ThemeSwitchGagModal

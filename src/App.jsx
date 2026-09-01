@@ -14,7 +14,6 @@ import Footer from './components/Footer';
 import HireMe from './components/HireMe';
 import ParallaxBackground from './components/ParallaxBackground';
 import JakkBotGuide from './components/JakkBotGuide';
-import OnboardingQuizModal from './components/OnboardingQuizModal';
 import ElasticCursor from './components/ElasticCursor';
 
 // Full-screen deep-dive view (and the architecture diagram it pulls in) is one
@@ -24,13 +23,6 @@ const CaseStudyView = lazy(() => import('./components/CaseStudyView'));
 
 function AppContent() {
   const [activeCaseStudy, setActiveCaseStudy] = useState(null);
-  const [isOnboardingOpen, setIsOnboardingOpen] = useState(() => {
-    try {
-      return !localStorage.getItem('portfolio_onboarding_completed');
-    } catch {
-      return true;
-    }
-  });
   const { reducedMotionMode } = useMotionPreference();
 
   return (
@@ -42,12 +34,6 @@ function AppContent() {
 
         {/* Drafting-tool cursor — desktop/mouse only, self-hides on touch */}
         <ElasticCursor />
-
-        {/* ATM Style Onboarding Questionnaire Modal */}
-        <OnboardingQuizModal
-          isOpen={isOnboardingOpen}
-          onClose={() => setIsOnboardingOpen(false)}
-        />
 
         {/* Parallax Scroll & Ambient Glow Layer */}
         <ParallaxBackground />
@@ -67,7 +53,7 @@ function AppContent() {
           ) : (
             <React.Fragment key="main-content">
               {/* Codebucks High-Contrast Header */}
-              <Navbar onReopenOnboarding={() => setIsOnboardingOpen(true)} />
+              <Navbar />
 
               {/* Main Portfolio Experience (Project-First Flow) */}
               <main className="w-full flex flex-col items-center justify-center pt-16 sm:pt-20">
@@ -82,7 +68,7 @@ function AppContent() {
               {/* Footer & Rotating Hire Me Badge */}
               <Footer />
               <HireMe />
-              <JakkBotGuide onReopenOnboarding={() => setIsOnboardingOpen(true)} />
+              <JakkBotGuide />
             </React.Fragment>
           )}
         </AnimatePresence>
