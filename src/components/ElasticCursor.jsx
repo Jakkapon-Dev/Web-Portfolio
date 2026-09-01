@@ -12,6 +12,26 @@ import { useMotionPreference } from '../context/MotionContext';
 // (usePathname, preloader) are removed; everything else is the same
 // spring/ticker approach.
 
+const RETICLE_SIZE = 22;
+const WRAP_PADDING = 6;
+const WRAP_EASE = 0.25;
+
+const lerp = (a, b, t) => a + (b - a) * t;
+const getAngle = (dx, dy) => Math.atan2(dy, dx) * (180 / Math.PI);
+const getScale = (dx, dy) => Math.min(Math.hypot(dx, dy) * 0.005, 0.35);
+
+const measure = (el) => {
+  const r = el.getBoundingClientRect();
+  return {
+    x: r.left,
+    y: r.top,
+    width: r.width,
+    height: r.height,
+    cx: r.left + r.width / 2,
+    cy: r.top + r.height / 2,
+  };
+};
+
 export default function ElasticCursor() {
   const isTouch = useMediaQuery('(max-width: 768px), (pointer: coarse)');
   const { motionEnabled } = useMotionPreference();
@@ -145,24 +165,24 @@ export default function ElasticCursor() {
     const onOver = (e) => {
       const target = e.target;
       if (target?.closest?.('[data-no-custom-cursor="true"]')) {
-        if (active.el) release();
+        if (active.current.el) release();
         return;
       }
       if (target?.closest?.('input, textarea, [contenteditable="true"]')) {
-        if (active.el) release();
+        if (active.current.el) release();
         return;
       }
       const t = target?.closest?.('a, button, [role="button"], summary, select, .cursor-can-hover');
-      if (t === active.el) return;
-      if (active.el) release();
+      if (t === active.current.el) return;
+      if (active.current.el) release();
       if (t) acquire(t);
     };
     const onLeave = () => {
-      if (active.el) release();
+      if (active.current.el) release();
     };
     const onScroll = () => {
-      if (!active.el) return;
-      active.base = measure(active.el);
+      if (!active.current.el) return;
+      active.current.base = measure(active.current.el);
     };
 
     document.addEventListener('pointerover', onOver);
