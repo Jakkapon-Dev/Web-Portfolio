@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import { portfolioData } from '../data/portfolioData';
 import { Mail, Phone, MapPin, Check, Copy, Send } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import ScrollReveal from './ScrollReveal';
+import SplitText from './SplitText';
 
 export default function Contact() {
   const { t } = useLanguage();
@@ -21,16 +23,31 @@ export default function Contact() {
 
   return (
     <section id="contact" className="relative w-full py-16 sm:py-20 px-6 sm:px-12 md:px-20 lg:px-32 bg-[#F4F6F5] dark:bg-[#10263D] text-blueprint-900 dark:text-blueprint-50 transition-colors duration-200 text-left">
-      <div className="hidden lg:block absolute top-6 right-8 text-[10px] font-mono-code uppercase tracking-widest text-blueprint-400/60 dark:text-blueprint-500/50">
+      <motion.div
+        initial={{ opacity: 0, scale: 1.6, rotate: 6 }}
+        whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+        viewport={{ once: true, margin: '-15% 0px' }}
+        transition={{ duration: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
+        className="hidden lg:block absolute top-6 right-8 text-[10px] font-mono-code uppercase tracking-widest text-blueprint-400/60 dark:text-blueprint-500/50"
+      >
         {t('Sheet 06 / 06', 'แผ่นที่ 06 / 06')}
-      </div>
+      </motion.div>
       <div className="max-w-6xl mx-auto space-y-16">
 
         {/* Heading */}
         <ScrollReveal direction="up">
           <div className="text-center">
             <h2 className="font-display text-3xl sm:text-5xl font-bold tracking-tight text-blueprint-900 dark:text-white">
-              {t('Get In Touch', 'ติดต่อพูดคุยร่วมงาน')}
+              <SplitText
+                text={t('Get In Touch', 'ติดต่อพูดคุยร่วมงาน')}
+                tag="span"
+                splitType="words"
+                textAlign="center"
+                delay={45}
+                duration={0.7}
+                from={{ opacity: 0, y: 24 }}
+                to={{ opacity: 1, y: 0 }}
+              />
             </h2>
             <p className="mt-2 text-xs sm:text-sm font-mono-code text-blueprint-500 dark:text-blueprint-300 max-w-xl mx-auto">
               {t(

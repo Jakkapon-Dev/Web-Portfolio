@@ -80,7 +80,7 @@ export default function Navbar({ onReopenOnboarding }) {
               <a
                 key={link.href}
                 href={link.href}
-                className="px-3 first:pl-0 text-[11px] font-mono-code font-semibold uppercase tracking-wide text-blueprint-700 dark:text-blueprint-200 hover:text-draft-600 dark:hover:text-draft-400 transition-colors"
+                className="pencil-underline px-3 first:pl-0 py-1 text-[11px] font-mono-code font-semibold uppercase tracking-wide text-blueprint-700 dark:text-blueprint-200 hover:text-draft-600 dark:hover:text-draft-400 transition-colors"
               >
                 {t(link.labelEn, link.labelTh)}
               </a>

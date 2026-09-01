@@ -1,9 +1,11 @@
 import React, { Suspense, lazy, useState } from 'react';
+import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import { portfolioData } from '../data/portfolioData';
 import { GithubIcon } from './Icons';
 import ScrollReveal from './ScrollReveal';
 import SpotlightCard from './SpotlightCard';
+import SplitText from './SplitText';
 import { ArrowUpRight, ArrowLeft, FolderGit2, BookOpen, Zap, Code2, Play, ExternalLink } from 'lucide-react';
 
 // Lazy load modals to keep initial bundle ultra-fast
@@ -205,11 +207,26 @@ export default function Projects({ onOpenCaseStudy }) {
       <div className="max-w-6xl mx-auto">
 
         <div className="text-center mb-16">
-          <div className="inline-block px-3.5 py-1 rounded-[3px] bg-draft-500/10 border border-draft-500/30 text-xs font-mono-code font-bold text-draft-600 dark:text-draft-400 mb-2">
+          <motion.div
+            initial={{ opacity: 0, scale: 1.5, rotate: -6 }}
+            whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+            viewport={{ once: true, margin: '-15% 0px' }}
+            transition={{ duration: 0.35, ease: [0.34, 1.56, 0.64, 1] }}
+            className="inline-block px-3.5 py-1 rounded-[3px] bg-draft-500/10 border border-draft-500/30 text-xs font-mono-code font-bold text-draft-600 dark:text-draft-400 mb-2"
+          >
             SHEET 02 / 06 · FEATURED FULL-STACK WORK
-          </div>
+          </motion.div>
           <h2 className="font-display text-3xl sm:text-5xl font-bold tracking-tight text-blueprint-900 dark:text-white">
-            {t('Featured Projects', 'ผลงานโปรเจกต์เด่น')}
+            <SplitText
+              text={t('Featured Projects', 'ผลงานโปรเจกต์เด่น')}
+              tag="span"
+              splitType="words"
+              textAlign="center"
+              delay={45}
+              duration={0.7}
+              from={{ opacity: 0, y: 24 }}
+              to={{ opacity: 1, y: 0 }}
+            />
           </h2>
           <p className="mt-2 text-xs sm:text-sm font-mono-code uppercase tracking-widest text-blueprint-500 dark:text-blueprint-300">
             {t('Interactive Architecture Pipelines & Case Studies', 'สถาปัตยกรรมระบบและบทความเจาะลึก Case Study')}

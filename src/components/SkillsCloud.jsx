@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import SkillConstellation from './SkillConstellation';
 import ScrollReveal from './ScrollReveal';
@@ -112,9 +113,15 @@ export default function SkillsCloud() {
     // itself (blueprint-950 ink), rather than a neutral graphite — the one
     // section that always reads as "the blueprint," toggle or not.
     <section id="skills" className="relative w-full py-20 px-6 sm:px-12 md:px-20 lg:px-32 bg-blueprint-950 text-blueprint-100 transition-colors duration-200 text-left">
-      <div className="hidden lg:block absolute top-6 right-8 text-[10px] font-mono-code uppercase tracking-widest text-blueprint-500/60">
+      <motion.div
+        initial={{ opacity: 0, scale: 1.6, rotate: -6 }}
+        whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+        viewport={{ once: true, margin: '-15% 0px' }}
+        transition={{ duration: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
+        className="hidden lg:block absolute top-6 right-8 text-[10px] font-mono-code uppercase tracking-widest text-blueprint-500/60"
+      >
         {t('Sheet 03 / 06', 'แผ่นที่ 03 / 06')}
-      </div>
+      </motion.div>
       <div className="max-w-6xl mx-auto space-y-12">
 
         {/* Section Heading — no eyebrow pill; the pill is reserved for Projects only */}

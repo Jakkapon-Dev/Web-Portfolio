@@ -1,7 +1,9 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import { portfolioData } from '../data/portfolioData';
 import ScrollReveal from './ScrollReveal';
+import CountUp from './CountUp';
 
 export default function About() {
   const { t } = useLanguage();
@@ -13,9 +15,15 @@ export default function About() {
 
   return (
     <section id="about" className="relative w-full py-16 px-6 sm:px-12 md:px-20 lg:px-32 bg-[#F4F6F5] dark:bg-[#10263D] text-blueprint-900 dark:text-blueprint-50 transition-colors duration-200">
-      <div className="hidden lg:block absolute top-6 right-8 text-[10px] font-mono-code uppercase tracking-widest text-blueprint-400/60 dark:text-blueprint-500/50">
+      <motion.div
+        initial={{ opacity: 0, scale: 1.6, rotate: -6 }}
+        whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+        viewport={{ once: true, margin: '-15% 0px' }}
+        transition={{ duration: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
+        className="hidden lg:block absolute top-6 right-8 text-[10px] font-mono-code uppercase tracking-widest text-blueprint-400/60 dark:text-blueprint-500/50"
+      >
         {t('Sheet 04 / 06', 'แผ่นที่ 04 / 06')}
-      </div>
+      </motion.div>
       <div className="max-w-6xl mx-auto">
 
         {/* Section Heading — left-biased, no eyebrow pill (About already carries its own "ABOUT ME" kicker below) */}
@@ -81,7 +89,7 @@ export default function About() {
                 className="p-5 rounded-[8px] bg-white dark:bg-blueprint-800 border border-blueprint-200 dark:border-blueprint-700/60 shadow-sm text-center hover:border-draft-500/50 transition-colors"
               >
                 <div className="text-3xl sm:text-4xl font-extrabold font-mono-code text-draft-500">
-                  {stat.value}
+                  <CountUp value={stat.value} />
                 </div>
                 <div className="text-xs font-mono-code font-semibold mt-1 text-blueprint-600 dark:text-blueprint-300">
                   {t(stat.labelEn, stat.labelTh)}

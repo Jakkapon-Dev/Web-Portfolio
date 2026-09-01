@@ -62,9 +62,14 @@ export default function Hero() {
     <section id="hero" className="relative overflow-hidden w-full bg-[#F4F6F5] dark:bg-[#10263D] text-blueprint-900 dark:text-blueprint-50 transition-colors duration-200">
 
       {/* Sheet index tab — corner stamp, first of the 6 sections a visitor scrolls through */}
-      <div className="hidden lg:block absolute top-6 right-8 z-10 text-[10px] font-mono-code uppercase tracking-widest text-blueprint-400/60 dark:text-blueprint-500/50">
+      <motion.div
+        initial={{ opacity: 0, scale: 1.6, rotate: -6 }}
+        animate={{ opacity: 1, scale: 1, rotate: 0 }}
+        transition={{ duration: 0.4, delay: 0.6, ease: [0.34, 1.56, 0.64, 1] }}
+        className="hidden lg:block absolute top-6 right-8 z-10 text-[10px] font-mono-code uppercase tracking-widest text-blueprint-400/60 dark:text-blueprint-500/50"
+      >
         {t('Sheet 01 / 06', 'แผ่นที่ 01 / 06')}
-      </div>
+      </motion.div>
 
       {/* ============================================================ */}
       {/* THE FOLD — statement + portrait, nothing else                */}
