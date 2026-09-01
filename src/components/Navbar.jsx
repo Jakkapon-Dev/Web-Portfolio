@@ -7,18 +7,24 @@ import {
   ArrowUpRight,
   Command,
   FileText,
-  Sparkles
+  Sparkles,
+  Zap,
+  ZapOff
 } from 'lucide-react';
 import { portfolioData } from '../data/portfolioData';
+import { useMotionPreference } from '../context/MotionContext';
 import CommandPalette from './CommandPalette';
 import ThemeSwitchGagModal from './ThemeSwitchGagModal';
 
-// Cobalt nav: a flush, bordered bar (not a floating pill — that's Coral's
-// vocabulary). Wordmark + section links left; language, theme, the ⌘K
-// affordance, and one solid cobalt button (Resume) right.
+// Blueprint nav: a flush title-block bar (not a floating pill), scored off
+// with a drafting double-rule instead of a soft drop shadow. Wordmark +
+// section links left; language, theme, the ⌘K affordance, and one solid
+// draft-orange button (Resume) right. First section moved from the old
+// Cobalt system — see index.css header comment for what changed and why.
 export default function Navbar({ onReopenOnboarding }) {
   const { lang, setLang, t } = useLanguage();
   const { theme, setThemeMode } = useTheme();
+  const { motionEnabled, toggleMotion } = useMotionPreference();
   const { personal } = portfolioData;
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [isThemeGagOpen, setIsThemeGagOpen] = useState(false);
@@ -32,8 +38,8 @@ export default function Navbar({ onReopenOnboarding }) {
     { href: '#contact', labelEn: 'Contact', labelTh: 'ติดต่อ' }
   ];
 
-  // Cobalt's signature move: the ⌘K affordance actually opens a working
-  // command palette from anywhere on the page, not just from the nav button.
+  // The ⌘K affordance actually opens a working command palette from
+  // anywhere on the page, not just from the nav button.
   useEffect(() => {
     const handleKeyDown = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
@@ -47,34 +53,34 @@ export default function Navbar({ onReopenOnboarding }) {
 
   return (
     <>
-      <header className="fixed top-0 inset-x-0 z-50 w-full bg-[#F7F9FC]/90 dark:bg-[#0F141C]/90 backdrop-blur-md border-b border-slate-200 dark:border-white/10 px-4 sm:px-8 py-3 transition-colors duration-200">
+      <header className="fixed top-0 inset-x-0 z-50 w-full bg-[#F4F6F5]/97 dark:bg-[#10263D]/97 blueprint-grid border-b-[6px] border-blueprint-300 dark:border-blueprint-700 [border-bottom-style:double] px-4 sm:px-8 py-3 transition-colors duration-200">
         <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
 
           {/* Wordmark */}
           <a href="#" className="flex items-center gap-2.5 group shrink-0">
-            <div className="w-9 h-9 rounded-lg bg-cobalt-500 text-white flex items-center justify-center font-mono-code font-bold text-sm shadow-sm shadow-cobalt-500/30 group-hover:scale-105 transition-transform">
+            <div className="w-9 h-9 rounded-[3px] bg-draft-500 text-white flex items-center justify-center font-mono-code font-bold text-sm shadow-sm shadow-draft-500/30 group-hover:scale-105 transition-transform">
               JW
             </div>
             <div className="hidden sm:flex flex-col text-left">
               <div className="flex items-center gap-1.5">
-                <span className="font-display font-semibold text-sm text-slate-900 dark:text-white tracking-tight">
+                <span className="font-display font-bold text-sm text-blueprint-900 dark:text-blueprint-50 tracking-tight">
                   {t(personal.name.split(' ')[0], 'จักรภพ')}
                 </span>
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" title={t("Available for work", "พร้อมเริ่มงานทันที")} />
+                <span className="w-1.5 h-1.5 rounded-[1px] bg-emerald-500" title={t("Available for work", "พร้อมเริ่มงานทันที")} />
               </div>
-              <span className="text-[10px] font-mono-code text-slate-500 dark:text-slate-400">
-                {t('Full-Stack Developer', 'นักพัฒนาเว็บ Full-Stack')}
+              <span className="text-[10px] font-mono-code uppercase tracking-wide text-blueprint-600 dark:text-blueprint-300">
+                {t('Full-Stack Developer', 'นักพัฒนาเว็บ Full-Stack')} <span className="text-draft-600 dark:text-draft-400">· rev.c</span>
               </span>
             </div>
           </a>
 
-          {/* Section links — text, not pills */}
-          <nav className="hidden md:flex items-center gap-6">
+          {/* Section links — title-block cells, divided by hairline rules, not pills */}
+          <nav className="hidden md:flex items-center divide-x divide-blueprint-200 dark:divide-blueprint-700/50">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-cobalt-600 dark:hover:text-cobalt-400 transition-colors"
+                className="px-3 first:pl-0 text-[11px] font-mono-code font-semibold uppercase tracking-wide text-blueprint-700 dark:text-blueprint-200 hover:text-draft-600 dark:hover:text-draft-400 transition-colors"
               >
                 {t(link.labelEn, link.labelTh)}
               </a>
@@ -84,11 +90,11 @@ export default function Navbar({ onReopenOnboarding }) {
           {/* Right cluster: language, theme, ⌘K, one solid CTA */}
           <div className="flex items-center gap-2">
 
-            <div className="hidden sm:flex items-center rounded-lg border border-slate-200 dark:border-white/10 text-[11px] font-mono-code font-semibold overflow-hidden">
+            <div className="hidden sm:flex items-center rounded-[3px] border border-blueprint-200 dark:border-blueprint-700/50 text-[11px] font-mono-code font-semibold overflow-hidden">
               <button
                 onClick={() => setLang('th')}
                 className={`px-2.5 py-1.5 transition-colors ${
-                  lang === 'th' ? 'bg-cobalt-500 text-white' : 'text-slate-500 dark:text-slate-400 hover:text-cobalt-500'
+                  lang === 'th' ? 'bg-draft-500 text-white' : 'text-blueprint-500 dark:text-blueprint-300 hover:text-draft-500'
                 }`}
               >
                 TH
@@ -96,7 +102,7 @@ export default function Navbar({ onReopenOnboarding }) {
               <button
                 onClick={() => setLang('en')}
                 className={`px-2.5 py-1.5 transition-colors ${
-                  lang === 'en' ? 'bg-cobalt-500 text-white' : 'text-slate-500 dark:text-slate-400 hover:text-cobalt-500'
+                  lang === 'en' ? 'bg-draft-500 text-white' : 'text-blueprint-500 dark:text-blueprint-300 hover:text-draft-500'
                 }`}
               >
                 EN
@@ -108,17 +114,27 @@ export default function Navbar({ onReopenOnboarding }) {
                 setTargetThemeMode(theme === 'dark' ? 'light' : 'dark');
                 setIsThemeGagOpen(true);
               }}
-              className="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors border border-slate-200 dark:border-white/10"
-              title={t("Toggle Light / Dark Theme", "สลับโหมดสว่าง / มืด")}
-              aria-label={t("Toggle light / dark theme", "สลับโหมดสว่าง / มืด")}
+              className="p-2 rounded-[3px] text-blueprint-600 dark:text-blueprint-200 hover:bg-blueprint-50 dark:hover:bg-white/5 transition-colors border border-blueprint-200 dark:border-blueprint-700/50"
+              title={theme === 'dark' ? t("Switch to Paper mode", "สลับเป็นโหมดกระดาษ") : t("Switch to Blueprint mode", "สลับเป็นโหมดพิมพ์เขียว")}
+              aria-label={theme === 'dark' ? t("Switch to Paper mode", "สลับเป็นโหมดกระดาษ") : t("Switch to Blueprint mode", "สลับเป็นโหมดพิมพ์เขียว")}
             >
-              {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" aria-hidden="true" /> : <Moon className="w-4 h-4 text-indigo-400" aria-hidden="true" />}
+              {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" aria-hidden="true" /> : <Moon className="w-4 h-4 text-blueprint-400" aria-hidden="true" />}
+            </button>
+
+            <button
+              onClick={toggleMotion}
+              aria-pressed={!motionEnabled}
+              className="p-2 rounded-[3px] text-blueprint-600 dark:text-blueprint-200 hover:bg-blueprint-50 dark:hover:bg-white/5 transition-colors border border-blueprint-200 dark:border-blueprint-700/50"
+              title={motionEnabled ? t("Reduce motion", "ลดการเคลื่อนไหว") : t("Enable motion", "เปิดการเคลื่อนไหว")}
+              aria-label={motionEnabled ? t("Reduce motion", "ลดการเคลื่อนไหว") : t("Enable motion", "เปิดการเคลื่อนไหว")}
+            >
+              {motionEnabled ? <Zap className="w-4 h-4 text-draft-500" aria-hidden="true" /> : <ZapOff className="w-4 h-4 text-blueprint-400" aria-hidden="true" />}
             </button>
 
             {onReopenOnboarding && (
               <button
                 onClick={onReopenOnboarding}
-                className="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors border border-slate-200 dark:border-white/10"
+                className="p-2 rounded-[3px] text-blueprint-600 dark:text-blueprint-200 hover:bg-blueprint-50 dark:hover:bg-white/5 transition-colors border border-blueprint-200 dark:border-blueprint-700/50"
                 title={t("Re-take ATM Interview & Customizer", "ทำแบบสอบถามสัมภาษณ์ (ATM เออรัก เออเร่อ)")}
                 aria-label="ATM Interview"
               >
@@ -128,7 +144,7 @@ export default function Navbar({ onReopenOnboarding }) {
 
             <button
               onClick={() => setPaletteOpen(true)}
-              className="hidden sm:flex items-center gap-1.5 px-2.5 py-2 rounded-lg text-xs font-mono-code text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-white/10 hover:border-cobalt-400 hover:text-cobalt-600 dark:hover:text-cobalt-400 transition-colors"
+              className="hidden sm:flex items-center gap-1.5 px-2.5 py-2 rounded-[3px] text-xs font-mono-code text-blueprint-500 dark:text-blueprint-300 border border-blueprint-200 dark:border-blueprint-700/50 hover:border-draft-400 hover:text-draft-600 dark:hover:text-draft-400 transition-colors"
               aria-label={t('Open command palette', 'เปิดพาเลตคำสั่ง')}
             >
               <Command className="w-3.5 h-3.5" aria-hidden="true" />
@@ -139,7 +155,7 @@ export default function Navbar({ onReopenOnboarding }) {
               href={personal.resumeUrl || "/cv.html"}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-cobalt-500 hover:bg-cobalt-600 text-white text-xs font-semibold transition-colors shadow-sm shadow-cobalt-500/20"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-[3px] bg-draft-500 hover:bg-draft-600 text-white text-xs font-semibold transition-colors shadow-sm shadow-draft-500/20"
             >
               <FileText className="w-3.5 h-3.5" aria-hidden="true" />
               <span>{t('Resume', 'เรซูเม่')}</span>

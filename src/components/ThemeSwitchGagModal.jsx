@@ -41,8 +41,8 @@ export default function ThemeSwitchGagModal({ isOpen, targetMode, onClose, onCon
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
           className={`relative w-full max-w-lg rounded-3xl p-6 sm:p-8 text-center font-sans border-2 shadow-2xl overflow-hidden ${
             isGoingDark
-              ? 'bg-[#0F141C] text-slate-100 border-amber-500/40 shadow-amber-500/10'
-              : 'bg-[#151B26] text-slate-100 border-sky-400/40 shadow-sky-400/10'
+              ? 'bg-[#10263D] text-blueprint-100 border-amber-500/40 shadow-amber-500/10'
+              : 'bg-[#0A1830] text-blueprint-100 border-sky-400/40 shadow-sky-400/10'
           }`}
         >
           {/* ======================================================== */}

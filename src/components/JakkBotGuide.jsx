@@ -123,7 +123,7 @@ export default function JakkBotGuide({ onReopenOnboarding }) {
 
   const guide = SECTION_GUIDE[activeSection] || SECTION_GUIDE.hero;
   const text = lang === "th" ? guide.th : guide.en;
-  const color = EXPRESSIONS[guide.expression]?.color || "#5B8CFF";
+  const color = EXPRESSIONS[guide.expression]?.color || "#8FB4FF";
 
   const handleAsk = (item) => {
     setChatAnswer(lang === "th" ? item.aTh : item.aEn);
@@ -139,9 +139,9 @@ export default function JakkBotGuide({ onReopenOnboarding }) {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="mb-3 w-80 rounded-2xl bg-[#0F141C] border border-slate-700/80 shadow-2xl p-4 text-left font-mono-code text-xs space-y-3"
+            className="mb-3 w-80 rounded-[10px] bg-blueprint-950 border border-blueprint-700/60 shadow-2xl p-4 text-left font-mono-code text-xs space-y-3"
           >
-            <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+            <div className="flex items-center justify-between pb-2 border-b border-blueprint-700/50">
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
                 <span className="font-bold text-white">JAKK-BOT Assistant</span>
@@ -151,14 +151,14 @@ export default function JakkBotGuide({ onReopenOnboarding }) {
                   setIsChatOpen(false);
                   setChatAnswer(null);
                 }}
-                className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                className="p-1 rounded-[3px] text-blueprint-400 hover:text-white hover:bg-blueprint-800 transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             {/* Answer Balloon */}
-            <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 text-slate-200 leading-relaxed text-[11px]">
+            <div className="p-3 rounded-[6px] bg-blueprint-900 border border-blueprint-700/50 text-blueprint-100 leading-relaxed text-[11px]">
               {chatAnswer || (lang === "th" ? "สวัสดีครับ! ถามคำถามด่วนเกี่ยวกับจักรภพได้เลยครับ 👇" : "Hi there! Pick a quick question below to learn more about Jakkapon 👇")}
             </div>
 
@@ -170,7 +170,7 @@ export default function JakkBotGuide({ onReopenOnboarding }) {
                     setIsChatOpen(false);
                     onReopenOnboarding();
                   }}
-                  className="w-full flex items-center justify-between p-2 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition-all text-left text-[11px] font-bold"
+                  className="w-full flex items-center justify-between p-2 rounded-[4px] bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition-all text-left text-[11px] font-bold"
                 >
                   <span className="flex items-center gap-1.5">
                     <Sparkles className="w-3.5 h-3.5 text-amber-400" />
@@ -184,7 +184,7 @@ export default function JakkBotGuide({ onReopenOnboarding }) {
                 <button
                   key={item.id}
                   onClick={() => handleAsk(item)}
-                  className="w-full flex items-center justify-between p-2 rounded-lg bg-slate-800/80 hover:bg-cobalt-500/20 text-slate-300 hover:text-cobalt-300 border border-slate-700/50 transition-all text-left text-[11px]"
+                  className="w-full flex items-center justify-between p-2 rounded-[4px] bg-blueprint-800/80 hover:bg-draft-500/20 text-blueprint-300 hover:text-draft-300 border border-blueprint-700/50 transition-all text-left text-[11px]"
                 >
                   <span>{lang === "th" ? item.qTh : item.qEn}</span>
                   <ChevronRight className="w-3.5 h-3.5 shrink-0 opacity-60" />
@@ -193,12 +193,12 @@ export default function JakkBotGuide({ onReopenOnboarding }) {
             </div>
 
             {/* Direct Shortcut Buttons */}
-            <div className="flex items-center gap-2 pt-2 border-t border-slate-800">
+            <div className="flex items-center gap-2 pt-2 border-t border-blueprint-700/50">
               <a
                 href={portfolioData.personal.resumeUrl || "/cv.html"}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 py-1.5 rounded-lg bg-cobalt-500 hover:bg-cobalt-600 text-white font-bold text-center text-[10px] transition-colors flex items-center justify-center gap-1"
+                className="flex-1 py-1.5 rounded-[4px] bg-draft-500 hover:bg-draft-600 text-white font-bold text-center text-[10px] transition-colors flex items-center justify-center gap-1"
               >
                 <FileText className="w-3 h-3" />
                 <span>{t("View Resume", "ดูเรซูเม่")}</span>
@@ -208,7 +208,7 @@ export default function JakkBotGuide({ onReopenOnboarding }) {
                   setIsChatOpen(false);
                   document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
                 }}
-                className="flex-1 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-center text-[10px] transition-colors flex items-center justify-center gap-1 border border-slate-700"
+                className="flex-1 py-1.5 rounded-[4px] bg-blueprint-800 hover:bg-blueprint-700 text-blueprint-100 font-bold text-center text-[10px] transition-colors flex items-center justify-center gap-1 border border-blueprint-700/50"
               >
                 <Mail className="w-3 h-3" />
                 <span>{t("Contact", "ติดต่อ")}</span>
@@ -234,7 +234,7 @@ export default function JakkBotGuide({ onReopenOnboarding }) {
               <GuideBubble text={text} color={color} />
               <div className="relative">
                 <JakkBotSvg expression={guide.expression} className={BOT_SIZE_CLASS} />
-                <span className="absolute -top-1 -right-1 px-2 py-0.5 rounded-full bg-cobalt-500 text-white text-[9px] font-mono-code font-bold shadow-md animate-pulse">
+                <span className="absolute -top-1 -right-1 px-2 py-0.5 rounded-full bg-draft-500 text-white text-[9px] font-mono-code font-bold shadow-md animate-pulse">
                   Click
                 </span>
               </div>
@@ -242,7 +242,7 @@ export default function JakkBotGuide({ onReopenOnboarding }) {
 
             <button
               onClick={() => setCollapsed(true)}
-              className="text-[10px] font-mono-code text-slate-400 hover:text-slate-200 opacity-60 hover:opacity-100 transition-opacity"
+              className="text-[10px] font-mono-code text-blueprint-400 hover:text-blueprint-200 opacity-60 hover:opacity-100 transition-opacity"
             >
               {lang === "th" ? "ซ่อนบอท" : "minimize"}
             </button>
@@ -256,7 +256,7 @@ export default function JakkBotGuide({ onReopenOnboarding }) {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.25 }}
-            className="opacity-70 hover:opacity-100 transition-opacity cursor-pointer p-2 rounded-2xl bg-slate-900/80 border border-slate-800 shadow-lg flex items-center gap-2 font-mono-code text-xs text-slate-300"
+            className="opacity-70 hover:opacity-100 transition-opacity cursor-pointer p-2 rounded-[8px] bg-blueprint-950/80 border border-blueprint-700/50 shadow-lg flex items-center gap-2 font-mono-code text-xs text-blueprint-300"
             title={lang === "th" ? "เรียก JakkBot กลับมา" : "Bring JakkBot back"}
           >
             <JakkBotSvg expression={guide.expression} className="w-8 h-8" />

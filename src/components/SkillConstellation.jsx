@@ -49,7 +49,7 @@ const SKILL_GROUPS = [
   },
   {
     id: 'tools', label: 'Tools & Testing', labelTh: 'Tools & Testing',
-    color: '#5B8CFF', glow: 'rgba(167,139,250,0.4)',
+    color: '#E8611C', glow: 'rgba(232,97,28,0.4)',
     skills: [
       { id: 'vscode',  name: 'VS Code',    level: 96, project: 'Dev Environment', detail: 'Advanced Extensions, Debugging, Custom Keybindings' },
       { id: 'postman', name: 'Postman',    level: 88, project: 'API Contracts', detail: 'Collection Runners, Automated Test Scripts, Mock Servers' },
@@ -167,11 +167,11 @@ export default function SkillConstellation() {
       const t = time * speedMultiplier;
       ctx.clearRect(0, 0, W, H);
 
-      // 1. Deep Space Radial Gradient Background
+      // 1. Deep Space Radial Gradient Background — blueprint ink, not neutral black
       const bg = ctx.createRadialGradient(W / 2, H / 2, 20, W / 2, H / 2, W * 0.7);
-      bg.addColorStop(0, '#0B1120');
-      bg.addColorStop(0.6, '#070D18');
-      bg.addColorStop(1, '#030712');
+      bg.addColorStop(0, '#0F2A44');
+      bg.addColorStop(0.6, '#0A1830');
+      bg.addColorStop(1, '#050D1A');
       ctx.fillStyle = bg;
       ctx.fillRect(0, 0, W, H);
 
@@ -344,7 +344,7 @@ export default function SkillConstellation() {
           ctx.save();
           ctx.globalAlpha = active ? (isHov || isSel ? 1 : 0.85) : 0.25;
           ctx.font = `${isHov || isSel ? 'bold ' : '600 '}${isHov || isSel ? 12 : 11}px monospace`;
-          ctx.fillStyle = isHov || isSel ? '#FFFFFF' : '#D6D3D1';
+          ctx.fillStyle = isHov || isSel ? '#FFFFFF' : '#C7D8E5';
           ctx.textAlign = 'center';
           ctx.shadowColor = isHov || isSel ? skill.color : 'transparent';
           ctx.shadowBlur = isHov || isSel ? 8 : 0;
@@ -428,31 +428,31 @@ export default function SkillConstellation() {
     : (hovered ? ALL_SKILLS.find(s => s.id === hovered) : null);
 
   return (
-    <div className="w-full my-12 rounded-3xl p-6 sm:p-8 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-6 text-left relative overflow-hidden selection:bg-cobalt-500 selection:text-white">
-      
+    <div className="w-full my-12 rounded-[10px] p-6 sm:p-8 bg-blueprint-900 border border-blueprint-500/15 shadow-2xl space-y-6 text-left relative overflow-hidden selection:bg-draft-500 selection:text-white">
+
       {/* Background Subtle Starfield Grid Overlay */}
-      <div 
-        className="absolute inset-0 opacity-[0.03] dark:opacity-[0.07] pointer-events-none"
+      <div
+        className="absolute inset-0 opacity-[0.07] pointer-events-none"
         style={{
-          backgroundImage: `radial-gradient(#38BDF8 1px, transparent 1px), radial-gradient(#5B8CFF 1px, transparent 1px)`,
+          backgroundImage: `radial-gradient(#38BDF8 1px, transparent 1px), radial-gradient(#E8611C 1px, transparent 1px)`,
           backgroundSize: '24px 24px',
           backgroundPosition: '0 0, 12px 12px'
         }}
       />
 
       {/* Header & Controls */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-slate-100 dark:border-slate-800 relative z-10">
-        
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-blueprint-500/15 relative z-10">
+
         <div>
           <div className="flex items-center gap-2">
-            <span className="p-2 rounded-xl bg-cobalt-500/10 text-cobalt-500 border border-cobalt-500/20">
+            <span className="p-2 rounded-[4px] bg-draft-500/10 text-draft-400 border border-draft-500/20">
               <Sparkles className="w-5 h-5 animate-pulse" />
             </span>
-            <h3 className="font-extrabold text-lg sm:text-2xl text-slate-900 dark:text-white tracking-tight">
+            <h3 className="font-extrabold text-lg sm:text-2xl text-blueprint-50 tracking-tight">
               {t('Skill Constellation Map', 'แผนที่กลุ่มดาวทักษะวิศวกรรม (Skill Constellation)')}
             </h3>
           </div>
-          <p className="text-xs font-mono-code text-slate-500 dark:text-slate-400 mt-1">
+          <p className="text-xs font-mono-code text-blueprint-400 mt-1">
             {t(
               'Interactive galaxy skill graph. Hover over star nodes to trace proficiencies and architecture stacks in real-time.',
               'สำรวจกลุ่มดาวทักษะวิศวกรรมแบบมีชีวิต ชีพจรข้อมูลเชื่อมต่อกันตามสายงานและระดับความเชี่ยวชาญ'
@@ -465,10 +465,10 @@ export default function SkillConstellation() {
           <Magnet padding={30} magnetStrength={5}>
             <button
               onClick={() => setActiveGroup('all')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-mono-code font-bold transition-all ${
+              className={`px-3 py-1.5 rounded-[4px] text-xs font-mono-code font-bold transition-all ${
                 activeGroup === 'all'
-                  ? 'bg-cobalt-500 text-white shadow-md shadow-cobalt-500/20'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-cobalt-500'
+                  ? 'bg-draft-500 text-white shadow-md shadow-draft-500/20'
+                  : 'bg-blueprint-950 text-blueprint-300 hover:text-draft-400'
               }`}
             >
               ✦ {t('All Domains', 'ทุกสายงาน')}
@@ -479,7 +479,7 @@ export default function SkillConstellation() {
             <Magnet key={g.id} padding={30} magnetStrength={5}>
               <button
                 onClick={() => setActiveGroup(g.id)}
-                className="px-3 py-1.5 rounded-xl text-xs font-mono-code font-bold transition-all border"
+                className="px-3 py-1.5 rounded-[4px] text-xs font-mono-code font-bold transition-all border"
                 style={{
                   background: activeGroup === g.id ? `${g.color}22` : undefined,
                   borderColor: activeGroup === g.id ? g.color : 'transparent',
@@ -495,10 +495,10 @@ export default function SkillConstellation() {
           <Magnet padding={30} magnetStrength={5} wrapperClassName="ml-2">
             <button
               onClick={() => setPulseSpeed(prev => prev === 'normal' ? 'boost' : 'normal')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-mono-code font-bold transition-all border flex items-center gap-1 ${
+              className={`px-3 py-1.5 rounded-[4px] text-xs font-mono-code font-bold transition-all border flex items-center gap-1 ${
                 pulseSpeed === 'boost'
-                  ? 'bg-cobalt-500 text-white border-cobalt-400 shadow-md shadow-cobalt-500/30'
-                  : 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300'
+                  ? 'bg-draft-500 text-white border-draft-400 shadow-md shadow-draft-500/30'
+                  : 'bg-blueprint-950 border-blueprint-700/50 text-blueprint-300'
               }`}
               title="Toggle Pulse Velocity"
             >
@@ -511,7 +511,7 @@ export default function SkillConstellation() {
       </div>
 
       {/* Interactive Galactic Constellation Canvas */}
-      <div className="relative w-full rounded-2xl overflow-hidden border border-slate-800 bg-[#030712] shadow-inner">
+      <div className="relative w-full rounded-[8px] overflow-hidden border border-blueprint-700/50 bg-[#050D1A] shadow-inner">
         <canvas
           ref={canvasRef}
           width={dims.w}
@@ -525,7 +525,7 @@ export default function SkillConstellation() {
         {/* Top Floating Badge */}
         <div className="absolute top-3 left-3 sm:top-4 sm:left-4 flex items-center gap-2 pointer-events-none">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-          <span className="text-[10px] sm:text-xs font-mono-code font-bold uppercase tracking-wider text-slate-400 bg-slate-900/80 px-2.5 py-1 rounded-lg border border-slate-800 backdrop-blur-md">
+          <span className="text-[10px] sm:text-xs font-mono-code font-bold uppercase tracking-wider text-blueprint-300 bg-blueprint-950/80 px-2.5 py-1 rounded-[3px] border border-blueprint-700/50 backdrop-blur-md">
             ✦ {ALL_SKILLS.length} Star Nodes Online
           </span>
         </div>
@@ -539,9 +539,9 @@ export default function SkillConstellation() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.92, y: 12 }}
               transition={{ duration: 0.16 }}
-              className="absolute bottom-3 right-3 sm:bottom-5 sm:right-5 p-4 sm:p-5 rounded-2xl border backdrop-blur-2xl space-y-3 w-[240px] sm:w-[280px] text-left shadow-2xl z-20"
+              className="absolute bottom-3 right-3 sm:bottom-5 sm:right-5 p-4 sm:p-5 rounded-[8px] border backdrop-blur-2xl space-y-3 w-[240px] sm:w-[280px] text-left shadow-2xl z-20"
               style={{
-                background: 'rgba(11, 17, 32, 0.92)',
+                background: 'rgba(10, 24, 48, 0.92)',
                 borderColor: `${activeSkillObj.color}66`,
                 boxShadow: `0 0 30px ${activeSkillObj.color}33`,
               }}
@@ -559,19 +559,19 @@ export default function SkillConstellation() {
               </div>
 
               {/* Animated Progress Meter */}
-              <div className="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
+              <div className="w-full h-1.5 rounded-full bg-blueprint-800 overflow-hidden">
                 <div
                   className="h-full rounded-full transition-all duration-300"
                   style={{ width: `${activeSkillObj.level}%`, background: activeSkillObj.color }}
                 />
               </div>
 
-              <p className="text-[11px] font-mono-code text-slate-300 leading-relaxed">
+              <p className="text-[11px] font-mono-code text-blueprint-100 leading-relaxed">
                 {activeSkillObj.detail}
               </p>
 
-              <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] font-mono-code">
-                <span className="text-slate-400 truncate max-w-[150px]">
+              <div className="pt-2 border-t border-blueprint-700/40 flex items-center justify-between text-[10px] font-mono-code">
+                <span className="text-blueprint-400 truncate max-w-[150px]">
                   📌 {activeSkillObj.project}
                 </span>
                 <span className="font-bold uppercase tracking-wider" style={{ color: activeSkillObj.color }}>
@@ -583,23 +583,23 @@ export default function SkillConstellation() {
         </AnimatePresence>
 
         {/* Bottom Helper Hint */}
-        <div className="absolute bottom-3 left-3 text-[10px] font-mono-code text-slate-500 hidden sm:block pointer-events-none">
+        <div className="absolute bottom-3 left-3 text-[10px] font-mono-code text-blueprint-500 hidden sm:block pointer-events-none">
           Click any star to pin inspector • Node size = proficiency
         </div>
       </div>
 
       {/* Footer Category Legend */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pt-2 text-xs font-mono-code text-slate-500 dark:text-slate-400">
+      <div className="flex flex-wrap items-center justify-between gap-3 pt-2 text-xs font-mono-code text-blueprint-400">
         <div className="flex flex-wrap items-center gap-4">
           {SKILL_GROUPS.map(g => (
             <div key={g.id} className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full shadow-sm" style={{ background: g.color }} />
-              <span className="font-medium text-slate-700 dark:text-slate-300">{lang === 'th' ? g.labelTh : g.label}</span>
+              <span className="font-medium text-blueprint-200">{lang === 'th' ? g.labelTh : g.label}</span>
             </div>
           ))}
         </div>
 
-        <div className="text-[11px] text-slate-400">
+        <div className="text-[11px] text-blueprint-400">
           ✦ Interconnected Architecture Graph
         </div>
       </div>
