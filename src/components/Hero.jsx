@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import { portfolioData } from '../data/portfolioData';
@@ -8,6 +8,13 @@ import SplitText from './SplitText';
 import DotGrid from './DotGrid';
 import ClickSpark from './ClickSpark';
 import StarBorder from './StarBorder';
+import useMediaQuery from '../hooks/useMediaQuery';
+
+// Three.js + R3F is a heavy dependency (~230KB gzipped) that's only ever
+// visible on lg+ screens — lazy-load it, and only mount it once we actually
+// know we're on a lg+ viewport, so phones/tablets never fetch this chunk at
+// all (a CSS `hidden` class alone would still trigger the dynamic import).
+const BlueprintObject = lazy(() => import('./BlueprintObject'));
 import {
   Mail,
   MapPin,
@@ -26,6 +33,7 @@ export default function Hero() {
   const { t } = useLanguage();
   const { personal, about } = portfolioData;
   const [copied, setCopied] = useState(false);
+  const isDesktop = useMediaQuery('(min-width: 1024px)');
 
   // Subtle cursor-tilt depth on the portrait card (disabled on touch — no onMouseMove there)
   const tiltX = useMotionValue(0);
@@ -132,7 +140,17 @@ export default function Hero() {
           </div>
 
           {/* Right: the portrait — the fold's other half, large and asymmetric */}
-          <ScrollReveal direction="left" delay={0.1} className="w-full lg:w-2/5 flex justify-center">
+          <ScrollReveal direction="left" delay={0.1} className="relative w-full lg:w-2/5 flex justify-center">
+            {/* The one 3D moment on the page: a schematic model floating
+                behind the photo, like the isometric view next to a plan.
+                Decorative only — hidden below lg where there's no room for
+                it to read as anything but clutter. */}
+            {isDesktop && (
+              <Suspense fallback={null}>
+                <BlueprintObject className="absolute -inset-16 -z-10 pointer-events-none" />
+              </Suspense>
+            )}
+
             <motion.div
               onMouseMove={handlePortraitMove}
               onMouseLeave={handlePortraitLeave}

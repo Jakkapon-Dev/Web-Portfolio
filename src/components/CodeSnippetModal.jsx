@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useLanguage } from "../context/LanguageContext";
 import { codeSnippetsData } from "../data/codeSnippetsData";
 import { portfolioData } from "../data/portfolioData";
@@ -8,13 +8,15 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function CodeSnippetModal({ initialProjectId = "omnipos", isOpen, onClose }) {
   const { t } = useLanguage();
   const [activeProjectId, setActiveProjectId] = useState(initialProjectId);
+  const [prevInitialId, setPrevInitialId] = useState(initialProjectId);
   const [copied, setCopied] = useState(false);
   const closeBtnRef = useRef(null);
   const triggerRef = useRef(null);
 
-  useEffect(() => {
-    if (initialProjectId) setActiveProjectId(initialProjectId);
-  }, [initialProjectId]);
+  if (prevInitialId !== initialProjectId) {
+    setPrevInitialId(initialProjectId);
+    setActiveProjectId(initialProjectId);
+  }
 
   useEffect(() => {
     if (!isOpen) return undefined;

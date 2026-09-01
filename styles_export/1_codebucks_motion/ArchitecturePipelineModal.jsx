@@ -13,8 +13,6 @@ import {
   Zap,
   Activity,
   Code2,
-  MonitorSmartphone,
-  Radio,
   Workflow
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';

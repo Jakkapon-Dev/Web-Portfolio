@@ -6,7 +6,8 @@ import { GithubIcon } from './Icons';
 import ScrollReveal from './ScrollReveal';
 import SpotlightCard from './SpotlightCard';
 import SplitText from './SplitText';
-import { ArrowUpRight, ArrowLeft, FolderGit2, BookOpen, Zap, Code2, Play, ExternalLink } from 'lucide-react';
+import TiltCard from './TiltCard';
+import { ArrowUpRight, ArrowLeft, FolderGit2, BookOpen, Zap, Code2, Play } from 'lucide-react';
 
 // Lazy load modals to keep initial bundle ultra-fast
 const ArchitecturePipelineModal = lazy(() => import('./ArchitecturePipelineModal'));
@@ -294,9 +295,9 @@ export default function Projects({ onOpenCaseStudy }) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {otherProjects.map((proj, idx) => (
+            <TiltCard key={idx} maxTilt={4} className="rounded-[10px]">
             <SpotlightCard
               as="article"
-              key={idx}
               spotlightColor="rgba(232, 97, 28, 0.25)"
               className="p-6 rounded-[10px] border border-blueprint-200 dark:border-blueprint-700/60 bg-white dark:bg-blueprint-800/80 text-left shadow-md hover:border-draft-500/50 transition-colors"
             >
@@ -324,6 +325,7 @@ export default function Projects({ onOpenCaseStudy }) {
                 </a>
               </div>
             </SpotlightCard>
+            </TiltCard>
           ))}
         </div>
 

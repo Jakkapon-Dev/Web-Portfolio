@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "../context/LanguageContext";
 import { EXPRESSIONS, JakkBotSvg } from "./JakkBotMascot";
-import { MessageSquare, X, Minus, Sparkles, Send, FileText, Mail, ChevronRight } from "lucide-react";
+import { X, Sparkles, FileText, Mail, ChevronRight } from "lucide-react";
 import { portfolioData } from "../data/portfolioData";
 
 const SECTION_ORDER = ["hero", "projects", "skills", "about", "experience", "contact"];

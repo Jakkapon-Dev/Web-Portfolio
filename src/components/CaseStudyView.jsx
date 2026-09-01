@@ -17,9 +17,6 @@ import {
   Cpu,
   Bug,
   ShieldCheck,
-  Layers,
-  Lightbulb,
-  CheckCircle2,
   AlertTriangle
 } from 'lucide-react';
 import { motion } from 'framer-motion';

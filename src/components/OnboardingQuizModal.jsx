@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "../context/LanguageContext";
-import { useTheme, ACCENT_THEMES } from "../context/ThemeContext";
+import { useTheme } from "../context/ThemeContext";
 import {
   Sparkles,
   ArrowRight,
   CheckCircle2,
-  HelpCircle,
   Clock,
   Coffee,
   Code2,
@@ -22,8 +21,8 @@ import {
 } from "lucide-react";
 
 export default function OnboardingQuizModal({ isOpen, onClose }) {
-  const { t, lang } = useLanguage();
-  const { theme, setThemeMode, setAccentColor } = useTheme();
+  const { t } = useLanguage();
+  const { setThemeMode, setAccentColor } = useTheme();
 
   const [step, setStep] = useState(1); // 1 to 5, and 6 for "รอแป๊บ..."
   const [step2SubStage, setStep2SubStage] = useState("choice"); // "choice" | "dark_side_warning"
@@ -39,14 +38,6 @@ export default function OnboardingQuizModal({ isOpen, onClose }) {
   const [isSkipHovered, setIsSkipHovered] = useState(false);
   const [loadingTextIdx, setLoadingTextIdx] = useState(0);
   const [loadingProgress, setLoadingProgress] = useState(0);
-
-  const handleModeClick = (modeChoice) => {
-    if (modeChoice === "light") {
-      setStep2SubStage("dark_side_warning");
-    } else {
-      handleSelectOption("mode", "dark");
-    }
-  };
 
   const triggerStep5Punchline = (choice) => {
     if (choice) setSelectedInStep(choice);
@@ -70,17 +61,18 @@ export default function OnboardingQuizModal({ isOpen, onClose }) {
     }
   }, [step, step5SubStage]);
 
-  // Reset state whenever modal is opened
-  useEffect(() => {
-    if (isOpen) {
-      setStep(1);
-      setStep2SubStage("choice");
-      setStep5SubStage("matte_glossy");
-      setSelectedInStep(null);
-      setLoadingProgress(0);
-      setLoadingTextIdx(0);
-    }
-  }, [isOpen]);
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
+  if (isOpen && !prevIsOpen) {
+    setPrevIsOpen(true);
+    setStep(1);
+    setStep2SubStage("choice");
+    setStep5SubStage("matte_glossy");
+    setSelectedInStep(null);
+    setLoadingProgress(0);
+    setLoadingTextIdx(0);
+  } else if (!isOpen && prevIsOpen) {
+    setPrevIsOpen(false);
+  }
 
   const loadingMessages = [
     t("กำลังผสมเฉดสีที่คุณเลือก...", "กำลังผสมเฉดสีที่คุณเลือก..."),

@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useTheme } from '../context/ThemeContext';
-import { useLanguage } from '../context/LanguageContext';
-import { Sun, Moon, Sparkles, Zap, Flame, ShieldAlert, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 export default function ThemeSwitchGagModal({ isOpen, targetMode, onClose, onConfirm }) {
-  const { theme } = useTheme();
-  const { t } = useLanguage();
   const [stage, setStage] = useState(1); // 1, 2, 3 (final transformation)
 
   if (!isOpen) return null;

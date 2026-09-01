@@ -15,6 +15,7 @@ import HireMe from './components/HireMe';
 import ParallaxBackground from './components/ParallaxBackground';
 import JakkBotGuide from './components/JakkBotGuide';
 import OnboardingQuizModal from './components/OnboardingQuizModal';
+import ElasticCursor from './components/ElasticCursor';
 
 // Full-screen deep-dive view (and the architecture diagram it pulls in) is one
 // of the heaviest chunks in the app — only load it once someone opens a case
@@ -38,6 +39,9 @@ function AppContent() {
     // Navbar toggle. See MotionContext for how that mode is derived.
     <MotionConfig reducedMotion={reducedMotionMode}>
       <div className="min-h-screen bg-[#F4F6F5] text-blueprint-900 dark:bg-[#10263D] dark:text-blueprint-50 transition-colors duration-300 font-sans relative selection:bg-draft-500 selection:text-white">
+
+        {/* Drafting-tool cursor — desktop/mouse only, self-hides on touch */}
+        <ElasticCursor />
 
         {/* ATM Style Onboarding Questionnaire Modal */}
         <OnboardingQuizModal

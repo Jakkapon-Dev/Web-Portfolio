@@ -4,6 +4,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { portfolioData } from '../data/portfolioData';
 import ScrollReveal from './ScrollReveal';
 import CountUp from './CountUp';
+import TiltCard from './TiltCard';
 
 export default function About() {
   const { t } = useLanguage();
@@ -67,9 +68,9 @@ export default function About() {
             </p>
           </div>
 
-          {/* Middle Column: Framed Image */}
+          {/* Middle Column: Framed Image — same cursor-tilt as the Hero portrait */}
           <div className="md:col-span-4 flex justify-center">
-            <div className="relative w-64 h-80 rounded-[10px] bg-white dark:bg-blueprint-800 border border-blueprint-200 dark:border-blueprint-700/60 shadow-xl p-2.5">
+            <TiltCard className="relative w-64 h-80 rounded-[10px] bg-white dark:bg-blueprint-800 border border-blueprint-200 dark:border-blueprint-700/60 shadow-xl p-2.5">
               <div className="w-full h-full rounded-[7px] overflow-hidden bg-blueprint-50 dark:bg-blueprint-900">
                 <img
                   src="/image/ShaRK.jfif"
@@ -78,7 +79,7 @@ export default function About() {
                   style={{ objectPosition: '40% 15%' }}
                 />
               </div>
-            </div>
+            </TiltCard>
           </div>
 
           {/* Right Column: Key Stats Cards */}

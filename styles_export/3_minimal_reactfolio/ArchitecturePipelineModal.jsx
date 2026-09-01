@@ -2,19 +2,11 @@ import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { 
   X, 
-  Layers, 
-  Cpu, 
-  Database, 
-  Server, 
   Terminal, 
-  ArrowRight, 
   ShieldCheck, 
   CheckCircle2,
   Zap,
   Activity,
-  Code2,
-  MonitorSmartphone,
-  Radio,
   Workflow
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';

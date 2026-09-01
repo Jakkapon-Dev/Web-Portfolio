@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+import React, { useState } from "react";
 import { useLanguage } from "../context/LanguageContext";
 import { portfolioData } from "../data/portfolioData";
 import {
@@ -9,9 +9,7 @@ import {
   Server,
   Database,
   Smartphone,
-  Send,
   RefreshCw,
-  Layers,
   Sparkles,
   X
 } from "lucide-react";
