@@ -187,7 +187,9 @@ export default function ElasticCursor() {
 
   return (
     <>
-      <style>{`html, body, a, button, [role="button"] { cursor: none !important; }`}</style>
+      {cursorMoved && (
+        <style>{`html, body, a, button, [role="button"] { cursor: none !important; }`}</style>
+      )}
       <div
         ref={jellyRef}
         aria-hidden="true"
