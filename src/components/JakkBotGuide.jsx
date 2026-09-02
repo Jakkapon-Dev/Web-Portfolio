@@ -130,7 +130,7 @@ export default function JakkBotGuide() {
   };
 
   return (
-    <div className="fixed left-6 xl:left-16 2xl:left-28 bottom-6 z-40 hidden lg:flex flex-col items-center select-none">
+    <div className="fixed left-6 xl:left-16 2xl:left-28 bottom-6 z-40 hidden lg:flex flex-col items-center select-none lg:scale-[0.8] xl:scale-100 origin-bottom-left">
       <AnimatePresence mode="wait">
         {/* Interactive Chat Dialog Mode */}
         {isChatOpen ? (

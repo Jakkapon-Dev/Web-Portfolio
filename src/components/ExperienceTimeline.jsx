@@ -66,7 +66,7 @@ export default function ExperienceTimeline() {
                       {t(exp.roleEn, exp.roleTh)}
                     </h4>
                     <span className="text-[11px] font-mono-code font-semibold text-draft-600 dark:text-draft-400 self-start sm:self-auto">
-                      {exp.period}
+                      {t(exp.periodEn, exp.periodTh)}
                     </span>
                   </div>
 

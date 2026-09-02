@@ -11,6 +11,7 @@ export default function Contact() {
   const { t } = useLanguage();
   const { personal } = portfolioData;
   const [copied, setCopied] = useState(false);
+  const [phoneRevealed, setPhoneRevealed] = useState(false);
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(personal.email);
@@ -98,7 +99,16 @@ export default function Contact() {
                 <Phone className="w-4 h-4 text-draft-500 shrink-0" />
                 <div className="min-w-0">
                   <span className="text-xs font-mono-code text-blueprint-500 dark:text-blueprint-300">Direct Phone</span>
-                  <div className="font-mono-code font-bold text-sm text-blueprint-900 dark:text-white">{personal.phone}</div>
+                  {phoneRevealed ? (
+                    <div className="font-mono-code font-bold text-sm text-blueprint-900 dark:text-white">{personal.phone}</div>
+                  ) : (
+                    <button
+                      onClick={() => setPhoneRevealed(true)}
+                      className="block font-mono-code font-bold text-sm text-draft-600 dark:text-draft-400 hover:underline"
+                    >
+                      {t('Tap to reveal', 'แตะเพื่อแสดงเบอร์')}
+                    </button>
+                  )}
                 </div>
               </div>
               <div className="pt-4 flex items-center gap-3">

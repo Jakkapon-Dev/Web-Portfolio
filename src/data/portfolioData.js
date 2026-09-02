@@ -256,7 +256,8 @@ export const portfolioData = {
     {
       roleEn: "Freelance Photographer & Content Operations",
       roleTh: "ช่างภาพอิสระ & บริหารจัดการคอนเทนต์",
-      period: "3 Years (3 ปี)",
+      periodEn: "3 Years",
+      periodTh: "3 ปี",
       type: "Transferable Professional Experience",
       summaryEn: "Managed client requirements, production schedules, digital asset delivery pipelines, and end-to-end communication across creative projects.",
       summaryTh: "บริหารจัดการงานถ่ายภาพ รับ Requirement วาง Workflow การทำงาน จัดการขั้นตอนการส่งมอบไฟล์ และแก้ปัญหาเฉพาะหน้าตามกำหนดเวลา",
@@ -265,7 +266,8 @@ export const portfolioData = {
     {
       roleEn: "Lawyer's Clerk / Legal Operations",
       roleTh: "เสมียนทนายความ / ดำเนินการเอกสารกฎหมาย",
-      period: "3 Years (3 ปี)",
+      periodEn: "3 Years",
+      periodTh: "3 ปี",
       type: "Transferable Professional Experience",
       summaryEn: "Handled contracts and legal documentation with strong attention to accuracy, structured processes, and cross-party coordination.",
       summaryTh: "จัดการเอกสารทางกฎหมายและสัญญา ตรวจสอบความถูกต้องของข้อมูล ประสานงานขั้นตอนทางกฎหมายอย่างเป็นระบบและละเอียดรอบคอบ",

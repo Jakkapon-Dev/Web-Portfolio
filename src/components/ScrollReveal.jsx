@@ -28,9 +28,9 @@ export default function ScrollReveal({
         x: 0, 
         y: 0 
       }}
-      viewport={{ once: true, margin: '-60px' }}
+      viewport={{ once: true, margin: '0px 0px -10% 0px' }}
       transition={{
-        duration: 0.65,
+        duration: 0.45,
         delay: delay,
         ease: [0.22, 1, 0.36, 1] // Apple / Awwwards smooth cubic-bezier curve
       }}
