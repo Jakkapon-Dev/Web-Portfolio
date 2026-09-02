@@ -1,11 +1,16 @@
-import React, { Suspense, lazy, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { Suspense, lazy, useRef, useState } from 'react';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import { Sparkles, Zap } from 'lucide-react';
 import Magnet from './Magnet';
 
 // The actual Three.js/R3F scene is heavy — lazy-loaded so it never touches
-// the initial bundle, and only fetched once this card is actually mounted.
+// the initial bundle. That alone isn't enough on its own though: SkillsCloud
+// renders this component unconditionally on first paint, so the moment it
+// mounts, React kicks off the dynamic import() regardless of whether anyone
+// ever scrolls this far — every visitor pays for the ~230kB (gzipped)
+// Three.js/R3F fetch on page load. Gate it behind useInView below so the
+// fetch itself only starts once this card is actually about to be seen.
 const SkillConstellationScene = lazy(() => import('./SkillConstellationScene'));
 
 // ── Skill Data ──────────────────────────────────────────────────────────────
@@ -122,6 +127,12 @@ export default function SkillConstellation() {
   const [activeGroup, setActiveGroup] = useState('all');
   const [pulseSpeed, setPulseSpeed] = useState('normal'); // 'normal' | 'boost'
 
+  // Only render (and thus only import()) the 3D scene once this card is
+  // actually about to enter the viewport — see the comment above the lazy()
+  // call for why that matters.
+  const sceneWrapperRef = useRef(null);
+  const nearViewport = useInView(sceneWrapperRef, { once: true, margin: '200px 0px 200px 0px' });
+
   const activeSkillObj = selected
     ? ALL_SKILLS.find(s => s.id === selected)
     : (hovered ? ALL_SKILLS.find(s => s.id === hovered) : null);
@@ -210,26 +221,32 @@ export default function SkillConstellation() {
       </div>
 
       {/* Interactive 3D Constellation */}
-      <div className="relative w-full h-[380px] sm:h-[460px] lg:h-[520px] rounded-[8px] overflow-hidden border border-blueprint-700/50 bg-[#050D1A] shadow-inner">
-        <Suspense
-          fallback={
-            <div className="w-full h-full flex items-center justify-center text-blueprint-400 font-mono-code text-xs">
-              {t('Loading 3D graph…', 'กำลังโหลดกราฟ 3 มิติ…')}
-            </div>
-          }
-        >
-          <SkillConstellationScene
-            allSkills={ALL_SKILLS}
-            connections={CONNECTIONS}
-            positions2D={STAR_POSITIONS}
-            activeGroup={activeGroup}
-            hovered={hovered}
-            selected={selected}
-            setHovered={setHovered}
-            setSelected={setSelected}
-            pulseSpeed={pulseSpeed}
-          />
-        </Suspense>
+      <div ref={sceneWrapperRef} className="relative w-full h-[380px] sm:h-[460px] lg:h-[520px] rounded-[8px] overflow-hidden border border-blueprint-700/50 bg-[#050D1A] shadow-inner">
+        {nearViewport ? (
+          <Suspense
+            fallback={
+              <div className="w-full h-full flex items-center justify-center text-blueprint-400 font-mono-code text-xs">
+                {t('Loading 3D graph…', 'กำลังโหลดกราฟ 3 มิติ…')}
+              </div>
+            }
+          >
+            <SkillConstellationScene
+              allSkills={ALL_SKILLS}
+              connections={CONNECTIONS}
+              positions2D={STAR_POSITIONS}
+              activeGroup={activeGroup}
+              hovered={hovered}
+              selected={selected}
+              setHovered={setHovered}
+              setSelected={setSelected}
+              pulseSpeed={pulseSpeed}
+            />
+          </Suspense>
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-blueprint-500 font-mono-code text-xs">
+            {t('Scroll closer to load the 3D graph…', 'เลื่อนลงมาใกล้ ๆ เพื่อโหลดกราฟ 3 มิติ…')}
+          </div>
+        )}
 
         {/* Top Floating Badge */}
         <div className="absolute top-3 left-3 sm:top-4 sm:left-4 flex items-center gap-2 pointer-events-none">
