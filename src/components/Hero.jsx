@@ -159,7 +159,7 @@ export default function Hero() {
             >
               <div className="w-full h-full rounded-[5px] overflow-hidden bg-blueprint-50 dark:bg-blueprint-900 relative">
                 <img
-                  src="/image/ShaRK.jfif"
+                  src="/image/ShaRK.jpg"
                   alt="Jakkapon Wapakpet"
                   className="w-full h-full object-cover"
                   style={{ objectPosition: '40% 15%' }}

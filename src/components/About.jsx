@@ -73,7 +73,7 @@ export default function About() {
             <TiltCard className="relative w-64 h-80 rounded-[10px] bg-white dark:bg-blueprint-800 border border-blueprint-200 dark:border-blueprint-700/60 shadow-xl p-2.5">
               <div className="w-full h-full rounded-[7px] overflow-hidden bg-blueprint-50 dark:bg-blueprint-900">
                 <img
-                  src="/image/ShaRK.jfif"
+                  src="/image/ShaRK.jpg"
                   alt="Jakkapon Wapakpet"
                   className="w-full h-full object-cover"
                   style={{ objectPosition: '40% 15%' }}
